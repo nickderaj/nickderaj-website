@@ -1,0 +1,91 @@
+/**
+ * One role/education card — the anatomy specified in PLAN §2.2: mono period, role · org, a rule,
+ * a mono stat strip (tenure · stack · team), summary prose, then outcome highlight lines.
+ * Restrained: no colour beyond the accent marker dot and links.
+ */
+
+import { formatPeriod, formatTenure, tenureMonths } from '@/lib/format.ts';
+import type { CareerEntry } from '@/types/content.ts';
+
+export type RoleCardProps = {
+  entry: CareerEntry;
+  isActive: boolean;
+};
+
+export default function RoleCard({ entry, isActive }: RoleCardProps) {
+  const tenure = formatTenure(tenureMonths(entry.start, entry.end));
+  const period = formatPeriod(entry.start, entry.end);
+
+  return (
+    <article
+      className={`rounded-lg border border-border bg-surface/40 p-6 transition-colors duration-200 sm:p-8 ${
+        isActive ? 'border-accent/60' : ''
+      }`}
+      aria-current={isActive ? 'step' : undefined}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <p className="font-mono text-xs tracking-[0.12em] text-muted tabular-nums">{period}</p>
+        <span
+          aria-hidden="true"
+          className={`mt-1 size-2 shrink-0 rounded-full ${isActive ? 'bg-accent' : 'bg-muted'}`}
+        />
+      </div>
+
+      <h3 className="mt-2 text-lg font-medium text-text sm:text-xl">
+        {entry.role} <span className="text-muted">·</span> {entry.org}
+      </h3>
+
+      <hr className="my-4 border-border" />
+
+      <dl className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-muted">
+        <div className="flex gap-2">
+          <dt className="tracking-[0.08em]">TENURE</dt>
+          <dd className="tabular-nums text-text">{tenure}</dd>
+        </div>
+        {entry.stack.length > 0 && (
+          <div className="flex gap-2">
+            <dt className="tracking-[0.08em]">STACK</dt>
+            <dd className="text-text">{entry.stack.join(' · ')}</dd>
+          </div>
+        )}
+        {entry.teamSize !== undefined && (
+          <div className="flex gap-2">
+            <dt className="tracking-[0.08em]">TEAM</dt>
+            <dd className="tabular-nums text-text">{entry.teamSize}</dd>
+          </div>
+        )}
+      </dl>
+
+      <p className="mt-4 text-sm leading-relaxed text-text sm:text-base">{entry.summary}</p>
+
+      {entry.highlights.length > 0 && (
+        <ul className="mt-4 space-y-1.5">
+          {entry.highlights.map((highlight) => (
+            <li key={highlight} className="flex gap-2 text-sm leading-relaxed text-text">
+              <span aria-hidden="true" className="text-accent">
+                →
+              </span>
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {entry.links && entry.links.length > 0 && (
+        <p className="mt-4 flex flex-wrap gap-4 font-mono text-xs">
+          {entry.links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+            >
+              {link.label}
+            </a>
+          ))}
+        </p>
+      )}
+    </article>
+  );
+}
