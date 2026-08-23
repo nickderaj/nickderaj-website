@@ -1,6 +1,6 @@
+import { ExternalLink, SectionHeading } from '@/components/ui/index.ts';
 import { Download, Mail } from 'lucide-react';
 import { useState } from 'react';
-import { ExternalLink, SectionHeading } from '@/components/ui/index.ts';
 
 const EMAIL_USER = 'nickderaj';
 const EMAIL_DOMAIN = 'gmail.com';
@@ -19,7 +19,7 @@ export default function Contact() {
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <SectionHeading index={4} label="Contact" headingId="contact-heading" />
         <div className="mt-10 max-w-xl">
-          <p className="text-base leading-relaxed text-text sm:text-lg">
+          <p className="text-text text-base leading-relaxed sm:text-lg">
             Open to conversations about quant research and engineering roles. The fastest way to
             reach me is email.
           </p>
@@ -27,13 +27,16 @@ export default function Contact() {
             {email ? (
               <a
                 href={`mailto:${email}`}
-                className="group inline-flex min-h-11 items-center gap-1.5 text-text underline decoration-accent decoration-1 underline-offset-4 transition-colors duration-150 hover:text-accent"
+                className="group text-text decoration-accent hover:text-accent inline-flex min-h-11 items-center gap-1.5 underline decoration-1 underline-offset-4 transition-colors duration-150"
               >
                 <Mail aria-hidden="true" className="size-[1em]" />
                 {email}
               </a>
             ) : (
-              <span aria-hidden="true" className="inline-flex min-h-11 items-center gap-1.5 text-muted">
+              <span
+                aria-hidden="true"
+                className="text-muted inline-flex min-h-11 items-center gap-1.5"
+              >
                 <Mail aria-hidden="true" className="size-[1em]" />
                 Email
               </span>

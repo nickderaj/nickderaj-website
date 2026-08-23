@@ -92,15 +92,13 @@ export default function Toolkit() {
   const groups = deriveToolkitGroups();
 
   return (
-    <section id="toolkit" aria-labelledby="toolkit-heading" className="border-b border-border">
+    <section id="toolkit" aria-labelledby="toolkit-heading" className="border-border border-b">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
         <SectionHeading index={3} label="Toolkit" headingId="toolkit-heading" />
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3">
           {GROUPS.map((group) => (
             <div key={group}>
-              <h3 className="font-mono text-xs tracking-[0.15em] text-muted uppercase">
-                {group}
-              </h3>
+              <h3 className="text-muted font-mono text-xs tracking-[0.15em] uppercase">{group}</h3>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {groups[group].map((skill) => (
                   <li key={skill}>

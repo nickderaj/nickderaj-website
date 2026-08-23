@@ -111,7 +111,9 @@ export function ticks(domain: readonly [number, number], count: number): number[
 }
 
 /** Generates one tick per calendar year covered by a month-index domain (PLAN chart year ticks). */
-export function yearTicks(domain: readonly [number, number]): { monthIndex: number; year: number }[] {
+export function yearTicks(
+  domain: readonly [number, number],
+): { monthIndex: number; year: number }[] {
   const [d0, d1] = domain;
   const lo = Math.min(d0, d1);
   const hi = Math.max(d0, d1);

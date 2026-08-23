@@ -2,13 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var stored = window.localStorage.getItem('theme');
+          var theme =
+            stored === 'dark' || stored === 'light'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (error) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0c0e" />
     <title>Nick de Raj</title>
     <meta
       name="description"
-      content="Nick de Raj — full-stack and quant developer. Career, projects, and research notes."
+      content="Nick de Raj — full-stack and quantitative developer. Career, projects, and research notes."
     />
+    <link rel="canonical" href="https://nickderaj.com" />
+
+    <meta property="og:title" content="Nick de Raj" />
+    <meta
+      property="og:description"
+      content="Nick de Raj — full-stack and quantitative developer. Career, projects, and research notes."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nickderaj.com" />
+    <meta property="og:image" content="/og.svg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nick de Raj" />
+    <meta
+      name="twitter:description"
+      content="Nick de Raj — full-stack and quantitative developer. Career, projects, and research notes."
+    />
+    <meta name="twitter:image" content="/og.svg" />
+
     <!--
       TODO: self-host and subset Inter + IBM Plex Mono before launch (PLAN §5.5 — no
       third-party font CDN in the shipped site). Google Fonts is a stopgap for scaffolding only.

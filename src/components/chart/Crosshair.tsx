@@ -3,8 +3,8 @@
  * scroll progress (PLAN §1.3 item 2).
  */
 
-import { seriesValueAt } from '@/lib/scales.ts';
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
+import { seriesValueAt } from '@/lib/scales.ts';
 
 const MONTH_LABELS = [
   'JAN',

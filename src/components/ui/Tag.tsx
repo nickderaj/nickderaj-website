@@ -7,7 +7,7 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(({ className = '', ...r
   return (
     <span
       ref={ref}
-      className={`inline-flex items-center rounded-sm border border-border px-1.5 py-0.5 font-mono text-[0.6875rem] tracking-wide text-muted uppercase ${className}`}
+      className={`border-border text-muted inline-flex items-center rounded-sm border px-1.5 py-0.5 font-mono text-[0.6875rem] tracking-wide uppercase ${className}`}
       {...rest}
     />
   );

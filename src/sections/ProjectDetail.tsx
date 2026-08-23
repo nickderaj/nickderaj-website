@@ -15,7 +15,7 @@ export default function ProjectDetail() {
   if (!project) {
     return (
       <section className="mx-auto max-w-3xl px-6 py-24">
-        <p className="text-accent font-mono text-xs uppercase tracking-widest">404</p>
+        <p className="text-accent font-mono text-xs tracking-widest uppercase">404</p>
         <h1 className="text-text mt-2 text-3xl font-semibold">Project not found</h1>
         <p className="text-muted mt-4">
           {slug === undefined
@@ -36,12 +36,12 @@ export default function ProjectDetail() {
       <BackLink />
 
       <header className="mt-8 flex flex-col gap-3">
-        <p className="text-muted font-mono text-xs uppercase tracking-widest">{project.period}</p>
+        <p className="text-muted font-mono text-xs tracking-widest uppercase">{project.period}</p>
         <h1 className="text-text text-4xl font-semibold">{project.title}</h1>
         <p className="text-text/90 text-lg leading-relaxed">{project.thesis}</p>
 
         {parentProject && (
-          <p className="text-accent font-mono text-xs uppercase tracking-widest">
+          <p className="text-accent font-mono text-xs tracking-widest uppercase">
             Spun out of{' '}
             <Link to={`/projects/${parentProject.slug}`} className="underline underline-offset-2">
               {parentProject.title}
@@ -53,7 +53,7 @@ export default function ProjectDetail() {
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="border-border text-muted rounded border px-2 py-0.5 uppercase tracking-wide"
+              className="border-border text-muted rounded border px-2 py-0.5 tracking-wide uppercase"
             >
               {tag}
             </li>
@@ -135,7 +135,7 @@ function StatStrip({ stats }: StatStripProps) {
           key={stat.label}
           className="border-border flex min-w-40 flex-1 flex-col gap-1 rounded border px-4 py-3 font-mono"
         >
-          <dt className="text-muted text-xs uppercase tracking-wide">{stat.label}</dt>
+          <dt className="text-muted text-xs tracking-wide uppercase">{stat.label}</dt>
           <dd className="text-accent m-0 text-2xl">{stat.value}</dd>
           {stat.note !== undefined && <dd className="text-muted m-0 text-xs">{stat.note}</dd>}
         </div>
@@ -148,7 +148,7 @@ function BackLink() {
   return (
     <Link
       to="/#projects"
-      className="text-muted hover:text-accent inline-flex items-center gap-1.5 font-mono text-sm uppercase tracking-wide transition-colors"
+      className="text-muted hover:text-accent inline-flex items-center gap-1.5 font-mono text-sm tracking-wide uppercase transition-colors"
     >
       <ArrowLeft aria-hidden="true" size={14} />
       Back to projects
@@ -165,7 +165,13 @@ function ProjectBlockView({ block }: ProjectBlockViewProps) {
     case 'heading': {
       const Heading = block.level === 2 ? 'h2' : 'h3';
       return (
-        <Heading className={block.level === 2 ? 'text-text text-2xl font-semibold' : 'text-text text-xl font-semibold'}>
+        <Heading
+          className={
+            block.level === 2
+              ? 'text-text text-2xl font-semibold'
+              : 'text-text text-xl font-semibold'
+          }
+        >
           {block.text}
         </Heading>
       );
@@ -189,7 +195,7 @@ function ProjectBlockView({ block }: ProjectBlockViewProps) {
     case 'stat':
       return (
         <div className="border-border flex flex-col gap-1 rounded border px-4 py-3 font-mono">
-          <span className="text-muted text-xs uppercase tracking-wide">{block.label}</span>
+          <span className="text-muted text-xs tracking-wide uppercase">{block.label}</span>
           <span className="text-accent text-2xl">{block.value}</span>
           {block.note !== undefined && <span className="text-muted text-xs">{block.note}</span>}
         </div>
@@ -200,4 +206,3 @@ function ProjectBlockView({ block }: ProjectBlockViewProps) {
     }
   }
 }
-

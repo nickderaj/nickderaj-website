@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import type { CareerEntry } from '@/types/content.ts';
+import { describe, expect, it } from 'vitest';
 import {
   buildCareerSeries,
   linearScale,
@@ -95,7 +95,10 @@ describe('ticks', () => {
 
 describe('yearTicks', () => {
   it('produces one tick per whole calendar year in the domain', () => {
-    const domain: [number, number] = [monthIndex({ year: 2013, month: 9 }), monthIndex({ year: 2016, month: 6 })];
+    const domain: [number, number] = [
+      monthIndex({ year: 2013, month: 9 }),
+      monthIndex({ year: 2016, month: 6 }),
+    ];
     const result = yearTicks(domain);
     expect(result.map((t) => t.year)).toEqual([2014, 2015, 2016]);
   });

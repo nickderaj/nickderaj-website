@@ -89,7 +89,10 @@ export function useScrollProgress(): ScrollProgressResult {
           const target = observedEntry.target;
           const foundIndex = entries.find(([, element]) => element === target)?.[0];
           if (foundIndex === undefined) continue;
-          visibleRatios.set(foundIndex, observedEntry.isIntersecting ? observedEntry.intersectionRatio : 0);
+          visibleRatios.set(
+            foundIndex,
+            observedEntry.isIntersecting ? observedEntry.intersectionRatio : 0,
+          );
         }
 
         let bestIndex = -1;

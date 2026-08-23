@@ -1,5 +1,3 @@
-import { Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import {
   THEME_CHANGE_EVENT,
   getAppliedTheme,
@@ -7,6 +5,8 @@ import {
   setTheme,
   type Theme,
 } from '@/lib/theme.ts';
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 /**
  * Icon-button theme toggle. Assumes the inline script from `src/lib/theme.ts`
@@ -48,7 +48,7 @@ export function ThemeToggle() {
       }}
       aria-label={`Switch to ${nextTheme} theme`}
       title={`Switch to ${nextTheme} theme`}
-      className="inline-flex size-11 items-center justify-center rounded-sm border border-border-strong text-text transition-colors duration-150 hover:border-accent hover:text-accent"
+      className="border-border-strong text-text hover:border-accent hover:text-accent inline-flex size-11 items-center justify-center rounded-sm border transition-colors duration-150"
     >
       <Icon aria-hidden="true" className="size-4" />
     </button>

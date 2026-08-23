@@ -31,16 +31,20 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.tags.map((tag) => (
             <li
               key={tag}
-              className="border-border text-muted rounded border px-2 py-0.5 uppercase tracking-wide"
+              className="border-border text-muted rounded border px-2 py-0.5 tracking-wide uppercase"
             >
               {tag}
             </li>
           ))}
         </ul>
 
-        <span className="text-accent inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wide">
+        <span className="text-accent inline-flex items-center gap-1 font-mono text-xs tracking-wide uppercase">
           View project
-          <ArrowRight aria-hidden="true" size={14} className="transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight
+            aria-hidden="true"
+            size={14}
+            className="transition-transform group-hover:translate-x-0.5"
+          />
         </span>
       </div>
     </Link>

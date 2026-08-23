@@ -3,10 +3,10 @@
  * are derived from `career.ts` `regime` fields via `buildRegimeBands` — never hardcoded dates.
  */
 
-import { useMemo } from 'react';
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
 import { buildRegimeBands } from '@/components/chart/regimes.ts';
 import type { CareerEntry } from '@/types/content.ts';
+import { useMemo } from 'react';
 
 export type RegimeBandsProps = {
   entries: readonly CareerEntry[];

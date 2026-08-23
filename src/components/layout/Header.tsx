@@ -27,7 +27,7 @@ export function Header() {
     <>
       <a
         href="#main"
-        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-2 focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:border-border-strong focus-visible:bg-surface focus-visible:px-3 focus-visible:py-2 focus-visible:font-mono focus-visible:text-xs focus-visible:text-text focus-visible:uppercase"
+        className="focus-visible:border-border-strong focus-visible:bg-surface focus-visible:text-text sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-2 focus-visible:left-2 focus-visible:z-50 focus-visible:rounded-sm focus-visible:border focus-visible:px-3 focus-visible:py-2 focus-visible:font-mono focus-visible:text-xs focus-visible:uppercase"
       >
         Skip to content
       </a>
@@ -35,17 +35,20 @@ export function Header() {
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <a
             href="#top"
-            className="font-mono text-sm font-medium tracking-wide text-text sm:text-base"
+            className="text-text font-mono text-sm font-medium tracking-wide sm:text-base"
           >
             Nick de Raj
           </a>
-          <nav aria-label="Section" className="flex h-full min-w-0 items-stretch gap-4 overflow-x-auto">
+          <nav
+            aria-label="Section"
+            className="flex h-full min-w-0 items-stretch gap-4 overflow-x-auto"
+          >
             <ul className="flex items-stretch gap-4 sm:gap-6">
               {NAV_LINKS.map((link) => (
                 <li key={link.href} className="flex">
                   <a
                     href={link.href}
-                    className="flex h-full items-center font-mono text-xs tracking-wide text-muted uppercase transition-colors duration-150 hover:text-accent sm:text-sm"
+                    className="text-muted hover:text-accent flex h-full items-center font-mono text-xs tracking-wide uppercase transition-colors duration-150 sm:text-sm"
                   >
                     {link.label}
                   </a>

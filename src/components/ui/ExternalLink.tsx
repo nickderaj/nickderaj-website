@@ -20,7 +20,7 @@ export const ExternalLink = forwardRef<HTMLAnchorElement, ExternalLinkProps>(
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`group inline-flex items-center gap-1 text-text underline decoration-accent decoration-1 underline-offset-4 transition-colors duration-150 hover:text-accent ${className}`}
+        className={`group text-text decoration-accent hover:text-accent inline-flex items-center gap-1 underline decoration-1 underline-offset-4 transition-colors duration-150 ${className}`}
         {...rest}
       >
         {children}

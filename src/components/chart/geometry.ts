@@ -4,14 +4,24 @@
  * the dots, and the crosshair can never drift apart (PLAN §2.1).
  */
 
-import { buildCareerSeries, linearScale, type CareerSeries, type LinearScale } from '@/lib/scales.ts';
+import {
+  buildCareerSeries,
+  linearScale,
+  type CareerSeries,
+  type LinearScale,
+} from '@/lib/scales.ts';
 import type { CareerEntry } from '@/types/content.ts';
 
 export type ChartOrientation = 'horizontal' | 'vertical';
 
 export type ChartPadding = { top: number; right: number; bottom: number; left: number };
 
-export const DEFAULT_HORIZONTAL_PADDING: ChartPadding = { top: 56, right: 24, bottom: 40, left: 56 };
+export const DEFAULT_HORIZONTAL_PADDING: ChartPadding = {
+  top: 56,
+  right: 24,
+  bottom: 40,
+  left: 56,
+};
 export const DEFAULT_VERTICAL_PADDING: ChartPadding = { top: 16, right: 8, bottom: 16, left: 8 };
 
 export type ChartGeometry = {
@@ -38,7 +48,9 @@ export function buildChartGeometry(
   orientation: ChartOrientation,
   width: number,
   height: number,
-  padding: ChartPadding = orientation === 'horizontal' ? DEFAULT_HORIZONTAL_PADDING : DEFAULT_VERTICAL_PADDING,
+  padding: ChartPadding = orientation === 'horizontal'
+    ? DEFAULT_HORIZONTAL_PADDING
+    : DEFAULT_VERTICAL_PADDING,
 ): ChartGeometry {
   const series = buildCareerSeries(entries);
   const { xDomain, yDomain } = series;
@@ -72,7 +84,18 @@ export function buildChartGeometry(
     .join(' ');
   const pathLength = polylineLength(points);
 
-  return { orientation, width, height, padding, series, timeScale, valueScale, toPoint, pathD, pathLength };
+  return {
+    orientation,
+    width,
+    height,
+    padding,
+    series,
+    timeScale,
+    valueScale,
+    toPoint,
+    pathD,
+    pathLength,
+  };
 }
 
 function polylineLength(points: readonly { x: number; y: number }[]): number {

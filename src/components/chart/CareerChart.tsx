@@ -4,13 +4,13 @@
  * decorative: `aria-hidden="true"`, the real content lives in the role card `<ol>`.
  */
 
-import { useMemo } from 'react';
 import Crosshair from '@/components/chart/Crosshair.tsx';
 import { buildChartGeometry, type ChartOrientation } from '@/components/chart/geometry.ts';
 import Markers from '@/components/chart/Markers.tsx';
 import RegimeBands from '@/components/chart/RegimeBands.tsx';
 import { yearTicks } from '@/lib/scales.ts';
 import type { CareerEntry } from '@/types/content.ts';
+import { useMemo } from 'react';
 
 const HORIZONTAL_WIDTH = 1000;
 const HORIZONTAL_HEIGHT = 720;
@@ -32,7 +32,13 @@ function formatYears(months: number): string {
   return years % 1 === 0 ? `${String(years)}y` : `${years.toFixed(1)}y`;
 }
 
-export default function CareerChart({ entries, orientation, progress, activeEntryId, className }: CareerChartProps) {
+export default function CareerChart({
+  entries,
+  orientation,
+  progress,
+  activeEntryId,
+  className,
+}: CareerChartProps) {
   const width = orientation === 'horizontal' ? HORIZONTAL_WIDTH : VERTICAL_WIDTH;
   const height = orientation === 'horizontal' ? HORIZONTAL_HEIGHT : VERTICAL_HEIGHT;
 

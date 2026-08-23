@@ -18,29 +18,29 @@ export default function RoleCard({ entry, isActive }: RoleCardProps) {
 
   return (
     <article
-      className={`rounded-lg border border-border bg-surface/40 p-6 transition-colors duration-200 sm:p-8 ${
+      className={`border-border bg-surface/40 rounded-lg border p-6 transition-colors duration-200 sm:p-8 ${
         isActive ? 'border-accent/60' : ''
       }`}
       aria-current={isActive ? 'step' : undefined}
     >
       <div className="flex items-start justify-between gap-4">
-        <p className="font-mono text-xs tracking-[0.12em] text-muted tabular-nums">{period}</p>
+        <p className="text-muted font-mono text-xs tracking-[0.12em] tabular-nums">{period}</p>
         <span
           aria-hidden="true"
           className={`mt-1 size-2 shrink-0 rounded-full ${isActive ? 'bg-accent' : 'bg-muted'}`}
         />
       </div>
 
-      <h3 className="mt-2 text-lg font-medium text-text sm:text-xl">
+      <h3 className="text-text mt-2 text-lg font-medium sm:text-xl">
         {entry.role} <span className="text-muted">·</span> {entry.org}
       </h3>
 
-      <hr className="my-4 border-border" />
+      <hr className="border-border my-4" />
 
-      <dl className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-muted">
+      <dl className="text-muted flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs">
         <div className="flex gap-2">
           <dt className="tracking-[0.08em]">TENURE</dt>
-          <dd className="tabular-nums text-text">{tenure}</dd>
+          <dd className="text-text tabular-nums">{tenure}</dd>
         </div>
         {entry.stack.length > 0 && (
           <div className="flex gap-2">
@@ -51,17 +51,17 @@ export default function RoleCard({ entry, isActive }: RoleCardProps) {
         {entry.teamSize !== undefined && (
           <div className="flex gap-2">
             <dt className="tracking-[0.08em]">TEAM</dt>
-            <dd className="tabular-nums text-text">{entry.teamSize}</dd>
+            <dd className="text-text tabular-nums">{entry.teamSize}</dd>
           </div>
         )}
       </dl>
 
-      <p className="mt-4 text-sm leading-relaxed text-text sm:text-base">{entry.summary}</p>
+      <p className="text-text mt-4 text-sm leading-relaxed sm:text-base">{entry.summary}</p>
 
       {entry.highlights.length > 0 && (
         <ul className="mt-4 space-y-1.5">
           {entry.highlights.map((highlight) => (
-            <li key={highlight} className="flex gap-2 text-sm leading-relaxed text-text">
+            <li key={highlight} className="text-text flex gap-2 text-sm leading-relaxed">
               <span aria-hidden="true" className="text-accent">
                 →
               </span>
@@ -79,7 +79,7 @@ export default function RoleCard({ entry, isActive }: RoleCardProps) {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+              className="text-accent decoration-accent/40 hover:decoration-accent underline underline-offset-4"
             >
               {link.label}
             </a>

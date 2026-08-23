@@ -10,11 +10,11 @@
  * No props — this section owns its own data (`career.ts`) and scroll-progress wiring.
  */
 
-import { useEffect, useRef, useState } from 'react';
 import CareerChart from '@/components/chart/CareerChart.tsx';
 import RoleCard from '@/components/timeline/RoleCard.tsx';
 import { career } from '@/content/career.ts';
 import { useScrollProgress } from '@/lib/useScrollProgress.ts';
+import { useEffect, useRef, useState } from 'react';
 
 const NAV_KEYS_FORWARD = new Set(['j', 'ArrowDown']);
 const NAV_KEYS_BACKWARD = new Set(['k', 'ArrowUp']);
@@ -56,10 +56,7 @@ export default function Timeline() {
 
       event.preventDefault();
       const current = activeIndex < 0 ? 0 : activeIndex;
-      const nextIndex = Math.min(
-        entries.length - 1,
-        Math.max(0, current + (isForward ? 1 : -1)),
-      );
+      const nextIndex = Math.min(entries.length - 1, Math.max(0, current + (isForward ? 1 : -1)));
       cardElementsRef.current[nextIndex]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
 
@@ -73,13 +70,18 @@ export default function Timeline() {
   const activeEntryId = activeEntry?.id ?? null;
 
   return (
-    <section ref={sectionRef} aria-labelledby="timeline-heading" className="relative bg-grid-paper">
+    <section
+      id="experience"
+      ref={sectionRef}
+      aria-labelledby="timeline-heading"
+      className="bg-grid-paper relative"
+    >
       <h2 id="timeline-heading" className="sr-only">
         Career timeline
       </h2>
 
       {/* Tablet (768–1023px): horizontal progress ribbon pinned under the header. */}
-      <div className="sticky top-0 z-10 hidden h-20 border-b border-border bg-ground/90 backdrop-blur md:block lg:hidden">
+      <div className="border-border bg-ground/90 sticky top-0 z-10 hidden h-20 border-b backdrop-blur md:block lg:hidden">
         <CareerChart
           entries={entries}
           orientation="horizontal"
@@ -89,7 +91,10 @@ export default function Timeline() {
         />
       </div>
 
-      <div ref={containerRef} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8">
+      <div
+        ref={containerRef}
+        className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
+      >
         {/* Desktop (≥1024px): sticky full-height chart pane, left ~55%. */}
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
           <CareerChart

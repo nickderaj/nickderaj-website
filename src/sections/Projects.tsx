@@ -15,8 +15,10 @@ export default function Projects() {
   return (
     <section id="projects" className="bg-grid-paper mx-auto max-w-6xl px-6 py-24">
       <header className="mb-12 flex flex-col gap-2">
-        <p className="text-accent font-mono text-xs uppercase tracking-widest">Projects</p>
-        <h2 className="text-text text-3xl font-semibold">Research, the strategy it produced, and the public record</h2>
+        <p className="text-accent font-mono text-xs tracking-widest uppercase">Projects</p>
+        <h2 className="text-text text-3xl font-semibold">
+          Research, the strategy it produced, and the public record
+        </h2>
       </header>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
@@ -50,7 +52,7 @@ type ProjectLineageConnectorProps = {
 function ProjectLineageConnector({ fromTitle, toTitle }: ProjectLineageConnectorProps) {
   return (
     <div
-      className="text-accent col-span-full flex items-center gap-3 py-1 font-mono text-xs uppercase tracking-widest"
+      className="text-accent col-span-full flex items-center gap-3 py-1 font-mono text-xs tracking-widest uppercase"
       aria-hidden="false"
     >
       <span className="bg-border h-px flex-1" />

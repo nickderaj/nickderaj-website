@@ -1,6 +1,6 @@
+import { ExternalLink } from '@/components/ui/index.ts';
 import { Download, Mail } from 'lucide-react';
 import { useState } from 'react';
-import { ExternalLink } from '@/components/ui/index.ts';
 
 /**
  * Assembled client-side from parts, and only joined at render time via a lazy `useState`
@@ -31,17 +31,15 @@ export default function Hero() {
     <section
       id="top"
       aria-label="Introduction"
-      className="bg-grid-paper relative flex min-h-[calc(100dvh-3.5rem)] items-center border-b border-border"
+      className="bg-grid-paper border-border relative flex min-h-[calc(100dvh-3.5rem)] items-center border-b"
     >
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         <div className="max-w-xl lg:max-w-2xl">
-          <p className="font-mono text-xs tracking-[0.2em] text-accent uppercase">
-            Singapore
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-text sm:text-5xl lg:text-6xl">
+          <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">Singapore</p>
+          <h1 className="text-text mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
             Nick de Raj
           </h1>
-          <p className="mt-6 text-lg leading-relaxed text-text sm:text-xl">
+          <p className="text-text mt-6 text-lg leading-relaxed sm:text-xl">
             Full-stack and quantitative developer at Goldman Sachs. Previously ran a physical
             commodities business trading palm oil on forward contracts, and built a crypto market
             maker from scratch. Now researching commodity futures.
@@ -60,13 +58,16 @@ export default function Hero() {
             {email ? (
               <a
                 href={`mailto:${email}`}
-                className="group inline-flex min-h-11 items-center gap-1.5 text-text underline decoration-accent decoration-1 underline-offset-4 transition-colors duration-150 hover:text-accent"
+                className="group text-text decoration-accent hover:text-accent inline-flex min-h-11 items-center gap-1.5 underline decoration-1 underline-offset-4 transition-colors duration-150"
               >
                 <Mail aria-hidden="true" className="size-[1em]" />
                 {email}
               </a>
             ) : (
-              <span aria-hidden="true" className="inline-flex min-h-11 items-center gap-1.5 text-muted">
+              <span
+                aria-hidden="true"
+                className="text-muted inline-flex min-h-11 items-center gap-1.5"
+              >
                 <Mail aria-hidden="true" className="size-[1em]" />
                 Email
               </span>

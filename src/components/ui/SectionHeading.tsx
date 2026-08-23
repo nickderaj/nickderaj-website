@@ -23,7 +23,7 @@ export const SectionHeading = forwardRef<HTMLDivElement, SectionHeadingProps>(
         <div className="flex items-baseline justify-between gap-4">
           <h2
             id={headingId}
-            className="font-mono text-xs font-medium tracking-[0.2em] text-muted uppercase sm:text-sm"
+            className="text-muted font-mono text-xs font-medium tracking-[0.2em] uppercase sm:text-sm"
           >
             {indexLabel !== null && (
               <span aria-hidden="true" className="text-accent">
@@ -33,10 +33,10 @@ export const SectionHeading = forwardRef<HTMLDivElement, SectionHeadingProps>(
             {label}
           </h2>
           {trailing !== undefined && (
-            <div className="font-mono text-xs tracking-wide text-muted uppercase">{trailing}</div>
+            <div className="text-muted font-mono text-xs tracking-wide uppercase">{trailing}</div>
           )}
         </div>
-        <div className="h-px w-full bg-border" />
+        <div className="bg-border h-px w-full" />
       </div>
     );
   },

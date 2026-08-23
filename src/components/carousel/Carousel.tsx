@@ -151,7 +151,7 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
         aria-roledescription="carousel"
         aria-label={`${label} screenshot carousel, ${String(slideCount)} slides`}
         onKeyDown={handleScrollerKeyDown}
-        className="scroll-smooth motion-reduce:scroll-auto flex snap-x snap-mandatory gap-4 overflow-x-auto rounded border border-border pb-1"
+        className="border-border flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth rounded border pb-1 motion-reduce:scroll-auto"
       >
         {screenshots.map((shot, index) => (
           <div
@@ -177,7 +177,7 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
                 height={1000}
                 loading="lazy"
                 decoding="async"
-                className="h-auto w-full rounded border border-border"
+                className="border-border h-auto w-full rounded border"
               />
             </button>
             {shot.caption !== undefined && (
@@ -214,7 +214,7 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
               className={`h-2.5 w-2.5 rounded-full border transition-colors ${
                 index === activeIndex
                   ? 'bg-accent border-accent'
-                  : 'border-border-strong bg-transparent hover:border-accent'
+                  : 'border-border-strong hover:border-accent bg-transparent'
               }`}
             />
           ))}
