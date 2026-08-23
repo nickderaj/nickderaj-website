@@ -1,14 +1,21 @@
 /**
- * The career equity-curve chart (PLAN §1.1, §2.1). A single responsive `<svg>` — the path draws
- * progressively via stroke-dasharray/stroke-dashoffset driven by scroll `progress`. Purely
- * decorative: `aria-hidden="true"`, the real content lives in the role card `<ol>`.
+ * The career chart (PLAN §1.1, §2.1; reworked to a candlestick chart — see fix #3 in the owner's
+ * review). A single responsive `<svg>`. Horizontal orientation draws a dense monthly OHLC candle
+ * series (`Candlesticks`, decorative market texture — see `lib/candles.ts`); the narrow mobile
+ * vertical gutter draws a simplified spine instead, since candle bodies don't read at ~48px wide.
+ * Both are driven by scroll `progress`. Purely decorative: `aria-hidden="true"`, the real content
+ * lives in the role card `<ol>`.
+ *
+ * The y-axis is deliberately unlabelled — no ticks, no title — since the candle series is not a
+ * real measurement. The x (time) axis and the regime bands stay, because both are real.
  */
 
+import Candlesticks from '@/components/chart/Candlesticks.tsx';
 import Crosshair from '@/components/chart/Crosshair.tsx';
 import { buildChartGeometry, type ChartOrientation } from '@/components/chart/geometry.ts';
 import Markers from '@/components/chart/Markers.tsx';
 import RegimeBands from '@/components/chart/RegimeBands.tsx';
-import { yearTicks } from '@/lib/scales.ts';
+import { ticks, yearTicks } from '@/lib/scales.ts';
 import type { CareerEntry } from '@/types/content.ts';
 import { useMemo } from 'react';
 
@@ -16,21 +23,17 @@ const HORIZONTAL_WIDTH = 1000;
 const HORIZONTAL_HEIGHT = 720;
 const VERTICAL_WIDTH = 48;
 const VERTICAL_HEIGHT = 1400;
+const GRIDLINE_COUNT = 4;
 
 export type CareerChartProps = {
   entries: readonly CareerEntry[];
   orientation: ChartOrientation;
-  /** 0..1: how much of the path is drawn, and where the crosshair sits. */
+  /** 0..1: how much of the chart is "drawn" (revealed), and where the crosshair sits. */
   progress: number;
   /** id of the currently active career entry, or null if none. */
   activeEntryId: string | null;
   className?: string;
 };
-
-function formatYears(months: number): string {
-  const years = months / 12;
-  return years % 1 === 0 ? `${String(years)}y` : `${years.toFixed(1)}y`;
-}
 
 export default function CareerChart({
   entries,
@@ -48,16 +51,16 @@ export default function CareerChart({
   );
 
   const clampedProgress = Math.min(1, Math.max(0, progress));
-  const dashOffset = geometry.pathLength * (1 - clampedProgress);
+  const [domainStart, domainEnd] = geometry.xDomain;
+  const playheadMonth = domainStart + clampedProgress * (domainEnd - domainStart);
+  const spineDashOffset = geometry.spinePathLength * (1 - clampedProgress);
 
   const showAxes = orientation === 'horizontal';
-  const yTicks = useMemo(() => yearTicks(geometry.series.xDomain), [geometry.series.xDomain]);
-  const [, yDomainEnd] = geometry.series.yDomain;
-  const valueTicks = useMemo(() => {
-    if (yDomainEnd <= 0) return [];
-    const steps = 4;
-    return Array.from({ length: steps + 1 }, (_, i) => (yDomainEnd / steps) * i);
-  }, [yDomainEnd]);
+  const yearTickList = useMemo(() => yearTicks(geometry.xDomain), [geometry.xDomain]);
+  const gridlines = useMemo(
+    () => (showAxes ? ticks(geometry.priceDomain, GRIDLINE_COUNT) : []),
+    [showAxes, geometry.priceDomain],
+  );
 
   return (
     <svg
@@ -72,6 +75,19 @@ export default function CareerChart({
 
       {showAxes && (
         <g>
+          {/* Faint horizontal gridlines only — no value labels, this axis isn't a real scale. */}
+          {gridlines.map((tick) => (
+            <line
+              key={tick}
+              x1={geometry.padding.left}
+              x2={width - geometry.padding.right}
+              y1={geometry.valueScale(tick)}
+              y2={geometry.valueScale(tick)}
+              stroke="var(--color-border)"
+              strokeWidth={1}
+              opacity={0.4}
+            />
+          ))}
           <line
             x1={geometry.padding.left}
             x2={width - geometry.padding.right}
@@ -80,7 +96,7 @@ export default function CareerChart({
             stroke="var(--color-border)"
             strokeWidth={1}
           />
-          {yTicks.map((tick) => (
+          {yearTickList.map((tick) => (
             <text
               key={tick.year}
               x={geometry.timeScale(tick.monthIndex)}
@@ -93,34 +109,23 @@ export default function CareerChart({
               {tick.year}
             </text>
           ))}
-          {valueTicks.map((tick) => (
-            <text
-              key={tick}
-              x={geometry.padding.left - 16}
-              y={geometry.valueScale(tick) + 3}
-              fontFamily="var(--font-mono)"
-              fontSize={9}
-              textAnchor="end"
-              fill="var(--color-muted)"
-              opacity={0.7}
-              style={{ fontVariantNumeric: 'tabular-nums' }}
-            >
-              {formatYears(tick)}
-            </text>
-          ))}
         </g>
       )}
 
-      <path
-        d={geometry.pathD}
-        fill="none"
-        stroke="var(--color-accent)"
-        strokeWidth={2}
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        strokeDasharray={geometry.pathLength}
-        strokeDashoffset={dashOffset}
-      />
+      {orientation === 'horizontal' ? (
+        <Candlesticks geometry={geometry} playheadMonth={playheadMonth} />
+      ) : (
+        <path
+          d={geometry.spinePathD}
+          fill="none"
+          stroke="var(--color-accent)"
+          strokeWidth={2}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          strokeDasharray={geometry.spinePathLength}
+          strokeDashoffset={spineDashOffset}
+        />
+      )}
 
       <Markers geometry={geometry} activeEntryId={activeEntryId} />
       <Crosshair geometry={geometry} progress={clampedProgress} />

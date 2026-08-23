@@ -67,8 +67,33 @@ test.describe('responsive rendering + no horizontal overflow', () => {
 });
 
 test.describe('career chart', () => {
-  test('draws progressively and completes at bottom of timeline', async ({ page }) => {
+  test('renders a dense candlestick series with up and down candles', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+
+    // The desktop sticky pane renders the candlestick series as one <rect> body per candle —
+    // roughly one per month across the ~2013-present career span (PLAN fix #3: "reads as a
+    // dense market chart, not a sparse infographic").
+    const desktopChart = page.locator('#experience > div > div').first();
+    const bodies = desktopChart.locator('svg > g rect');
+    const bodyCount = await bodies.count();
+    expect(bodyCount).toBeGreaterThan(100);
+
+    // Both colours must appear — a monotonic/one-colour series would fail this.
+    const fills = await bodies.evaluateAll((els) => [
+      ...new Set(els.map((el) => el.getAttribute('fill'))),
+    ]);
+    expect(fills).toContain('var(--color-candle-up)');
+    expect(fills).toContain('var(--color-candle-down)');
+  });
+
+  test('the mobile vertical gutter spine draws progressively and completes at bottom', async ({
+    page,
+  }) => {
+    // Below 1024px there is exactly one <path> under #experience: the simplified vertical spine
+    // (candles don't read in a ~48px gutter, see CareerChart.tsx). It shares the same scroll
+    // progress as the desktop candles, so this exercises the same progressive-reveal wiring.
+    await page.setViewportSize({ width: 768, height: 900 });
     await page.goto('/');
 
     const path = page.locator('#experience svg path').first();
@@ -122,6 +147,46 @@ test.describe('career role cards', () => {
       await expect(card).toBeVisible();
     }
   });
+
+  test('renders chronologically: Bristol first, Goldman Sachs last', async ({ page }) => {
+    // PLAN fix #1: scroll order must track the chart's left-to-right time axis, so the card stack
+    // is chronological (oldest first) even though career.ts itself stays most-recent-first.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    const cards = page.locator('#experience ol > li');
+    await expect(cards).toHaveCount(7);
+    await expect(cards.first()).toContainText('University of Bristol');
+    await expect(cards.last()).toContainText('Goldman Sachs');
+  });
+});
+
+test.describe('tablet layout (768-1023px)', () => {
+  // PLAN fix #2: the tablet horizontal-ribbon variant was deleted (it rendered on top of the
+  // text). There are now exactly two layouts: the mobile vertical-gutter layout below 1024px,
+  // and the desktop two-column layout at/above it. Assert nothing overlaps at either edge of the
+  // tablet range.
+  for (const width of [768, 1023]) {
+    test(`gutter chart does not overlap the role card text at ${String(width)}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.goto('/');
+      await page.locator('#experience').scrollIntoViewIfNeeded();
+
+      const gutter = page.locator('#experience [aria-hidden="true"].w-12').first();
+      const firstCard = page.locator('#experience ol > li').first();
+      await expect(gutter).toBeVisible();
+      await expect(firstCard).toBeVisible();
+
+      const gutterBox = await gutter.boundingBox();
+      const cardBox = await firstCard.boundingBox();
+      if (!gutterBox || !cardBox) {
+        throw new Error('expected both the gutter and the first card to have a layout box');
+      }
+      // The gutter must sit fully to the left of the card text, never over it.
+      expect(gutterBox.x + gutterBox.width).toBeLessThanOrEqual(cardBox.x + 1);
+    });
+  }
 });
 
 test.describe('projects', () => {

@@ -1,11 +1,10 @@
 /**
- * Small hand-rolled scale helpers for the career chart (PLAN §2.1 — no `d3` dependency for a
- * single line chart). Everything here is a pure function: given a career entry array, produce
- * the time domain, the cumulative-experience series, and per-entry marker positions, all derived
- * from the SAME linear scale functions so the drawn path and the markers can never drift apart.
+ * Small hand-rolled scale helpers for the career chart (PLAN §2.1 — no `d3` dependency). Pure
+ * date/domain/scale primitives: parsing 'YYYY-MM' career dates, a linear `domain -> range` scale
+ * with `.invert()`, and axis tick generation. The chart's plotted values themselves (the
+ * decorative candle series) live in `src/lib/candles.ts`; `src/components/chart/geometry.ts`
+ * combines both into the geometry the chart, markers, and crosshair all share.
  */
-
-import type { CareerEntry } from '@/types/content.ts';
 
 export type YearMonth = { year: number; month: number };
 
@@ -124,119 +123,4 @@ export function yearTicks(
     result.push({ monthIndex: year * 12, year });
   }
   return result;
-}
-
-/** A point on the cumulative-experience series: a month index and the cumulative total at it. */
-export type SeriesPoint = { x: number; y: number };
-
-/** A resolved plotting position for one career entry, in the same units as the series. */
-export type EntryMarker = {
-  id: string;
-  x: number;
-  y: number;
-  scope: number;
-  kind: CareerEntry['kind'];
-};
-
-export type CareerSeries = {
-  /** [earliest start month index, latest end month index (or now, for 'present')]. */
-  xDomain: readonly [number, number];
-  /** [0, total accrued work months]. */
-  yDomain: readonly [number, number];
-  /**
-   * The cumulative-experience path as an ordered list of (month index, cumulative months) points.
-   * Only 'work' entries accrue; gaps between work entries render as flat plateaus (no
-   * interpolation across idle time), and education/milestone entries do not raise the line.
-   */
-  series: SeriesPoint[];
-  /** One marker per entry (work, education, and milestone), positioned on/relative to the series. */
-  markers: EntryMarker[];
-};
-
-/**
- * Builds the whole-career time series: the x (time) domain, the cumulative-months-of-experience
- * y series (work entries only — education never accrues), and a marker position per entry.
- *
- * Critical behaviour (PLAN §1.1, §2.1): employment gaps must render FLAT. The series is built by
- * walking entries in chronological order and only ever incrementing cumulative months across a
- * 'work' entry's own start→end span; time between entries (including gaps) contributes zero and
- * is represented as a flat segment at the running total.
- */
-export function buildCareerSeries(entries: readonly CareerEntry[]): CareerSeries {
-  if (entries.length === 0) {
-    return { xDomain: [0, 0], yDomain: [0, 0], series: [], markers: [] };
-  }
-
-  const chronological = [...entries].sort(
-    (a, b) => monthIndex(parseYearMonth(a.start)) - monthIndex(parseYearMonth(b.start)),
-  );
-
-  const xStart = Math.min(...chronological.map((entry) => monthIndex(parseYearMonth(entry.start))));
-  const xEnd = Math.max(...chronological.map((entry) => monthIndex(resolveYearMonth(entry.end))));
-
-  const series: SeriesPoint[] = [{ x: xStart, y: 0 }];
-  const markers: EntryMarker[] = [];
-  let cumulative = 0;
-
-  for (const entry of chronological) {
-    const entryStart = monthIndex(parseYearMonth(entry.start));
-    const entryEnd = monthIndex(resolveYearMonth(entry.end));
-
-    // Flat plateau up to this entry's start, at whatever the running total already is (this is
-    // what keeps a gap — or a non-accruing education entry — from being interpolated).
-    series.push({ x: entryStart, y: cumulative });
-
-    // Marker sits at the entry's start, on the series value at that point in time — i.e. before
-    // this entry's own contribution (if any) is added.
-    markers.push({
-      id: entry.id,
-      x: entryStart,
-      y: cumulative,
-      scope: entry.scope,
-      kind: entry.kind,
-    });
-
-    if (entry.kind === 'work') {
-      cumulative += Math.max(0, entryEnd - entryStart);
-      series.push({ x: entryEnd, y: cumulative });
-    }
-  }
-
-  // Extend flat to the domain end so the path always spans the full x domain.
-  const lastPoint = series[series.length - 1];
-  if (lastPoint && lastPoint.x < xEnd) {
-    series.push({ x: xEnd, y: cumulative });
-  }
-
-  return {
-    xDomain: [xStart, xEnd],
-    yDomain: [0, cumulative],
-    series,
-    markers,
-  };
-}
-
-/**
- * Linear interpolation of the drawn series at an arbitrary x (month index) — matches what the
- * straight-line SVG path renders at that point. Used to place the crosshair readout in between
- * marker points. Flat within a gap (both bracketing points share the same y) falls out for free.
- */
-export function seriesValueAt(series: readonly SeriesPoint[], x: number): number {
-  if (series.length === 0) return 0;
-  const first = series[0];
-  if (!first || x <= first.x) return first?.y ?? 0;
-  const last = series[series.length - 1];
-  if (last && x >= last.x) return last.y;
-
-  for (let i = 1; i < series.length; i += 1) {
-    const previous = series[i - 1];
-    const current = series[i];
-    if (!previous || !current) continue;
-    if (x <= current.x) {
-      const span = current.x - previous.x;
-      const ratio = span === 0 ? 0 : (x - previous.x) / span;
-      return previous.y + ratio * (current.y - previous.y);
-    }
-  }
-  return last?.y ?? 0;
 }

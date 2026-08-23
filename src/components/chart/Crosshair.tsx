@@ -4,7 +4,7 @@
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
-import { seriesValueAt } from '@/lib/scales.ts';
+import { candleValueAt } from '@/lib/candles.ts';
 
 const MONTH_LABELS = [
   'JAN',
@@ -36,11 +36,11 @@ function formatMonthIndexLabel(monthIndexValue: number): string {
 }
 
 export default function Crosshair({ geometry, progress }: CrosshairProps) {
-  const { orientation, width, height, padding, series } = geometry;
-  const [domainStart, domainEnd] = series.xDomain;
+  const { orientation, width, height, padding, xDomain, candles } = geometry;
+  const [domainStart, domainEnd] = xDomain;
   const clampedProgress = Math.min(1, Math.max(0, progress));
   const playheadMonth = domainStart + clampedProgress * (domainEnd - domainStart);
-  const value = seriesValueAt(series.series, playheadMonth);
+  const value = candleValueAt(candles, playheadMonth);
   const point = geometry.toPoint(playheadMonth, value);
   const dateLabel = formatMonthIndexLabel(playheadMonth);
 

@@ -1,11 +1,15 @@
 /**
- * The career timeline section — the site's centrepiece (PLAN §1, §2.1). A single continuous
- * cumulative-experience curve rendered as an SVG (decorative, `aria-hidden`) alongside the real
- * content: an `<ol>` of role cards. Responsive per PLAN §2.1:
+ * The career timeline section — the site's centrepiece (PLAN §1, §2.1). A candlestick chart
+ * rendered as an SVG (decorative, `aria-hidden`) alongside the real content: an `<ol>` of role
+ * cards. Exactly two responsive layouts (the middle "tablet ribbon" variant was removed — it
+ * rendered on top of the text at 768–1023px):
  *
  *  - ≥1024px: two columns, sticky full-height chart pane left (~55%), scrolling cards right.
- *  - 768–1023px: chart collapses to a slim horizontal progress ribbon under the header.
- *  - <768px: chart becomes a vertical curve in a ~48px left gutter, transposed axes.
+ *  - <1024px (mobile AND tablet): chart becomes a vertical spine in a ~48px left gutter.
+ *
+ * Cards render in CHRONOLOGICAL order (Bristol first, Goldman last) so scrolling down tracks the
+ * chart's left-to-right time axis. `career.ts` itself stays most-recent-first for other consumers
+ * (CV, `/data`) — this section sorts only at the point of rendering.
  *
  * No props — this section owns its own data (`career.ts`) and scroll-progress wiring.
  */
@@ -13,8 +17,9 @@
 import CareerChart from '@/components/chart/CareerChart.tsx';
 import RoleCard from '@/components/timeline/RoleCard.tsx';
 import { career } from '@/content/career.ts';
+import { monthIndex, parseYearMonth } from '@/lib/scales.ts';
 import { useScrollProgress } from '@/lib/useScrollProgress.ts';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const NAV_KEYS_FORWARD = new Set(['j', 'ArrowDown']);
 const NAV_KEYS_BACKWARD = new Set(['k', 'ArrowUp']);
@@ -26,7 +31,16 @@ function isTypingTarget(target: EventTarget | null): boolean {
 }
 
 export default function Timeline() {
-  const entries = career;
+  // Render order is chronological (scroll down = forward in time, matching the chart's
+  // left-to-right time axis) even though `career.ts` stays sorted most-recent-first for other
+  // consumers (the CV, `/data`, the command palette).
+  const entries = useMemo(
+    () =>
+      [...career].sort(
+        (a, b) => monthIndex(parseYearMonth(a.start)) - monthIndex(parseYearMonth(b.start)),
+      ),
+    [],
+  );
   const { progress, activeIndex, containerRef, itemRef } = useScrollProgress();
 
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -80,17 +94,6 @@ export default function Timeline() {
         Career timeline
       </h2>
 
-      {/* Tablet (768–1023px): horizontal progress ribbon pinned under the header. */}
-      <div className="border-border bg-ground/90 sticky top-0 z-10 hidden h-20 border-b backdrop-blur md:block lg:hidden">
-        <CareerChart
-          entries={entries}
-          orientation="horizontal"
-          progress={progress}
-          activeEntryId={activeEntryId}
-          className="h-full w-full"
-        />
-      </div>
-
       <div
         ref={containerRef}
         className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
@@ -107,8 +110,8 @@ export default function Timeline() {
         </div>
 
         <div className="flex min-w-0 gap-4 lg:flex-1 lg:gap-0">
-          {/* Mobile (<768px): vertical curve in a ~48px left gutter. */}
-          <div className="w-12 shrink-0 md:hidden" aria-hidden="true">
+          {/* Below 1024px (mobile AND tablet): vertical spine in a ~48px left gutter. */}
+          <div className="w-12 shrink-0 lg:hidden" aria-hidden="true">
             <CareerChart
               entries={entries}
               orientation="vertical"

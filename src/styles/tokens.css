@@ -23,6 +23,10 @@
      decorative divider only. */
   --border-strong: #636a73;
   --accent: #5fb3c4;
+  /* Restrained market-chart greens/reds for the career candlestick chart (decorative texture,
+     not real data — see src/lib/candles.ts). Both clear 3:1 against ground and surface. */
+  --candle-up: #4f9d6e;
+  --candle-down: #c1666b;
 
   --font-prose:
     'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
@@ -41,6 +45,8 @@
     --border: #d8d6d0;
     --border-strong: #7a8087;
     --accent: #2f7a89;
+    --candle-up: #2f7a4d;
+    --candle-down: #a13a3a;
   }
 }
 
@@ -53,6 +59,8 @@
   --border: #d8d6d0;
   --border-strong: #7a8087;
   --accent: #2f7a89;
+  --candle-up: #2f7a4d;
+  --candle-down: #a13a3a;
 }
 
 /* Dark theme via explicit toggle, regardless of OS preference. */
@@ -64,6 +72,8 @@
   --border: #23262b;
   --border-strong: #636a73;
   --accent: #5fb3c4;
+  --candle-up: #4f9d6e;
+  --candle-down: #c1666b;
 }
 
 @theme {
@@ -74,6 +84,8 @@
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-accent: var(--accent);
+  --color-candle-up: var(--candle-up);
+  --color-candle-down: var(--candle-down);
 
   --font-sans: var(--font-prose);
   --font-mono: var(--font-mono);

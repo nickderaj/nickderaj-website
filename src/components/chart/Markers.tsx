@@ -23,7 +23,7 @@ function radiusForScope(scope: number): number {
 export default function Markers({ geometry, activeEntryId }: MarkersProps) {
   return (
     <g>
-      {geometry.series.markers.map((marker) => {
+      {geometry.markers.map((marker) => {
         const point = geometry.toPoint(marker.x, marker.y);
         const radius = radiusForScope(marker.scope);
         const isActive = marker.id === activeEntryId;

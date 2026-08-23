@@ -1,16 +1,20 @@
 /**
  * `/data` (PLAN §1.3 item 6): "nothing here is hand-waved". Prints the actual computed values
- * that drive the career chart — the cumulative-months series, marker positions, and regime bands —
+ * that drive the career chart — the decorative candle series, marker positions, and regime bands —
  * plus the raw project metadata, all derived live from `src/content` through the exact same
- * `src/lib/scales.ts` / `src/components/chart/regimes.ts` functions the chart itself uses. Deliberately
- * plain and monospace rather than styled: this page's whole point is to look like raw output, not
- * a marketing surface.
+ * `src/components/chart/geometry.ts` / `src/lib/candles.ts` / `src/components/chart/regimes.ts`
+ * functions the chart itself uses. Deliberately plain and monospace rather than styled: this
+ * page's whole point is to look like raw output, not a marketing surface.
+ *
+ * HONESTY NOTE (see the callout below, rendered on the page): the candle series is generated,
+ * seeded decorative texture, not real data. It does not represent earnings, performance, or any
+ * measured quantity — the only real signal in it is which months are career-transition months.
  */
 
+import { buildChartGeometry } from '@/components/chart/geometry.ts';
 import { buildRegimeBands } from '@/components/chart/regimes.ts';
 import { career } from '@/content/career.ts';
 import { projects } from '@/content/projects/index.ts';
-import { buildCareerSeries } from '@/lib/scales.ts';
 import { Link } from 'react-router';
 
 function monthIndexToLabel(monthIndexValue: number): string {
@@ -20,7 +24,7 @@ function monthIndexToLabel(monthIndexValue: number): string {
 }
 
 export default function DataPage() {
-  const series = buildCareerSeries(career);
+  const geometry = buildChartGeometry(career, 'horizontal', 1000, 720);
   const bands = buildRegimeBands(career);
 
   return (
@@ -39,28 +43,43 @@ export default function DataPage() {
       <p className="text-muted mt-2 max-w-2xl">
         Everything on this page is computed at build/render time from{' '}
         <code>src/content/career.ts</code> and <code>src/content/projects/</code> through{' '}
-        <code>src/lib/scales.ts</code> and <code>src/components/chart/regimes.ts</code> — the same
-        functions the career chart renders from. Nothing here is hand-waved or restated by hand.
+        <code>src/lib/candles.ts</code>, <code>src/components/chart/geometry.ts</code>, and{' '}
+        <code>src/components/chart/regimes.ts</code> — the same functions the career chart renders
+        from. Nothing here is hand-waved or restated by hand.
+      </p>
+      <p className="border-accent/40 text-text mt-4 max-w-2xl border-l-2 pl-3">
+        <strong>Honesty note:</strong> the candle series below is generated, seeded decorative
+        texture, not real data. It does not represent earnings, performance, or any measured
+        quantity. The one real signal plotted in it is <em>when</em> — every career transition (a
+        new role starting) is marked as an <code>isTransition</code> candle.
       </p>
 
       <section className="mt-10">
         <h2 className="text-accent tracking-wide uppercase">
-          Cumulative-months series ({String(series.series.length)} points)
+          Decorative candle series ({String(geometry.candles.length)} monthly candles, generated —
+          not real data)
         </h2>
         <p className="text-muted mt-1">
-          x = month index ({monthIndexToLabel(series.xDomain[0])} ..{' '}
-          {monthIndexToLabel(series.xDomain[1])}), y = cumulative months of work experience (0 ..{' '}
-          {String(series.yDomain[1])}).
+          x = month index ({monthIndexToLabel(geometry.xDomain[0])} ..{' '}
+          {monthIndexToLabel(geometry.xDomain[1])}). Deterministic seeded PRNG (mulberry32); see{' '}
+          <code>src/lib/candles.ts</code>.
         </p>
         <pre
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see src/components/carousel/Carousel.tsx for the pattern this follows: a horizontally scrollable region needs to be reachable by keyboard (axe: scrollable-region-focusable) even though it isn't an interactive control.
           tabIndex={0}
           role="region"
-          aria-label="Cumulative-months series JSON"
-          className="border-border mt-3 overflow-x-auto rounded border p-3"
+          aria-label="Decorative candle series JSON"
+          className="border-border mt-3 max-h-96 overflow-auto rounded border p-3"
         >
           {JSON.stringify(
-            series.series.map((point) => ({ date: monthIndexToLabel(point.x), months: point.y })),
+            geometry.candles.map((candle) => ({
+              date: monthIndexToLabel(candle.month),
+              open: Number(candle.open.toFixed(2)),
+              high: Number(candle.high.toFixed(2)),
+              low: Number(candle.low.toFixed(2)),
+              close: Number(candle.close.toFixed(2)),
+              isTransition: candle.isTransition,
+            })),
             null,
             2,
           )}
@@ -69,8 +88,13 @@ export default function DataPage() {
 
       <section className="mt-10">
         <h2 className="text-accent tracking-wide uppercase">
-          Markers ({String(series.markers.length)})
+          Career-transition anchors ({String(geometry.markers.length)})
         </h2>
+        <p className="text-muted mt-1">
+          Real: each marker&apos;s date and kind, from <code>career.ts</code>. Decorative: its
+          plotted y position (a price from the generated candle series above, used only to place the
+          dot).
+        </p>
         <pre
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see comment above.
           tabIndex={0}
@@ -79,10 +103,9 @@ export default function DataPage() {
           className="border-border mt-3 overflow-x-auto rounded border p-3"
         >
           {JSON.stringify(
-            series.markers.map((marker) => ({
+            geometry.markers.map((marker) => ({
               id: marker.id,
               date: monthIndexToLabel(marker.x),
-              cumulativeMonths: marker.y,
               scope: marker.scope,
               kind: marker.kind,
             })),
