@@ -96,7 +96,7 @@ export default function CareerChart({
           {valueTicks.map((tick) => (
             <text
               key={tick}
-              x={geometry.padding.left - 10}
+              x={geometry.padding.left - 16}
               y={geometry.valueScale(tick) + 3}
               fontFamily="var(--font-mono)"
               fontSize={9}

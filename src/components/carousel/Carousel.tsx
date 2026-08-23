@@ -242,7 +242,10 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
         onClose={handleDialogClose}
         onClick={handleDialogClick}
         aria-label={activeShot === undefined ? 'Screenshot preview' : activeShot.alt}
-        className="bg-surface text-text border-border max-w-[95vw] rounded border p-0 backdrop:bg-black/80"
+        // Tailwind's preflight zeroes out the UA stylesheet's `dialog { margin: auto }`
+        // centering, so it's restored explicitly here — otherwise `showModal()` pins the
+        // dialog to the top-left instead of centering it in the viewport.
+        className="bg-surface text-text border-border fixed inset-0 m-auto max-h-[90vh] max-w-[95vw] rounded border p-0 backdrop:bg-black/80"
       >
         {activeShot !== undefined && (
           <div className="relative max-w-[90vw] p-4">

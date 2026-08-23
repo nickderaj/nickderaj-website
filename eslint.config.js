@@ -15,6 +15,9 @@ export default tseslint.config(
   },
   {
     files: ['**/*.{ts,tsx}'],
+    // Playwright's config + e2e tests live outside the app/node tsconfig projects (deliberately —
+    // kept out of `tsc -b` so `npm run check`/`build` stay fast); they get their own project below.
+    ignores: ['playwright.config.ts', 'tests/e2e/**'],
     extends: [
       js.configs.recommended,
       ...tseslint.configs.strictTypeChecked,
@@ -69,6 +72,7 @@ export default tseslint.config(
   {
     // Vite/Node config files run outside the browser and outside the app tsconfig project.
     files: ['*.config.{js,ts}', '.commitlintrc.cjs'],
+    ignores: ['playwright.config.ts'],
     languageOptions: {
       globals: globals.node,
     },
@@ -77,6 +81,25 @@ export default tseslint.config(
     files: ['src/test/**/*.{ts,tsx}', '**/*.test.{ts,tsx}'],
     languageOptions: {
       globals: { ...globals.browser, ...globals.node },
+    },
+  },
+  {
+    // Playwright config + E2E tests: type-checked against their own standalone tsconfig
+    // (tsconfig.playwright.json), which is intentionally not part of the `tsc -b` solution so
+    // `npm run check`/`build` stay fast — this is the only place that project is used.
+    files: ['playwright.config.ts', 'tests/e2e/**/*.ts'],
+    extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+      parserOptions: {
+        project: ['./tsconfig.playwright.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
     },
   },
   prettierConfig,

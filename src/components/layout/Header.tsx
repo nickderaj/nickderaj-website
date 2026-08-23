@@ -35,7 +35,7 @@ export function Header() {
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <a
             href="#top"
-            className="text-text font-mono text-sm font-medium tracking-wide sm:text-base"
+            className="text-text shrink-0 font-mono text-sm font-medium tracking-wide whitespace-nowrap sm:text-base"
           >
             Nick de Raj
           </a>

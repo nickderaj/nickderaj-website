@@ -24,7 +24,10 @@ export default function DataPage() {
   const bands = buildRegimeBands(career);
 
   return (
-    <main className="text-text mx-auto max-w-4xl px-4 py-16 font-mono text-xs leading-relaxed sm:px-6 sm:text-sm">
+    // A plain <div>, not <main> — App.tsx's `/data` route already wraps this in the page's one
+    // <main id="main">; a second <main> here was a duplicate/nested landmark (axe:
+    // landmark-no-duplicate-main, landmark-main-is-top-level, landmark-unique).
+    <div className="text-text mx-auto max-w-4xl px-4 py-16 font-mono text-xs leading-relaxed sm:px-6 sm:text-sm">
       <p className="text-muted">
         <Link to="/" className="hover:text-accent underline underline-offset-2">
           ← nickderaj.com
@@ -49,7 +52,13 @@ export default function DataPage() {
           {monthIndexToLabel(series.xDomain[1])}), y = cumulative months of work experience (0 ..{' '}
           {String(series.yDomain[1])}).
         </p>
-        <pre className="border-border mt-3 overflow-x-auto rounded border p-3">
+        <pre
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see src/components/carousel/Carousel.tsx for the pattern this follows: a horizontally scrollable region needs to be reachable by keyboard (axe: scrollable-region-focusable) even though it isn't an interactive control.
+          tabIndex={0}
+          role="region"
+          aria-label="Cumulative-months series JSON"
+          className="border-border mt-3 overflow-x-auto rounded border p-3"
+        >
           {JSON.stringify(
             series.series.map((point) => ({ date: monthIndexToLabel(point.x), months: point.y })),
             null,
@@ -62,7 +71,13 @@ export default function DataPage() {
         <h2 className="text-accent tracking-wide uppercase">
           Markers ({String(series.markers.length)})
         </h2>
-        <pre className="border-border mt-3 overflow-x-auto rounded border p-3">
+        <pre
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see comment above.
+          tabIndex={0}
+          role="region"
+          aria-label="Markers JSON"
+          className="border-border mt-3 overflow-x-auto rounded border p-3"
+        >
           {JSON.stringify(
             series.markers.map((marker) => ({
               id: marker.id,
@@ -81,7 +96,13 @@ export default function DataPage() {
         <h2 className="text-accent tracking-wide uppercase">
           Regime bands ({String(bands.length)})
         </h2>
-        <pre className="border-border mt-3 overflow-x-auto rounded border p-3">
+        <pre
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see comment above.
+          tabIndex={0}
+          role="region"
+          aria-label="Regime bands JSON"
+          className="border-border mt-3 overflow-x-auto rounded border p-3"
+        >
           {JSON.stringify(
             bands.map((band) => ({
               regime: band.regime,
@@ -98,14 +119,26 @@ export default function DataPage() {
 
       <section className="mt-10">
         <h2 className="text-accent tracking-wide uppercase">Career entries (raw)</h2>
-        <pre className="border-border mt-3 overflow-x-auto rounded border p-3">
+        <pre
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see comment above.
+          tabIndex={0}
+          role="region"
+          aria-label="Career entries JSON"
+          className="border-border mt-3 overflow-x-auto rounded border p-3"
+        >
           {JSON.stringify(career, null, 2)}
         </pre>
       </section>
 
       <section className="mt-10">
         <h2 className="text-accent tracking-wide uppercase">Project metadata (raw)</h2>
-        <pre className="border-border mt-3 overflow-x-auto rounded border p-3">
+        <pre
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- see comment above.
+          tabIndex={0}
+          role="region"
+          aria-label="Project metadata JSON"
+          className="border-border mt-3 overflow-x-auto rounded border p-3"
+        >
           {JSON.stringify(
             projects.map((project) => ({
               id: project.id,
@@ -122,6 +155,6 @@ export default function DataPage() {
           )}
         </pre>
       </section>
-    </main>
+    </div>
   );
 }
