@@ -25,12 +25,12 @@ export const quantTradingLabs = {
   ],
   screenshots: [
     {
-      src: '/screenshots/quant-trading-labs/var-es-dashboard.png',
+      src: '/screenshots/quant-trading-labs/var-es-dashboard.svg',
       alt: 'Live dashboard showing Value-at-Risk and Expected Shortfall bands across 16 futures contracts, updated from continuous calibration monitoring.',
       caption: 'Production VaR / ES dashboard across the 16-future universe.',
     },
     {
-      src: '/screenshots/quant-trading-labs/calibration-plot.png',
+      src: '/screenshots/quant-trading-labs/calibration-plot.svg',
       alt: 'Calibration plot comparing realised tail exceedances against the GARCH-t/EVT model forecast, with exceedance rate tracked over a rolling window.',
       caption: 'Rolling calibration check for the GARCH-t/EVT tail model.',
     },

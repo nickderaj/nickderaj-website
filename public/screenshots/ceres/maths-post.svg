@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-labelledby="title desc">
+  <title id="title">Ceres blog post on partial derivatives and multiple integrals</title>
+  <desc id="desc">Placeholder mockup of a Ceres blog post showing a rendered mathematical derivation alongside an interactive plot.</desc>
+  <rect width="1600" height="1000" fill="#0b0c0e"/>
+
+  <text x="80" y="90" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="14" fill="#5fb3c4">CERES &#8226; QUANT MATHS FROM FIRST PRINCIPLES</text>
+  <text x="80" y="150" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="38" fill="#e8e9eb">Partial Derivatives &amp; Multiple Integrals</text>
+  <text x="80" y="188" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="14" fill="#8b8f96">PUBLISHED 2024-03 &#183; 11 MIN READ</text>
+
+  <line x1="80" y1="216" x2="1520" y2="216" stroke="#23262b" stroke-width="1"/>
+
+  <!-- body paragraph placeholder lines -->
+  <g fill="#8b8f96">
+    <rect x="80" y="256" width="900" height="14" rx="2"/>
+    <rect x="80" y="284" width="860" height="14" rx="2"/>
+    <rect x="80" y="312" width="920" height="14" rx="2"/>
+    <rect x="80" y="340" width="500" height="14" rx="2"/>
+  </g>
+
+  <!-- rendered derivation block -->
+  <rect x="80" y="384" width="920" height="220" fill="#121316" stroke="#23262b"/>
+  <text x="104" y="424" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="15" fill="#5fb3c4">&#8706;f/&#8706;x = lim(h&#8594;0) [f(x+h,y) - f(x,y)] / h</text>
+  <text x="104" y="460" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="15" fill="#e8e9eb">&#8730;&#8730; f(x,y) dA = &#8747;&#8747;_D f(x,y) dx dy</text>
+  <text x="104" y="496" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="15" fill="#e8e9eb">&#8711;f = (&#8706;f/&#8706;x, &#8706;f/&#8706;y, &#8706;f/&#8706;z)</text>
+  <g fill="#8b8f96">
+    <rect x="104" y="520" width="760" height="12" rx="2"/>
+    <rect x="104" y="546" width="700" height="12" rx="2"/>
+    <rect x="104" y="572" width="600" height="12" rx="2"/>
+  </g>
+
+  <g fill="#8b8f96">
+    <rect x="80" y="636" width="900" height="14" rx="2"/>
+    <rect x="80" y="664" width="840" height="14" rx="2"/>
+  </g>
+
+  <!-- interactive plot panel to the right -->
+  <rect x="1040" y="256" width="480" height="440" fill="#121316" stroke="#23262b"/>
+  <text x="1064" y="290" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#5fb3c4">INTERACTIVE: f(x, y) = x&#178; - y&#178;</text>
+  <g stroke="#23262b" stroke-width="1">
+    <line x1="1064" y1="450" x2="1480" y2="450"/>
+    <line x1="1280" y1="320" x2="1280" y2="640"/>
+  </g>
+  <path d="M 1080,600 Q 1180,380 1280,450 T 1460,340" fill="none" stroke="#5fb3c4" stroke-width="2.5"/>
+  <path d="M 1080,340 Q 1180,560 1280,450 T 1460,600" fill="none" stroke="#e8e9eb" stroke-width="2" opacity="0.7"/>
+  <text x="1064" y="672" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#8b8f96">DRAG TO PERTURB PARAMETERS</text>
+
+  <text x="80" y="944" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#8b8f96">PLACEHOLDER MOCKUP &#183; NOT ACTUAL SITE CONTENT</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-labelledby="title desc">
+  <title id="title">Drawdown post-mortem</title>
+  <desc id="desc">Placeholder mockup of an annotated drawdown chart tracing the -11.3% paper drawdown to a single unstopped trade, with the rebuilt stop layer overlaid.</desc>
+  <defs>
+    <pattern id="grid5" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#1c1f24" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="#0b0c0e"/>
+  <rect width="1600" height="1000" fill="url(#grid5)"/>
+
+  <text x="48" y="72" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="30" fill="#e8e9eb">DRAWDOWN POST-MORTEM</text>
+  <text x="48" y="104" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="16" fill="#8b8f96">UNDERWATER EQUITY &#183; PRE- AND POST-REBUILD STOP LAYER</text>
+
+  <rect x="48" y="140" width="1504" height="700" fill="#121316" stroke="#23262b"/>
+
+  <!-- zero (high water mark) line -->
+  <line x1="96" y1="220" x2="1504" y2="220" stroke="#8b8f96" stroke-width="1"/>
+  <text x="1460" y="214" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#8b8f96">0%</text>
+  <line x1="96" y1="700" x2="1504" y2="700" stroke="#8b8f96" stroke-width="1" opacity="0.4"/>
+  <text x="1420" y="694" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="12" fill="#8b8f96">-11.3%</text>
+
+  <!-- pre-rebuild underwater curve, dipping to -11.3% -->
+  <polyline fill="none" stroke="#c4685f" stroke-width="2.5"
+    points="96,220 180,230 260,224 340,260 420,300 500,340 580,420 660,520 720,700
+             760,690 820,600 900,480 980,380 1060,300 1140,250 1220,226"/>
+  <circle cx="720" cy="700" r="7" fill="#c4685f"/>
+
+  <!-- annotation callout -->
+  <line x1="720" y1="700" x2="900" y2="820" stroke="#c4685f" stroke-width="1"/>
+  <rect x="900" y="790" width="600" height="90" fill="#0b0c0e" stroke="#c4685f" stroke-width="1"/>
+  <text x="920" y="822" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="15" fill="#e8e9eb">-11.3% PEAK DRAWDOWN</text>
+  <text x="920" y="850" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#8b8f96">TRACED TO ONE UNSTOPPED TRADE</text>
+
+  <!-- post-rebuild overlay: shallower drawdown -->
+  <polyline fill="none" stroke="#5fb3c4" stroke-width="2.5" stroke-dasharray="8 6"
+    points="1220,226 1280,240 1340,270 1400,320 1450,380 1504,410"/>
+  <text x="1230" y="200" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#5fb3c4">REBUILT STOP LAYER (ATR + ADVERSE-EXCURSION)</text>
+
+  <g font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#8b8f96">
+    <text x="96" y="880">BEFORE: GLOBAL STOP RULE</text>
+    <text x="96" y="906">AFTER:  ATR-BASED SIZING &#183; ADVERSE-EXCURSION STOPS &#183; PER-SPREAD CALIBRATION</text>
+  </g>
+
+  <text x="48" y="964" font-family="'IBM Plex Mono', ui-monospace, monospace" font-size="13" fill="#8b8f96">PLACEHOLDER MOCKUP &#183; NOT LIVE DATA</text>
+</svg>

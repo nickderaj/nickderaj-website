@@ -11,12 +11,12 @@ export const ceres = {
   links: [{ label: 'Site', href: 'https://ceres.my' }],
   screenshots: [
     {
-      src: '/screenshots/ceres/maths-post.png',
+      src: '/screenshots/ceres/maths-post.svg',
       alt: 'A Ceres blog post on partial derivatives and multiple integrals, showing a rendered mathematical derivation alongside an interactive plot.',
       caption: 'A first-principles maths post with a rendered derivation and interactive plot.',
     },
     {
-      src: '/screenshots/ceres/interactive-map.png',
+      src: '/screenshots/ceres/interactive-map.svg',
       alt: 'An interactive map on Ceres showing global precious-metals or oil-reserve data by region, with hover tooltips.',
       caption: 'One of the interactive precious-metals / oil-reserve maps.',
     },

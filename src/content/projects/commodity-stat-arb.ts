@@ -19,17 +19,17 @@ export const commodityStatArb = {
   links: [{ label: 'Repo', href: 'https://github.com/nickderaj/commodity-stat-arb' }],
   screenshots: [
     {
-      src: '/screenshots/commodity-stat-arb/equity-curve.png',
+      src: '/screenshots/commodity-stat-arb/equity-curve.svg',
       alt: 'Plotly Dash panel showing the cumulative equity curve of the commodity spread book from 2010 to present, including the held-out 2024–2026 segment.',
       caption: 'Live Dash equity curve, full-sample and held-out segments.',
     },
     {
-      src: '/screenshots/commodity-stat-arb/spread-zscore.png',
+      src: '/screenshots/commodity-stat-arb/spread-zscore.svg',
       alt: 'Chart of a cointegrated commodity spread’s rolling z-score against its entry and exit thresholds, with trade markers.',
       caption: 'Spread z-score signal with entry/exit thresholds.',
     },
     {
-      src: '/screenshots/commodity-stat-arb/drawdown-postmortem.png',
+      src: '/screenshots/commodity-stat-arb/drawdown-postmortem.svg',
       alt: 'Annotated drawdown chart tracing the -11.3% paper drawdown to a single unstopped trade, with the subsequent rebuilt stop layer overlaid.',
       caption: 'Post-mortem on the -11.3% drawdown that drove the stop-layer rebuild.',
     },
