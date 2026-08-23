@@ -1,0 +1,18 @@
+npx lint-staged
+
+# Block committing any real .env file (only .env.example is allowed).
+staged_env_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(^|/)\.env(\..+)?$' | grep -v '\.env\.example$' || true)
+if [ -n "$staged_env_files" ]; then
+  echo "Refusing to commit .env file(s):"
+  echo "$staged_env_files"
+  echo "Only .env.example may be committed."
+  exit 1
+fi
+
+# Secret scan — no-op with a warning if gitleaks isn't installed locally. CI does not need to
+# run gitleaks for this to be effective; this is a local-only guard rail (PLAN §5.4/§5.5).
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact
+else
+  echo "warning: gitleaks not installed — skipping local secret scan (see PLAN §5.5)"
+fi
