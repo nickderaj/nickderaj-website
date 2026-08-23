@@ -26,6 +26,17 @@ export default function RegimeBands({ entries, geometry }: RegimeBandsProps) {
         if (orientation === 'horizontal') {
           const x = Math.min(start, end);
           const bandWidth = Math.abs(end - start);
+          // Narrow bands (a short regime near the right edge) cannot fit the full label without
+          // colliding with the next one, so drop the date range first and the label second.
+          const charWidth = 6.7; // 9px mono + 0.12em tracking, measured
+          const available = bandWidth - 12;
+          const full = `${band.label} · ${band.rangeLabel}`;
+          const labelText =
+            full.length * charWidth <= available
+              ? full
+              : band.label.length * charWidth <= available
+                ? band.label
+                : null;
           return (
             <g key={band.regime + String(band.startMonth)}>
               <rect
@@ -44,16 +55,18 @@ export default function RegimeBands({ entries, geometry }: RegimeBandsProps) {
                 stroke="var(--color-border)"
                 strokeWidth={1}
               />
-              <text
-                x={x + 8}
-                y={padding.top - 12}
-                fontFamily="var(--font-mono)"
-                fontSize={9}
-                letterSpacing="0.12em"
-                fill="var(--color-muted)"
-              >
-                {band.label} · {band.rangeLabel}
-              </text>
+              {labelText !== null && (
+                <text
+                  x={x + 8}
+                  y={padding.top - 12}
+                  fontFamily="var(--font-mono)"
+                  fontSize={9}
+                  letterSpacing="0.12em"
+                  fill="var(--color-muted)"
+                >
+                  {labelText}
+                </text>
+              )}
             </g>
           );
         }
