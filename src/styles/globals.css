@@ -1,0 +1,94 @@
+/*
+ * Base layer: reset-ish defaults, the graph-paper grid utility, focus rings, and reduced-motion
+ * damping. Component-level styles live alongside their components.
+ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-ground);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Numerals should always line up — ticker/date/tenure figures live in mono contexts. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible focus ring everywhere. Never suppress `outline` without a replacement indicator. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /*
+   * Faint 8px graph-paper grid, ties the whole page to the "plotting surface" concept (PLAN
+   * §1.2). Apply to a section/background element, not to text-bearing containers directly.
+   */
+  .bg-grid-paper {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 8px 8px;
+    background-position: -1px -1px;
+  }
+}
+
+/*
+ * Global reduced-motion damping (PLAN §1.2, §6). Anything with scroll-driven or decorative
+ * motion must also provide a static fallback at the component level — this is the backstop.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

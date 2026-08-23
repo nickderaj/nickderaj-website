@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens (PLAN §1.2). Dark is the default theme. Both `prefers-color-scheme` and an
+ * explicit `[data-theme]` attribute on :root are supported so a manual toggle works in either
+ * direction regardless of OS preference.
+ *
+ * Fonts: Inter (prose) + IBM Plex Mono (numerals/labels/tickers). Loaded via a Google Fonts
+ * <link> in index.html for now.
+ * TODO: self-host and subset both fonts before launch (PLAN §5.5 — no third-party font CDN in
+ * the shipped site).
+ */
+
+:root {
+  /* Dark theme (default) */
+  --ground: #0b0c0e;
+  --surface: #121316;
+  --text: #e8e9eb;
+  --muted: #8b8f96;
+  --border: #23262b;
+  --accent: #5fb3c4;
+
+  --font-prose:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono:
+    'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+/* Light theme via OS preference, unless an explicit [data-theme] overrides it. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --ground: #f6f5f2;
+    --surface: #ffffff;
+    --text: #14161a;
+    --muted: #5b5f66;
+    --border: #d8d6d0;
+    --accent: #2f7a89;
+  }
+}
+
+/* Light theme via explicit toggle, regardless of OS preference. */
+:root[data-theme='light'] {
+  --ground: #f6f5f2;
+  --surface: #ffffff;
+  --text: #14161a;
+  --muted: #5b5f66;
+  --border: #d8d6d0;
+  --accent: #2f7a89;
+}
+
+/* Dark theme via explicit toggle, regardless of OS preference. */
+:root[data-theme='dark'] {
+  --ground: #0b0c0e;
+  --surface: #121316;
+  --text: #e8e9eb;
+  --muted: #8b8f96;
+  --border: #23262b;
+  --accent: #5fb3c4;
+}
+
+@theme {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+
+  --font-sans: var(--font-prose);
+  --font-mono: var(--font-mono);
+}
