@@ -1,5 +1,99 @@
 /*
- * Print stylesheet stub (PLAN §1.3 item 7 — stretch goal). A later agent (Phase 5) fills this in
- * to produce a clean one-page CV via @media print: hide chrome/nav/chart interactivity, flatten
- * to static text, and use standard print typography/margins. Not imported anywhere yet.
+ * Print stylesheet (PLAN §1.3 item 7): turns the page into a clean one-page CV. Recruiters print
+ * or "save as PDF" constantly — this must not hand them the chart, chrome, or dark background.
+ * Imported from `main.tsx` alongside `globals.css`/`tokens.css`; scoped entirely under
+ * `@media print` so it has zero effect on-screen.
  */
+
+@media print {
+  @page {
+    margin: 14mm 12mm;
+  }
+
+  :root,
+  :root[data-theme='dark'],
+  :root[data-theme='light'] {
+    /* Force the light palette regardless of the on-screen theme — printers use ink, not photons. */
+    --ground: #ffffff;
+    --surface: #ffffff;
+    --text: #14161a;
+    --muted: #3f434a;
+    --border: #b9b7b1;
+    --border-strong: #6c7178;
+    --accent: #2f7a89;
+  }
+
+  * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #14161a !important;
+    font-size: 11pt;
+    line-height: 1.35;
+  }
+
+  /* Decorative/interactive chrome — none of it belongs on paper. */
+  header,
+  footer,
+  .theme-toggle,
+  [data-print-hide],
+  svg[aria-hidden='true'],
+  .bg-grid-paper::before,
+  nav[aria-label='Section'] {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #3f434a;
+    word-break: break-all;
+  }
+
+  /* mailto/tel/hash links are noise on paper — no href worth printing. */
+  a[href^='mailto:']::after,
+  a[href^='tel:']::after,
+  a[href^='#']::after {
+    content: '';
+  }
+
+  /* Linearise: every section becomes a static, full-width block stacked in reading order. */
+  section {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    position: static !important;
+    overflow: visible !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .bg-grid-paper {
+    background-image: none !important;
+  }
+
+  article,
+  li,
+  [data-print-card] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Carousels/galleries print as a single representative frame, not a scroll rail. */
+  [data-carousel] {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  [data-carousel] > *:not(:first-child) {
+    display: none !important;
+  }
+}
