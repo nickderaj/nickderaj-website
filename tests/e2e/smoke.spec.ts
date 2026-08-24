@@ -91,8 +91,8 @@ test.describe('career chart', () => {
 
   test('the mobile ticker tape pans sideways as the page scrolls down', async ({ page }) => {
     // Below 1024px the chart is a full-bleed candle tape painted behind the cards. It is drawn
-    // several screens wide and panned by moving the <svg> viewBox window across it, so scrolling
-    // down runs the tape sideways (CareerChart.tsx, `ticker` orientation).
+    // several screens wide and slid sideways with a `transform`, so scrolling down runs the tape
+    // sideways (CareerChart.tsx, `ticker` orientation).
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
@@ -108,8 +108,15 @@ test.describe('career chart', () => {
     expect(fills).toContain('var(--color-candle-up)');
     expect(fills).toContain('var(--color-candle-down)');
 
+    // The pan is a translate on the <svg>, written straight to the DOM so panning never costs a
+    // re-render. `getComputedStyle().transform` resolves to a matrix, whose `e` component (index
+    // 4) is the horizontal offset in px - negative as the tape slides left.
     const panX = async (): Promise<number> =>
-      ticker.evaluate((el) => Number((el.getAttribute('viewBox') ?? '').split(' ')[0]));
+      ticker.evaluate((el) => {
+        const matrix = getComputedStyle(el).transform;
+        if (!matrix || matrix === 'none') return 0;
+        return Number(matrix.replace(/^matrix\(|\)$/g, '').split(',')[4]);
+      });
 
     // Scroll to explicit offsets inside the section rather than wheeling by a fixed delta: the
     // section is only a few screens tall, so a large wheel would jump straight to full progress
@@ -129,21 +136,25 @@ test.describe('career chart', () => {
     }, sectionTop + 700);
     await page.waitForTimeout(300);
     const midPan = await panX();
-    expect(midPan, 'the tape should have panned right (i.e. slid left on screen)').toBeGreaterThan(
-      initialPan,
-    );
+    expect(midPan, 'the tape should have slid left on screen').toBeLessThan(initialPan);
 
     await page.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);
     });
     await page.waitForTimeout(300);
-    expect(await panX()).toBeGreaterThan(midPan);
+    expect(await panX()).toBeLessThan(midPan);
 
-    // At the bottom every candle is revealed - none left dimmed.
-    const dimmed = await ticker
-      .locator('g[data-candle]')
-      .evaluateAll((els) => els.filter((el) => Number(el.getAttribute('opacity')) < 1).length);
-    expect(dimmed).toBe(0);
+    // No candle's drawn geometry may depend on scroll position - that is what keeps the pan a
+    // compositor job rather than a re-render of ~470 nodes per frame. The markup must be
+    // byte-identical at the bottom of the section and at the top.
+    const candleMarkup = async (): Promise<string> =>
+      ticker.locator('g[data-candle]').evaluateAll((els) => els.map((el) => el.outerHTML).join(''));
+    const atBottom = await candleMarkup();
+    await page.evaluate((y) => {
+      window.scrollTo(0, y);
+    }, sectionTop);
+    await page.waitForTimeout(300);
+    expect(await candleMarkup()).toBe(atBottom);
   });
 
   test('regime bands render with labels', async ({ page }) => {
@@ -420,8 +431,8 @@ test.describe('reduced motion', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
-    // `useScrollProgress` pins progress to 1 under reduced motion, so every candle in both the
-    // desktop pane and the mobile ticker renders revealed (opacity 1) rather than dimmed.
+    // `useScrollProgress` pins progress to 1 under reduced motion, so every candle in the desktop
+    // pane renders revealed (opacity 1) rather than dimmed.
     const dimmed = await page
       .locator('#experience svg g[data-candle]')
       .evaluateAll((els) => els.filter((el) => Number(el.getAttribute('opacity')) < 1).length);

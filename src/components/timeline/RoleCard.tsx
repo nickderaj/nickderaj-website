@@ -17,8 +17,11 @@ export default function RoleCard({ entry, isActive }: RoleCardProps) {
   const period = formatPeriod(entry.start, entry.end);
 
   return (
+    // Below `lg` the ticker tape runs behind these cards, so the fill is near-opaque to keep the
+    // copy comfortably readable - the tape reads through the gaps between cards, and only as a
+    // faint texture within them. Desktop has nothing behind the cards, so it keeps the lighter fill.
     <article
-      className={`border-border bg-surface/40 rounded-lg border p-6 transition-colors duration-200 sm:p-8 ${
+      className={`border-border bg-surface/85 lg:bg-surface/40 rounded-lg border p-6 transition-colors duration-200 sm:p-8 ${
         isActive ? 'border-accent/60' : ''
       }`}
       aria-current={isActive ? 'step' : undefined}

@@ -20,11 +20,14 @@ import CareerChart from '@/components/chart/CareerChart.tsx';
 import RoleCard from '@/components/timeline/RoleCard.tsx';
 import { career } from '@/content/career.ts';
 import { monthIndex, parseYearMonth } from '@/lib/scales.ts';
+import { useMediaQuery } from '@/lib/useMediaQuery.ts';
 import { useScrollProgress } from '@/lib/useScrollProgress.ts';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const NAV_KEYS_FORWARD = new Set(['j', 'ArrowDown']);
 const NAV_KEYS_BACKWARD = new Set(['k', 'ArrowUp']);
+/** Tailwind's `lg` breakpoint - the one place the two timeline layouts diverge. */
+const DESKTOP_QUERY = '(min-width: 1024px)';
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -85,6 +88,11 @@ export default function Timeline() {
   const activeEntry = activeIndex >= 0 ? entries[activeIndex] : undefined;
   const activeEntryId = activeEntry?.id ?? null;
 
+  // Mount only the chart this viewport can show. `hidden`/`lg:hidden` alone still leaves the other
+  // one in the tree, and this section re-renders on every scroll frame - so the phone was paying
+  // to reconcile a desktop chart it could never see, on top of drawing its own.
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+
   return (
     <section
       id="experience"
@@ -99,26 +107,28 @@ export default function Timeline() {
       {/*
        * Below 1024px: the ticker tape, full-bleed and pinned to the viewport, painted behind the
        * cards. `absolute inset-0` bounds it to this section; the inner `sticky` element is what
-       * holds it still while the tape pans. Nothing on this path may set `overflow-hidden` - that
-       * would turn an ancestor into the sticky scrollport and freeze the pan. The <svg> clips its
-       * own viewBox, so no clipping wrapper is needed.
+       * holds it still while the tape pans. Nothing on *this* path may set `overflow-hidden` -
+       * that would turn an ancestor into the sticky scrollport and freeze the pan. (The tape's own
+       * clipping wrapper is inside `CareerChart`, below the sticky element, which is safe.)
        */}
-      <div
-        data-ticker
-        data-print-hide
-        className="pointer-events-none absolute inset-0 lg:hidden"
-        aria-hidden="true"
-      >
-        <div className="sticky top-0 h-screen w-full">
-          <CareerChart
-            entries={entries}
-            orientation="ticker"
-            progress={progress}
-            activeEntryId={activeEntryId}
-            className="h-full w-full"
-          />
+      {!isDesktop && (
+        <div
+          data-ticker
+          data-print-hide
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        >
+          <div className="sticky top-0 h-screen w-full">
+            <CareerChart
+              entries={entries}
+              orientation="ticker"
+              progress={progress}
+              activeEntryId={activeEntryId}
+              className="h-full w-full"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div
         ref={containerRef}
@@ -126,13 +136,15 @@ export default function Timeline() {
       >
         {/* Desktop (≥1024px): sticky full-height chart pane, left ~55%. */}
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
-          <CareerChart
-            entries={entries}
-            orientation="horizontal"
-            progress={progress}
-            activeEntryId={activeEntryId}
-            className="h-full w-full"
-          />
+          {isDesktop && (
+            <CareerChart
+              entries={entries}
+              orientation="horizontal"
+              progress={progress}
+              activeEntryId={activeEntryId}
+              className="h-full w-full"
+            />
+          )}
         </div>
 
         <div className="min-w-0 lg:flex-1">

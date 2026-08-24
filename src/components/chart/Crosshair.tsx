@@ -1,10 +1,10 @@
 /**
  * A thin line at the playhead with a mono date readout - a charting-terminal cursor that follows
- * scroll progress (PLAN §1.3 item 2).
+ * scroll progress (PLAN §1.3 item 2). Desktop pane only.
  *
- * The mobile ticker draws the line but not the readout: its viewBox is stretched to the phone's
- * aspect ratio (`preserveAspectRatio="none"`), which would distort glyphs, and a date label
- * behind the role-card text would be clutter rather than signal.
+ * The ticker has no crosshair. It is drawn once and panned by the compositor, so anything that
+ * moves against the tape would force the whole tape to be re-rendered on every scroll frame -
+ * which is exactly the stutter this split exists to avoid.
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';

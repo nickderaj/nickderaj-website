@@ -20,8 +20,12 @@ const BODY_WIDTH_RATIO = 0.7;
 
 export type CandlesticksProps = {
   geometry: ChartGeometry;
-  /** Month index of the scroll playhead - candles after this are dimmed. */
-  playheadMonth: number;
+  /**
+   * Month index of the scroll playhead - candles after this are dimmed. Omit for a series with no
+   * progressive reveal: the ticker's whole point is that nothing about it changes as you scroll,
+   * so it can be rendered once and panned by the compositor.
+   */
+  playheadMonth?: number;
   /** Cap on candle body width in SVG user units. */
   maxBodyWidth?: number;
   /** Wick stroke width in SVG user units. */
@@ -30,11 +34,11 @@ export type CandlesticksProps = {
 
 export default function Candlesticks({
   geometry,
-  playheadMonth,
+  playheadMonth = Infinity,
   maxBodyWidth = DEFAULT_MAX_BODY_WIDTH,
   strokeWidth = 1,
 }: CandlesticksProps) {
-  const { candles, timeScale, valueScale } = geometry;
+  const { candles, timeScale, valueAt } = geometry;
   if (candles.length < 2) return null;
 
   // Candle width: the pixel span between two month ticks, minus a thin gap, capped so a sparse
@@ -55,10 +59,10 @@ export default function Candlesticks({
         const color = isUp ? 'var(--color-candle-up)' : 'var(--color-candle-down)';
         const revealed = candle.month <= playheadMonth;
 
-        const openY = valueScale(candle.open);
-        const closeY = valueScale(candle.close);
-        const highY = valueScale(candle.high);
-        const lowY = valueScale(candle.low);
+        const openY = valueAt(candle.month, candle.open);
+        const closeY = valueAt(candle.month, candle.close);
+        const highY = valueAt(candle.month, candle.high);
+        const lowY = valueAt(candle.month, candle.low);
         const bodyTop = Math.min(openY, closeY);
         const bodyHeight = Math.max(MIN_BODY_HEIGHT, Math.abs(closeY - openY));
 

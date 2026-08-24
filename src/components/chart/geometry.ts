@@ -10,12 +10,21 @@
  * Two orientations, both with time on the x axis and price on the y axis - they differ only in
  * scale, not in projection:
  *
- *  - `horizontal`: the desktop sticky pane. The whole career fits the drawn width.
+ *  - `horizontal`: the desktop sticky pane. The whole career fits the drawn width, and the whole
+ *    price range is framed at once.
  *  - `ticker`: the mobile full-bleed backdrop. The career is drawn several screens wide and
- *    `CareerChart` pans a viewBox window across it, so scrolling down slides the tape sideways.
+ *    `CareerChart` slides it sideways as the page scrolls. Because that pan must not cost a
+ *    re-render, everything scroll-dependent is baked in here instead: each month is framed
+ *    against its own neighbours (`valueAt`), so the tape is well-scaled at every point along its
+ *    length without anything being recomputed as it moves.
  */
 
-import { candlePriceDomain, generateCandles, type Candle } from '@/lib/candles.ts';
+import {
+  candlePriceDomain,
+  generateCandles,
+  rollingPriceEnvelope,
+  type Candle,
+} from '@/lib/candles.ts';
 import {
   linearScale,
   monthIndex,
@@ -76,8 +85,14 @@ export type ChartGeometry = {
   markers: EntryMarker[];
   /** Scale for the time axis (month index -> pixels), in the axis's own pixel space. */
   timeScale: LinearScale;
-  /** Scale for the value axis (price -> pixels), in the axis's own pixel space. */
+  /**
+   * Scale for the value axis (price -> pixels) across the whole series. Drives the desktop pane's
+   * gridlines. The ticker frames each month against its own neighbours instead - use `valueAt`,
+   * which is the only y mapping correct for both orientations.
+   */
   valueScale: LinearScale;
+  /** Maps a (month index, price) pair to a y pixel, honouring the ticker's per-month framing. */
+  valueAt: (monthIndex: number, price: number) => number;
   /** Projects a (month index, price) pair to an {x, y} SVG point. */
   toPoint: (monthIndex: number, price: number) => { x: number; y: number };
   /** Multiplier for fixed-size features (strokes, radii) so they read the same on screen. */
@@ -87,12 +102,11 @@ export type ChartGeometry = {
 export type ChartGeometryOptions = {
   padding?: ChartPadding;
   /**
-   * Overrides the y (price) domain, which otherwise spans the whole series. The ticker passes the
-   * extremes of its currently visible month window here so the tape auto-scales as it pans, the
-   * way a real chart does - without it, thirteen years of range are squeezed into one screen and
-   * any given window reads as a flat line.
+   * Half-width, in months, of the neighbourhood each month is framed against (see
+   * `rollingPriceEnvelope`). Ticker only; the desktop pane always frames the whole series at once.
+   * Defaults to a quarter of the domain, which is roughly one screen's worth of tape.
    */
-  priceDomain?: readonly [number, number];
+  localFramingHalfWindow?: number;
 };
 
 /** Builds the geometry for a career chart at a given size/orientation from a set of entries. */
@@ -125,14 +139,38 @@ export function buildChartGeometry(
   );
 
   const candles = generateCandles(xDomain[0], xDomain[1], transitionMonths);
-  const priceDomain = options.priceDomain ?? candlePriceDomain(candles);
+  const priceDomain = candlePriceDomain(candles);
 
   const timeScale = linearScale(xDomain, [padding.left, width - padding.right]);
   // Inverted range: a higher price draws higher up the chart.
   const valueScale = linearScale(priceDomain, [height - padding.bottom, padding.top]);
+  const plotBottom = height - padding.bottom;
+  const plotTop = padding.top;
+
+  // The ticker frames every month against its own neighbours (see `rollingPriceEnvelope`); the
+  // desktop pane frames the whole series at once. Both are computed here, once, so nothing about
+  // the drawn geometry depends on scroll position.
+  const envelope =
+    orientation === 'ticker'
+      ? rollingPriceEnvelope(
+          candles,
+          options.localFramingHalfWindow ?? Math.round((xDomain[1] - xDomain[0]) / 4),
+        )
+      : null;
+  const firstMonth = candles[0]?.month ?? 0;
+
+  const valueAt = (month: number, price: number): number => {
+    if (!envelope) return valueScale(price);
+    const index = Math.min(candles.length - 1, Math.max(0, Math.round(month) - firstMonth));
+    const low = envelope.low[index];
+    const high = envelope.high[index];
+    if (low === undefined || high === undefined || high === low) return valueScale(price);
+    return plotBottom + ((price - low) / (high - low)) * (plotTop - plotBottom);
+  };
+
   const toPoint = (month: number, price: number) => ({
     x: timeScale(month),
-    y: valueScale(price),
+    y: valueAt(month, price),
   });
 
   const closeAt = (month: number): number => {
@@ -165,6 +203,7 @@ export function buildChartGeometry(
     markers,
     timeScale,
     valueScale,
+    valueAt,
     toPoint,
     unitScale: UNIT_SCALE[orientation],
   };
