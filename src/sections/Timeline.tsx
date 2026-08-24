@@ -9,9 +9,16 @@
  *    full-width cards. It pans sideways with scroll progress, running off the left edge of the
  *    screen and fading out towards the right so it never competes with the text.
  *
- * Cards render in CHRONOLOGICAL order (Bristol first, Goldman last) so scrolling down tracks the
- * chart's left-to-right time axis. `career.ts` itself stays most-recent-first for other consumers
- * (CV, `/data`) - this section sorts only at the point of rendering.
+ * Card order differs by layout:
+ *
+ *  - ≥1024px: CHRONOLOGICAL (Bristol first, Goldman last), so scrolling down tracks the sticky
+ *    pane's left-to-right time axis.
+ *  - <1024px: REVERSE-CHRONOLOGICAL (Goldman first, Bristol last), the order a CV is read in on a
+ *    phone. The tape behind it keeps running left, like a real ticker - it is texture, not a
+ *    second reading of the card stack.
+ *
+ * `career.ts` itself stays most-recent-first for other consumers (CV, `/data`) - this section
+ * sorts only at the point of rendering.
  *
  * No props - this section owns its own data (`career.ts`) and scroll-progress wiring.
  */
@@ -36,17 +43,29 @@ function isTypingTarget(target: EventTarget | null): boolean {
 }
 
 export default function Timeline() {
-  // Render order is chronological (scroll down = forward in time, matching the chart's
-  // left-to-right time axis) even though `career.ts` stays sorted most-recent-first for other
-  // consumers (the CV, `/data`, the command palette).
-  const entries = useMemo(
+  // Oldest-first. This is the order the chart's time axis is built from in both layouts; the card
+  // stack reverses it below 1024px (see the header comment). `career.ts` itself stays sorted
+  // most-recent-first for other consumers (the CV, `/data`, the command palette).
+  const chronological = useMemo(
     () =>
       [...career].sort(
         (a, b) => monthIndex(parseYearMonth(a.start)) - monthIndex(parseYearMonth(b.start)),
       ),
     [],
   );
-  const { progress, activeIndex, containerRef, itemRef } = useScrollProgress();
+  const { progress, crossingProgress, activeIndex, containerRef, itemRef } = useScrollProgress();
+
+  // Mount only the chart this viewport can show. `hidden`/`lg:hidden` alone still leaves the other
+  // one in the tree, and this section re-renders on every scroll frame - so the phone was paying
+  // to reconcile a desktop chart it could never see, on top of drawing its own.
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+
+  // The chart's geometry is always built from the chronological list (its x axis is time); only
+  // the card stack flips below 1024px.
+  const entries = useMemo(
+    () => (isDesktop ? chronological : [...chronological].reverse()),
+    [chronological, isDesktop],
+  );
 
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardElementsRef = useRef<(HTMLLIElement | null)[]>([]);
@@ -88,10 +107,11 @@ export default function Timeline() {
   const activeEntry = activeIndex >= 0 ? entries[activeIndex] : undefined;
   const activeEntryId = activeEntry?.id ?? null;
 
-  // Mount only the chart this viewport can show. `hidden`/`lg:hidden` alone still leaves the other
-  // one in the tree, and this section re-renders on every scroll frame - so the phone was paying
-  // to reconcile a desktop chart it could never see, on top of drawing its own.
-  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+  // `crossingProgress`, not `progress`: the tape is meant to read as something that has been
+  // running all along, so it is already part-way across when the section scrolls into view and
+  // keeps running until the section has left the top of the screen - rather than starting dead
+  // still at the section's top edge and stopping dead at its bottom.
+  const tickerProgress = crossingProgress;
 
   return (
     <section
@@ -120,9 +140,9 @@ export default function Timeline() {
         >
           <div className="sticky top-0 h-screen w-full">
             <CareerChart
-              entries={entries}
+              entries={chronological}
               orientation="ticker"
-              progress={progress}
+              progress={tickerProgress}
               activeEntryId={activeEntryId}
               className="h-full w-full"
             />
@@ -138,7 +158,7 @@ export default function Timeline() {
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
           {isDesktop && (
             <CareerChart
-              entries={entries}
+              entries={chronological}
               orientation="horizontal"
               progress={progress}
               activeEntryId={activeEntryId}

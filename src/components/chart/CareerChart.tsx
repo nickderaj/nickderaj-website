@@ -7,8 +7,10 @@
  *    ticks, regime labels and the crosshair date readout all render, and scroll `progress` drives
  *    a progressive reveal.
  *  - `ticker` (<1024px): a full-bleed backdrop behind the role cards, drawn `TICKER_WIDTH` wide -
- *    3.6 phone screens - and slid sideways as the page scrolls down, so history runs off the left
- *    edge of the screen and the tape fades out to the right, underneath the text.
+ *    3.6 phone screens - and slid sideways as the page scrolls down, so the tape runs off the left
+ *    edge of the screen and fades out to the right, underneath the text. `progress` alone decides
+ *    which slice is on screen; the caller feeds it a value that is already part-way along when the
+ *    section appears and only completes once it has left (see `Timeline.tsx`).
  *
  * The ticker is deliberately **static**: no reveal, no crosshair, no rescaling. Everything that
  * used to move against the tape has been removed or baked into the geometry, so the SVG renders
@@ -54,11 +56,12 @@ const TICKER_FRAMING_HALF_WINDOW = 22;
 /** Kept low: this sits behind body copy, and the text has to stay the loudest thing on screen. */
 const TICKER_OPACITY = 0.85;
 /**
- * How far the tape travels, as a percentage of its own width: from showing its first window to
- * showing its last. A percentage translate resolves against the element's own border box, so the
- * pan needs no measurement of the viewport and survives resize with no JS.
+ * How far the tape travels, as a percentage of its own width: a full 100%, so it ends with even
+ * its last candle carried off the left edge rather than parking on its final window with a few
+ * bars still on screen. A percentage translate resolves against the element's own border box, so
+ * the pan needs no measurement of the viewport and survives resize with no JS.
  */
-const TICKER_PAN_SPAN_PERCENT = ((TICKER_WIDTH - TICKER_WINDOW) / TICKER_WIDTH) * 100;
+const TICKER_PAN_SPAN_PERCENT = 100;
 /**
  * Solid where the tape runs off the left of the screen, gone by the right, where the text is - and
  * softened at the top and bottom so the pinned panel never reads as a cropped rectangle where it
@@ -251,7 +254,10 @@ function TickerChart({
           viewBox={`0 0 ${String(TICKER_WIDTH)} ${String(TICKER_HEIGHT)}`}
           preserveAspectRatio="none"
           height="100%"
-          className="absolute inset-y-0 left-0 will-change-transform"
+          // `max-w-none` is load-bearing: `globals.css` caps every `svg` at `max-width: 100%`,
+          // which silently squashed the whole tape into a single screen - the pan then ran a
+          // compressed tape and left candles parked on screen at the end of its travel.
+          className="absolute inset-y-0 left-0 max-w-none will-change-transform"
           style={{ width: `${String((TICKER_WIDTH / TICKER_WINDOW) * 100)}%` }}
         >
           {tape}

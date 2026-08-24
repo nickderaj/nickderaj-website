@@ -92,7 +92,8 @@ test.describe('career chart', () => {
   test('the mobile ticker tape pans sideways as the page scrolls down', async ({ page }) => {
     // Below 1024px the chart is a full-bleed candle tape painted behind the cards. It is drawn
     // several screens wide and slid sideways with a `transform`, so scrolling down runs the tape
-    // sideways (CareerChart.tsx, `ticker` orientation).
+    // sideways (CareerChart.tsx, `ticker` orientation), until by the end of the section even its last
+    // candle has been carried off the left edge.
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
@@ -142,7 +143,13 @@ test.describe('career chart', () => {
       window.scrollTo(0, document.body.scrollHeight);
     });
     await page.waitForTimeout(300);
-    expect(await panX()).toBeLessThan(midPan);
+    const finalPan = await panX();
+    expect(finalPan).toBeLessThan(midPan);
+
+    // Fully off the left edge by the end: the tape is translated by at least its own drawn width,
+    // so no candle is left parked on screen.
+    const tapeWidth = await ticker.evaluate((el) => el.getBoundingClientRect().width);
+    expect(finalPan).toBeLessThanOrEqual(-tapeWidth + 1);
 
     // No candle's drawn geometry may depend on scroll position - that is what keeps the pan a
     // compositor job rather than a re-render of ~470 nodes per frame. The markup must be
@@ -182,7 +189,9 @@ test.describe('career role cards', () => {
     }
   });
 
-  test('renders chronologically: Bristol first, Goldman Sachs last', async ({ page }) => {
+  test('renders chronologically on desktop: Bristol first, Goldman Sachs last', async ({
+    page,
+  }) => {
     // PLAN fix #1: scroll order must track the chart's left-to-right time axis, so the card stack
     // is chronological (oldest first) even though career.ts itself stays most-recent-first.
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -191,6 +200,17 @@ test.describe('career role cards', () => {
     await expect(cards).toHaveCount(7);
     await expect(cards.first()).toContainText('University of Bristol');
     await expect(cards.last()).toContainText('Goldman Sachs');
+  });
+
+  test('renders newest-first on mobile: Goldman Sachs first, Bristol last', async ({ page }) => {
+    // Below 1024px there is no side-by-side time axis to track, so the stack reads like a CV:
+    // most recent role at the top.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    const cards = page.locator('#experience ol > li');
+    await expect(cards).toHaveCount(7);
+    await expect(cards.first()).toContainText('Goldman Sachs');
+    await expect(cards.last()).toContainText('University of Bristol');
   });
 });
 

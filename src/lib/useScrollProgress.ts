@@ -3,6 +3,10 @@
  *
  *  - `progress`: 0..1 progress of the viewport through a ref'd container element. Driven by a
  *    single rAF-throttled `scroll` listener - no scroll-jacking, native scrolling is untouched.
+ *  - `crossingProgress`: the same idea over a wider window - 0 when the container's top edge is
+ *    still a full viewport below the fold, 1 once its bottom edge has passed the top of the
+ *    screen. Anything driven by it is already part-way along when it scrolls into view and keeps
+ *    moving until it has left, instead of starting and stopping at the section's edges.
  *  - `activeIndex`: the index of the career entry currently "in view", via IntersectionObserver
  *    watching a set of item refs (the role cards). `-1` when nothing is registered yet.
  *
@@ -16,6 +20,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export type ScrollProgressResult = {
   /** 0..1 progress of the viewport through the container. Pinned to 1 under reduced motion. */
   progress: number;
+  /**
+   * 0..1 progress of the container across the viewport, from first entering the bottom of the
+   * screen to fully leaving the top. Pinned to 1 under reduced motion.
+   */
+  crossingProgress: number;
   /** Index of the currently active (most in-view) item, or -1 if none is registered/visible. */
   activeIndex: number;
   /** Ref callback to attach to the scroll-progress container. */
@@ -46,8 +55,23 @@ function computeProgress(container: HTMLElement): number {
   return Math.min(1, Math.max(0, scrolled / totalScrollable));
 }
 
+/**
+ * Progress of `container` crossing the viewport, clamped to [0, 1]: 0 when its top edge sits at
+ * the bottom of the screen, 1 once its bottom edge has passed the top. The travel is therefore
+ * one container plus one viewport, so a scroll-driven effect is already mid-flight when the
+ * container appears and only finishes once it is gone.
+ */
+function computeCrossingProgress(container: HTMLElement): number {
+  const rect = container.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const totalScrollable = rect.height + viewportHeight;
+  if (totalScrollable <= 0) return 0;
+  return Math.min(1, Math.max(0, (viewportHeight - rect.top) / totalScrollable));
+}
+
 export function useScrollProgress(): ScrollProgressResult {
   const [progress, setProgress] = useState(0);
+  const [crossingProgress, setCrossingProgress] = useState(0);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const containerElementRef = useRef<HTMLElement | null>(null);
@@ -62,9 +86,11 @@ export function useScrollProgress(): ScrollProgressResult {
     if (!container) return;
     if (reducedMotionRef.current) {
       setProgress(1);
+      setCrossingProgress(1);
       return;
     }
     setProgress(computeProgress(container));
+    setCrossingProgress(computeCrossingProgress(container));
   }, []);
 
   const scheduleProgressUpdate = useCallback(() => {
@@ -173,5 +199,5 @@ export function useScrollProgress(): ScrollProgressResult {
     [rebuildObserver],
   );
 
-  return { progress, activeIndex, containerRef, itemRef };
+  return { progress, crossingProgress, activeIndex, containerRef, itemRef };
 }
