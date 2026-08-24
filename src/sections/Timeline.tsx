@@ -5,7 +5,9 @@
  * rendered on top of the text at 768–1023px):
  *
  *  - ≥1024px: two columns, sticky full-height chart pane left (~55%), scrolling cards right.
- *  - <1024px (mobile AND tablet): chart becomes a vertical spine in a ~48px left gutter.
+ *  - <1024px (mobile AND tablet): the chart becomes a full-bleed sticky ticker tape *behind* the
+ *    full-width cards. It pans sideways with scroll progress, running off the left edge of the
+ *    screen and fading out towards the right so it never competes with the text.
  *
  * Cards render in CHRONOLOGICAL order (Bristol first, Goldman last) so scrolling down tracks the
  * chart's left-to-right time axis. `career.ts` itself stays most-recent-first for other consumers
@@ -94,9 +96,33 @@ export default function Timeline() {
         Career timeline
       </h2>
 
+      {/*
+       * Below 1024px: the ticker tape, full-bleed and pinned to the viewport, painted behind the
+       * cards. `absolute inset-0` bounds it to this section; the inner `sticky` element is what
+       * holds it still while the tape pans. Nothing on this path may set `overflow-hidden` - that
+       * would turn an ancestor into the sticky scrollport and freeze the pan. The <svg> clips its
+       * own viewBox, so no clipping wrapper is needed.
+       */}
+      <div
+        data-ticker
+        data-print-hide
+        className="pointer-events-none absolute inset-0 lg:hidden"
+        aria-hidden="true"
+      >
+        <div className="sticky top-0 h-screen w-full">
+          <CareerChart
+            entries={entries}
+            orientation="ticker"
+            progress={progress}
+            activeEntryId={activeEntryId}
+            className="h-full w-full"
+          />
+        </div>
+      </div>
+
       <div
         ref={containerRef}
-        className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
+        className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
       >
         {/* Desktop (≥1024px): sticky full-height chart pane, left ~55%. */}
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
@@ -109,19 +135,8 @@ export default function Timeline() {
           />
         </div>
 
-        <div className="flex min-w-0 gap-4 lg:flex-1 lg:gap-0">
-          {/* Below 1024px (mobile AND tablet): vertical spine in a ~48px left gutter. */}
-          <div className="w-12 shrink-0 lg:hidden" aria-hidden="true">
-            <CareerChart
-              entries={entries}
-              orientation="vertical"
-              progress={progress}
-              activeEntryId={activeEntryId}
-              className="h-full w-full"
-            />
-          </div>
-
-          <ol className="min-w-0 flex-1 space-y-8">
+        <div className="min-w-0 lg:flex-1">
+          <ol className="min-w-0 space-y-8">
             {entries.map((entry, index) => (
               <li
                 key={entry.id}

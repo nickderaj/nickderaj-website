@@ -74,8 +74,10 @@ test.describe('career chart', () => {
     // The desktop sticky pane renders the candlestick series as one <rect> body per candle —
     // roughly one per month across the ~2013-present career span (PLAN fix #3: "reads as a
     // dense market chart, not a sparse infographic").
-    const desktopChart = page.locator('#experience > div > div').first();
-    const bodies = desktopChart.locator('svg > g rect');
+    // `:not([data-ticker])` skips the mobile ticker layer, which is the first child of the
+    // section and stays in the DOM at every width (it is hidden with a media query, not unmounted).
+    const desktopChart = page.locator('#experience > div:not([data-ticker])').first();
+    const bodies = desktopChart.locator('svg g[data-candle] rect');
     const bodyCount = await bodies.count();
     expect(bodyCount).toBeGreaterThan(100);
 
@@ -87,48 +89,69 @@ test.describe('career chart', () => {
     expect(fills).toContain('var(--color-candle-down)');
   });
 
-  test('the mobile vertical gutter spine draws progressively and completes at bottom', async ({
-    page,
-  }) => {
-    // Below 1024px there is exactly one <path> under #experience: the simplified vertical spine
-    // (candles don't read in a ~48px gutter, see CareerChart.tsx). It shares the same scroll
-    // progress as the desktop candles, so this exercises the same progressive-reveal wiring.
-    await page.setViewportSize({ width: 768, height: 900 });
+  test('the mobile ticker tape pans sideways as the page scrolls down', async ({ page }) => {
+    // Below 1024px the chart is a full-bleed candle tape painted behind the cards. It is drawn
+    // several screens wide and panned by moving the <svg> viewBox window across it, so scrolling
+    // down runs the tape sideways (CareerChart.tsx, `ticker` orientation).
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const path = page.locator('#experience svg path').first();
-    await expect(path).toHaveCount(1);
+    const ticker = page.locator('#experience [data-ticker] svg');
+    await expect(ticker).toHaveCount(1);
 
-    const initialDashoffset = await path.evaluate((el) =>
-      Number(el.getAttribute('stroke-dashoffset')),
-    );
-    const pathLength = await path.evaluate((el) => Number(el.getAttribute('stroke-dasharray')));
-    expect(pathLength).toBeGreaterThan(0);
+    // Same dense monthly series as the desktop pane, in both colours.
+    const bodies = ticker.locator('g[data-candle] rect');
+    expect(await bodies.count()).toBeGreaterThan(100);
+    const fills = await bodies.evaluateAll((els) => [
+      ...new Set(els.map((el) => el.getAttribute('fill'))),
+    ]);
+    expect(fills).toContain('var(--color-candle-up)');
+    expect(fills).toContain('var(--color-candle-down)');
 
-    await page.locator('#experience').scrollIntoViewIfNeeded();
-    await page.mouse.wheel(0, 2000);
+    const panX = async (): Promise<number> =>
+      ticker.evaluate((el) => Number((el.getAttribute('viewBox') ?? '').split(' ')[0]));
+
+    // Scroll to explicit offsets inside the section rather than wheeling by a fixed delta: the
+    // section is only a few screens tall, so a large wheel would jump straight to full progress
+    // and the mid-scroll sample would be indistinguishable from the final one.
+    const sectionTop = await page
+      .locator('#experience')
+      .evaluate((el) => el.getBoundingClientRect().top + window.scrollY);
+
+    await page.evaluate((y) => {
+      window.scrollTo(0, y);
+    }, sectionTop);
     await page.waitForTimeout(300);
+    const initialPan = await panX();
 
-    const midDashoffset = await path.evaluate((el) => Number(el.getAttribute('stroke-dashoffset')));
-    expect(midDashoffset).toBeLessThan(initialDashoffset);
+    await page.evaluate((y) => {
+      window.scrollTo(0, y);
+    }, sectionTop + 700);
+    await page.waitForTimeout(300);
+    const midPan = await panX();
+    expect(midPan, 'the tape should have panned right (i.e. slid left on screen)').toBeGreaterThan(
+      initialPan,
+    );
 
-    // Scroll all the way to the bottom of the page (past the timeline) to fully draw the path.
     await page.evaluate(() => {
       window.scrollTo(0, document.body.scrollHeight);
     });
     await page.waitForTimeout(300);
+    expect(await panX()).toBeGreaterThan(midPan);
 
-    const finalDashoffset = await path.evaluate((el) =>
-      Number(el.getAttribute('stroke-dashoffset')),
-    );
-    expect(finalDashoffset).toBeLessThanOrEqual(1);
+    // At the bottom every candle is revealed - none left dimmed.
+    const dimmed = await ticker
+      .locator('g[data-candle]')
+      .evaluateAll((els) => els.filter((el) => Number(el.getAttribute('opacity')) < 1).length);
+    expect(dimmed).toBe(0);
   });
 
   test('regime bands render with labels', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
+    // The ticker draws no labels, so read the desktop pane specifically.
     const svgText = await page
-      .locator('#experience svg')
+      .locator('#experience > div:not([data-ticker]) svg')
       .first()
       .evaluate((el) => el.textContent);
     expect(svgText).toContain('PHYSICAL COMMODITIES');
@@ -160,31 +183,47 @@ test.describe('career role cards', () => {
   });
 });
 
-test.describe('tablet layout (768-1023px)', () => {
-  // PLAN fix #2: the tablet horizontal-ribbon variant was deleted (it rendered on top of the
-  // text). There are now exactly two layouts: the mobile vertical-gutter layout below 1024px,
-  // and the desktop two-column layout at/above it. Assert nothing overlaps at either edge of the
-  // tablet range.
-  for (const width of [768, 1023]) {
-    test(`gutter chart does not overlap the role card text at ${String(width)}px`, async ({
-      page,
-    }) => {
+test.describe('sub-1024px ticker sits behind the text', () => {
+  // The tablet horizontal-ribbon variant was deleted long ago for rendering *on top of* the text.
+  // Its replacement, the ticker tape, is also behind the cards - but as a backdrop: it never
+  // takes a click, never sits above the copy, and never widens the page. Assert all three at both
+  // edges of the range that uses it.
+  for (const width of [390, 768, 1023]) {
+    test(`backdrop, not an overlay, at ${String(width)}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto('/');
       await page.locator('#experience').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
 
-      const gutter = page.locator('#experience [aria-hidden="true"].w-12').first();
-      const firstCard = page.locator('#experience ol > li').first();
-      await expect(gutter).toBeVisible();
-      await expect(firstCard).toBeVisible();
+      const ticker = page.locator('#experience [data-ticker]');
+      await expect(ticker).toBeVisible();
 
-      const gutterBox = await gutter.boundingBox();
-      const cardBox = await firstCard.boundingBox();
-      if (!gutterBox || !cardBox) {
-        throw new Error('expected both the gutter and the first card to have a layout box');
-      }
-      // The gutter must sit fully to the left of the card text, never over it.
-      expect(gutterBox.x + gutterBox.width).toBeLessThanOrEqual(cardBox.x + 1);
+      // Full-bleed: it spans the viewport rather than sitting in a gutter beside the text.
+      const tickerBox = await ticker.boundingBox();
+      if (!tickerBox) throw new Error('expected the ticker layer to have a layout box');
+      expect(tickerBox.x).toBeLessThanOrEqual(0);
+      expect(tickerBox.width).toBeGreaterThanOrEqual(width);
+
+      // Hit-testing the middle of a card lands on the card, never on the chart behind it.
+      const card = page.locator('#experience ol > li article').first();
+      const cardBox = await card.boundingBox();
+      if (!cardBox) throw new Error('expected the first card to have a layout box');
+      const topmost = await page.evaluate(
+        ([x, y]: number[]) => {
+          const el = document.elementFromPoint(x ?? 0, y ?? 0);
+          return { tag: el?.tagName ?? null, inCard: el?.closest('#experience ol > li') !== null };
+        },
+        [cardBox.x + cardBox.width / 2, cardBox.y + cardBox.height / 2],
+      );
+      expect(topmost.tag).not.toBe('svg');
+      expect(topmost.inCard, 'the card must be hit-testable through the backdrop').toBe(true);
+
+      // The tape is drawn far wider than the screen, so it must not extend the scrollable width.
+      const overflow = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        innerWidth: window.innerWidth,
+      }));
+      expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.innerWidth);
     });
   }
 });
@@ -381,9 +420,12 @@ test.describe('reduced motion', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
-    const path = page.locator('#experience svg path').first();
-    const dashoffset = await path.evaluate((el) => Number(el.getAttribute('stroke-dashoffset')));
-    expect(dashoffset).toBeLessThanOrEqual(1);
+    // `useScrollProgress` pins progress to 1 under reduced motion, so every candle in both the
+    // desktop pane and the mobile ticker renders revealed (opacity 1) rather than dimmed.
+    const dimmed = await page
+      .locator('#experience svg g[data-candle]')
+      .evaluateAll((els) => els.filter((el) => Number(el.getAttribute('opacity')) < 1).length);
+    expect(dimmed).toBe(0);
     await page.screenshot({ path: '.playwright/screens/reduced-motion.png', fullPage: true });
   });
 });

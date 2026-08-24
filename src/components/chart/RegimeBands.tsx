@@ -1,6 +1,9 @@
 /**
  * Faint labelled background bands marking the three career regimes (PLAN §1.3 item 1). Boundaries
  * are derived from `career.ts` `regime` fields via `buildRegimeBands` - never hardcoded dates.
+ *
+ * The mobile ticker draws the tinted strips and boundary rules but no labels: it sits behind the
+ * role-card text, where a second layer of type would only compete with it.
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
@@ -13,86 +16,64 @@ export type RegimeBandsProps = {
   geometry: ChartGeometry;
 };
 
+/** Width of one mono character at the label's size: 9px + 0.12em tracking, measured. */
+const LABEL_CHAR_WIDTH = 6.7;
+
 export default function RegimeBands({ entries, geometry }: RegimeBandsProps) {
   const bands = useMemo(() => buildRegimeBands(entries), [entries]);
-  const { orientation, width, height, padding, timeScale } = geometry;
+  const { orientation, height, padding, timeScale, unitScale } = geometry;
+  const showLabels = orientation === 'horizontal';
 
   return (
     <g>
       {bands.map((band) => {
         const start = timeScale(band.startMonth);
         const end = timeScale(band.endMonth);
+        const x = Math.min(start, end);
+        const bandWidth = Math.abs(end - start);
 
-        if (orientation === 'horizontal') {
-          const x = Math.min(start, end);
-          const bandWidth = Math.abs(end - start);
-          // Narrow bands (a short regime near the right edge) cannot fit the full label without
-          // colliding with the next one, so drop the date range first and the label second.
-          const charWidth = 6.7; // 9px mono + 0.12em tracking, measured
-          const available = bandWidth - 12;
-          const full = `${band.label} · ${band.rangeLabel}`;
-          const labelText =
-            full.length * charWidth <= available
-              ? full
-              : band.label.length * charWidth <= available
-                ? band.label
-                : null;
-          return (
-            <g key={band.regime + String(band.startMonth)}>
-              <rect
-                x={x}
-                y={padding.top}
-                width={bandWidth}
-                height={Math.max(0, height - padding.top - padding.bottom)}
-                fill="var(--color-accent)"
-                opacity={0.05}
-              />
-              <line
-                x1={x}
-                x2={x}
-                y1={padding.top}
-                y2={height - padding.bottom}
-                stroke="var(--color-border)"
-                strokeWidth={1}
-              />
-              {labelText !== null && (
-                <text
-                  x={x + 8}
-                  y={padding.top - 12}
-                  fontFamily="var(--font-mono)"
-                  fontSize={9}
-                  letterSpacing="0.12em"
-                  fill="var(--color-muted)"
-                >
-                  {labelText}
-                </text>
-              )}
-            </g>
-          );
-        }
+        // Narrow bands (a short regime near the right edge) cannot fit the full label without
+        // colliding with the next one, so drop the date range first and the label second.
+        const available = bandWidth - 12;
+        const full = `${band.label} · ${band.rangeLabel}`;
+        const labelText = !showLabels
+          ? null
+          : full.length * LABEL_CHAR_WIDTH <= available
+            ? full
+            : band.label.length * LABEL_CHAR_WIDTH <= available
+              ? band.label
+              : null;
 
-        // Vertical (mobile) orientation: a narrow gutter has no room for readable labels, so
-        // render just the tinted strip and a boundary tick - same data, no label clutter.
-        const y = Math.min(start, end);
-        const bandHeight = Math.abs(end - start);
         return (
           <g key={band.regime + String(band.startMonth)}>
             <rect
-              x={padding.left}
-              y={y}
-              width={Math.max(0, width - padding.left - padding.right)}
-              height={bandHeight}
+              x={x}
+              y={padding.top}
+              width={bandWidth}
+              height={Math.max(0, height - padding.top - padding.bottom)}
               fill="var(--color-accent)"
               opacity={0.05}
             />
             <line
-              x1={padding.left}
-              x2={width - padding.right}
-              y1={y}
-              y2={y}
+              x1={x}
+              x2={x}
+              y1={padding.top}
+              y2={height - padding.bottom}
               stroke="var(--color-border)"
-              strokeWidth={1}
+              strokeWidth={unitScale}
             />
+            {labelText !== null && (
+              <text
+                x={x + 8}
+                y={padding.top - 12}
+                fontFamily="var(--font-mono)"
+                fontSize={9}
+                letterSpacing="0.12em"
+                fill="var(--color-muted)"
+              >
+                {labelText}
+              </text>
+            )}
           </g>
         );
       })}

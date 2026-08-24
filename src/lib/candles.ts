@@ -138,6 +138,46 @@ export function candlePriceDomain(candles: readonly Candle[]): readonly [number,
 }
 
 /**
+ * Minimum height of a windowed domain, as a fraction of the window's own price level. Auto-scaling
+ * a near-flat stretch to fill the plot would turn the deliberate post-transition consolidation
+ * into fake volatility, so quiet windows stay quiet - and a dead-flat one never collapses to a
+ * zero-height domain the scale would divide by.
+ */
+const MIN_WINDOW_SPAN_RATIO = 0.06;
+
+/**
+ * The price range covered by the candles inside `[startMonth, endMonth]`, centred on that range's
+ * midpoint and widened by `padRatio` at each end so the extremes don't sit flush against the plot
+ * edges. Used by the mobile ticker to auto-scale to the window it is currently showing; without
+ * it, thirteen years of range are squeezed onto one phone screen and every window reads flat.
+ *
+ * Never narrower than `MIN_WINDOW_SPAN_RATIO`. Falls back to the whole series' range when the
+ * window contains no candles.
+ */
+export function candlePriceDomainBetween(
+  candles: readonly Candle[],
+  startMonth: number,
+  endMonth: number,
+  padRatio = 0.1,
+): readonly [number, number] {
+  let low = Infinity;
+  let high = -Infinity;
+  for (const candle of candles) {
+    if (candle.month < startMonth || candle.month > endMonth) continue;
+    if (candle.low < low) low = candle.low;
+    if (candle.high > high) high = candle.high;
+  }
+  if (low === Infinity || high === -Infinity) return candlePriceDomain(candles);
+
+  const middle = (high + low) / 2;
+  const span = Math.max(
+    (high - low) * (1 + 2 * padRatio),
+    Math.abs(middle) * MIN_WINDOW_SPAN_RATIO,
+  );
+  return [middle - span / 2, middle + span / 2];
+}
+
+/**
  * Linearly interpolates the candle series' close price at an arbitrary month index - matches what
  * the drawn candles/spine represent at that point. Used to place the crosshair readout in between
  * candle months. Clamps to the first/last close outside the series' domain.

@@ -21,11 +21,13 @@ function radiusForScope(scope: number): number {
 }
 
 export default function Markers({ geometry, activeEntryId }: MarkersProps) {
+  const { unitScale } = geometry;
+
   return (
     <g>
       {geometry.markers.map((marker) => {
         const point = geometry.toPoint(marker.x, marker.y);
-        const radius = radiusForScope(marker.scope);
+        const radius = radiusForScope(marker.scope) * unitScale;
         const isActive = marker.id === activeEntryId;
 
         return (
@@ -34,10 +36,10 @@ export default function Markers({ geometry, activeEntryId }: MarkersProps) {
               <circle
                 cx={point.x}
                 cy={point.y}
-                r={radius + ACTIVE_RING_PADDING}
+                r={radius + ACTIVE_RING_PADDING * unitScale}
                 fill="none"
                 stroke="var(--color-accent)"
-                strokeWidth={1.5}
+                strokeWidth={1.5 * unitScale}
                 opacity={0.5}
               />
             )}
@@ -47,7 +49,7 @@ export default function Markers({ geometry, activeEntryId }: MarkersProps) {
               r={radius}
               fill={isActive ? 'var(--color-accent)' : 'var(--color-ground)'}
               stroke={isActive ? 'var(--color-accent)' : 'var(--color-muted)'}
-              strokeWidth={isActive ? 0 : 1.5}
+              strokeWidth={isActive ? 0 : 1.5 * unitScale}
             />
           </g>
         );

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { candlePriceDomain, candleValueAt, generateCandles, mulberry32 } from './candles.ts';
+import {
+  candlePriceDomain,
+  candlePriceDomainBetween,
+  candleValueAt,
+  generateCandles,
+  mulberry32,
+} from './candles.ts';
 
 describe('mulberry32', () => {
   it('is deterministic: the same seed always yields the same sequence', () => {
@@ -110,6 +116,44 @@ describe('candlePriceDomain', () => {
       expect(candle.low).toBeGreaterThanOrEqual(low);
       expect(candle.high).toBeLessThanOrEqual(high);
     }
+  });
+});
+
+describe('candlePriceDomainBetween', () => {
+  it('covers every candle inside the window, and is tighter than the full range', () => {
+    const candles = generateCandles(0, 100, new Set([50]));
+    const [windowLow, windowHigh] = candlePriceDomainBetween(candles, 0, 20);
+    const [fullLow, fullHigh] = candlePriceDomain(candles);
+
+    for (const candle of candles.filter((candle) => candle.month <= 20)) {
+      expect(candle.low).toBeGreaterThanOrEqual(windowLow);
+      expect(candle.high).toBeLessThanOrEqual(windowHigh);
+    }
+    // The +32% transition spike at month 50 is outside the window, so it must not widen it.
+    expect(windowHigh - windowLow).toBeLessThan(fullHigh - fullLow);
+  });
+
+  it('pads a volatile window by the requested ratio at each end, centred on its midpoint', () => {
+    const candles = generateCandles(0, 60, new Set([30]));
+    const window = candles.filter((candle) => candle.month >= 0 && candle.month <= 60);
+    const low = Math.min(...window.map((candle) => candle.low));
+    const high = Math.max(...window.map((candle) => candle.high));
+
+    const [domainLow, domainHigh] = candlePriceDomainBetween(candles, 0, 60, 0.1);
+    expect(domainHigh - domainLow).toBeCloseTo((high - low) * 1.2, 6);
+    expect((domainHigh + domainLow) / 2).toBeCloseTo((high + low) / 2, 6);
+  });
+
+  it('floors the height of a flat window rather than amplifying it', () => {
+    const candles = generateCandles(0, 40, new Set());
+    const [low, high] = candlePriceDomainBetween(candles, 5, 5);
+    const middle = (high + low) / 2;
+    expect(high - low).toBeGreaterThanOrEqual(middle * 0.06);
+  });
+
+  it('falls back to the full series range when the window contains no candles', () => {
+    const candles = generateCandles(0, 40, new Set());
+    expect(candlePriceDomainBetween(candles, 100, 200)).toEqual(candlePriceDomain(candles));
   });
 });
 
