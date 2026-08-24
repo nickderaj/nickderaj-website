@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { candlePriceDomain, candleValueAt, generateCandles, mulberry32 } from './candles.ts';
+import {
+  candlePriceDomain,
+  candleValueAt,
+  generateCandles,
+  mulberry32,
+  rollingPriceEnvelope,
+} from './candles.ts';
 
 describe('mulberry32', () => {
   it('is deterministic: the same seed always yields the same sequence', () => {
@@ -110,6 +116,68 @@ describe('candlePriceDomain', () => {
       expect(candle.low).toBeGreaterThanOrEqual(low);
       expect(candle.high).toBeLessThanOrEqual(high);
     }
+  });
+});
+
+describe('rollingPriceEnvelope', () => {
+  it('returns one framing per candle', () => {
+    const candles = generateCandles(0, 40, new Set([20]));
+    const envelope = rollingPriceEnvelope(candles, 10);
+    expect(envelope.low).toHaveLength(candles.length);
+    expect(envelope.high).toHaveLength(candles.length);
+  });
+
+  it('contains every candle it frames, spikes included', () => {
+    // The smoothing pass pulls the envelope in around a transition spike, so containment has to be
+    // restored afterwards - otherwise the spike (and the career marker sitting on it) gets clipped.
+    const candles = generateCandles(0, 100, new Set([30, 70]));
+    const envelope = rollingPriceEnvelope(candles, 22);
+    candles.forEach((candle, i) => {
+      expect(candle.low).toBeGreaterThanOrEqual(envelope.low[i] ?? Infinity);
+      expect(candle.high).toBeLessThanOrEqual(envelope.high[i] ?? -Infinity);
+    });
+  });
+
+  it('frames each month against its neighbours, not the whole series', () => {
+    const candles = generateCandles(0, 100, new Set([80]));
+    const envelope = rollingPriceEnvelope(candles, 15);
+    const [fullLow, fullHigh] = candlePriceDomain(candles);
+
+    // Month 0 is far from the +32% spike at month 80, so its framing must be much tighter than
+    // the full range - that difference is the entire reason this exists.
+    const localSpan = (envelope.high[0] ?? 0) - (envelope.low[0] ?? 0);
+    expect(localSpan).toBeGreaterThan(0);
+    expect(localSpan).toBeLessThan((fullHigh - fullLow) * 0.75);
+  });
+
+  it('varies smoothly, so neighbouring candles never sit at jarringly different scales', () => {
+    const candles = generateCandles(0, 120, new Set([40, 90]));
+    const envelope = rollingPriceEnvelope(candles, 22);
+    for (let i = 1; i < candles.length; i += 1) {
+      const previous = (envelope.high[i - 1] ?? 0) - (envelope.low[i - 1] ?? 0);
+      const current = (envelope.high[i] ?? 0) - (envelope.low[i] ?? 0);
+      expect(Math.abs(current - previous) / previous).toBeLessThan(0.25);
+    }
+  });
+
+  it('floors a flat stretch rather than amplifying it into fake volatility', () => {
+    // A dead-flat series: every framing must still have height, and none may blow the noise up.
+    const flat = generateCandles(0, 40, new Set()).map((candle) => ({
+      ...candle,
+      open: 100,
+      close: 100,
+      high: 100,
+      low: 100,
+    }));
+    const envelope = rollingPriceEnvelope(flat, 10);
+    envelope.high.forEach((high, i) => {
+      const low = envelope.low[i] ?? 0;
+      expect(high - low).toBeGreaterThanOrEqual(100 * 0.06 * 0.999);
+    });
+  });
+
+  it('returns empty arrays for an empty series', () => {
+    expect(rollingPriceEnvelope([], 10)).toEqual({ low: [], high: [] });
   });
 });
 

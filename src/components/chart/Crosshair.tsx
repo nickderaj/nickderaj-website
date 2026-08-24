@@ -1,6 +1,10 @@
 /**
  * A thin line at the playhead with a mono date readout - a charting-terminal cursor that follows
- * scroll progress (PLAN §1.3 item 2).
+ * scroll progress (PLAN §1.3 item 2). Desktop pane only.
+ *
+ * The ticker has no crosshair. It is drawn once and panned by the compositor, so anything that
+ * moves against the tape would force the whole tape to be re-rendered on every scroll frame -
+ * which is exactly the stutter this split exists to avoid.
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
@@ -36,7 +40,7 @@ function formatMonthIndexLabel(monthIndexValue: number): string {
 }
 
 export default function Crosshair({ geometry, progress }: CrosshairProps) {
-  const { orientation, width, height, padding, xDomain, candles } = geometry;
+  const { orientation, width, height, padding, xDomain, candles, unitScale } = geometry;
   const [domainStart, domainEnd] = xDomain;
   const clampedProgress = Math.min(1, Math.max(0, progress));
   const playheadMonth = domainStart + clampedProgress * (domainEnd - domainStart);
@@ -44,19 +48,19 @@ export default function Crosshair({ geometry, progress }: CrosshairProps) {
   const point = geometry.toPoint(playheadMonth, value);
   const dateLabel = formatMonthIndexLabel(playheadMonth);
 
-  if (orientation === 'horizontal') {
-    return (
-      <g>
-        <line
-          x1={point.x}
-          x2={point.x}
-          y1={padding.top}
-          y2={height - padding.bottom}
-          stroke="var(--color-accent)"
-          strokeWidth={1}
-          strokeDasharray="2,3"
-          opacity={0.7}
-        />
+  return (
+    <g>
+      <line
+        x1={point.x}
+        x2={point.x}
+        y1={padding.top}
+        y2={height - padding.bottom}
+        stroke="var(--color-accent)"
+        strokeWidth={unitScale}
+        strokeDasharray={`${String(2 * unitScale)},${String(3 * unitScale)}`}
+        opacity={0.7}
+      />
+      {orientation === 'horizontal' && (
         <text
           x={Math.min(width - padding.right - 4, point.x + 6)}
           y={padding.top - 12}
@@ -67,22 +71,7 @@ export default function Crosshair({ geometry, progress }: CrosshairProps) {
         >
           {dateLabel}
         </text>
-      </g>
-    );
-  }
-
-  return (
-    <g>
-      <line
-        x1={padding.left}
-        x2={width - padding.right}
-        y1={point.y}
-        y2={point.y}
-        stroke="var(--color-accent)"
-        strokeWidth={1}
-        strokeDasharray="2,3"
-        opacity={0.7}
-      />
+      )}
     </g>
   );
 }

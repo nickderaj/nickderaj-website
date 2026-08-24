@@ -5,7 +5,9 @@
  * rendered on top of the text at 768–1023px):
  *
  *  - ≥1024px: two columns, sticky full-height chart pane left (~55%), scrolling cards right.
- *  - <1024px (mobile AND tablet): chart becomes a vertical spine in a ~48px left gutter.
+ *  - <1024px (mobile AND tablet): the chart becomes a full-bleed sticky ticker tape *behind* the
+ *    full-width cards. It pans sideways with scroll progress, running off the left edge of the
+ *    screen and fading out towards the right so it never competes with the text.
  *
  * Cards render in CHRONOLOGICAL order (Bristol first, Goldman last) so scrolling down tracks the
  * chart's left-to-right time axis. `career.ts` itself stays most-recent-first for other consumers
@@ -18,11 +20,14 @@ import CareerChart from '@/components/chart/CareerChart.tsx';
 import RoleCard from '@/components/timeline/RoleCard.tsx';
 import { career } from '@/content/career.ts';
 import { monthIndex, parseYearMonth } from '@/lib/scales.ts';
+import { useMediaQuery } from '@/lib/useMediaQuery.ts';
 import { useScrollProgress } from '@/lib/useScrollProgress.ts';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const NAV_KEYS_FORWARD = new Set(['j', 'ArrowDown']);
 const NAV_KEYS_BACKWARD = new Set(['k', 'ArrowUp']);
+/** Tailwind's `lg` breakpoint - the one place the two timeline layouts diverge. */
+const DESKTOP_QUERY = '(min-width: 1024px)';
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -83,6 +88,11 @@ export default function Timeline() {
   const activeEntry = activeIndex >= 0 ? entries[activeIndex] : undefined;
   const activeEntryId = activeEntry?.id ?? null;
 
+  // Mount only the chart this viewport can show. `hidden`/`lg:hidden` alone still leaves the other
+  // one in the tree, and this section re-renders on every scroll frame - so the phone was paying
+  // to reconcile a desktop chart it could never see, on top of drawing its own.
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+
   return (
     <section
       id="experience"
@@ -94,34 +104,51 @@ export default function Timeline() {
         Career timeline
       </h2>
 
-      <div
-        ref={containerRef}
-        className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
-      >
-        {/* Desktop (≥1024px): sticky full-height chart pane, left ~55%. */}
-        <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
-          <CareerChart
-            entries={entries}
-            orientation="horizontal"
-            progress={progress}
-            activeEntryId={activeEntryId}
-            className="h-full w-full"
-          />
-        </div>
-
-        <div className="flex min-w-0 gap-4 lg:flex-1 lg:gap-0">
-          {/* Below 1024px (mobile AND tablet): vertical spine in a ~48px left gutter. */}
-          <div className="w-12 shrink-0 lg:hidden" aria-hidden="true">
+      {/*
+       * Below 1024px: the ticker tape, full-bleed and pinned to the viewport, painted behind the
+       * cards. `absolute inset-0` bounds it to this section; the inner `sticky` element is what
+       * holds it still while the tape pans. Nothing on *this* path may set `overflow-hidden` -
+       * that would turn an ancestor into the sticky scrollport and freeze the pan. (The tape's own
+       * clipping wrapper is inside `CareerChart`, below the sticky element, which is safe.)
+       */}
+      {!isDesktop && (
+        <div
+          data-ticker
+          data-print-hide
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        >
+          <div className="sticky top-0 h-screen w-full">
             <CareerChart
               entries={entries}
-              orientation="vertical"
+              orientation="ticker"
               progress={progress}
               activeEntryId={activeEntryId}
               className="h-full w-full"
             />
           </div>
+        </div>
+      )}
 
-          <ol className="min-w-0 flex-1 space-y-8">
+      <div
+        ref={containerRef}
+        className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:flex lg:gap-12 lg:px-8"
+      >
+        {/* Desktop (≥1024px): sticky full-height chart pane, left ~55%. */}
+        <div className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-[55%] lg:shrink-0">
+          {isDesktop && (
+            <CareerChart
+              entries={entries}
+              orientation="horizontal"
+              progress={progress}
+              activeEntryId={activeEntryId}
+              className="h-full w-full"
+            />
+          )}
+        </div>
+
+        <div className="min-w-0 lg:flex-1">
+          <ol className="min-w-0 space-y-8">
             {entries.map((entry, index) => (
               <li
                 key={entry.id}

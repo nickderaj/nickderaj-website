@@ -138,6 +138,85 @@ export function candlePriceDomain(candles: readonly Candle[]): readonly [number,
 }
 
 /**
+ * Minimum height of a local domain, as a fraction of its own price level. Framing a near-flat
+ * stretch to fill the plot would turn the deliberate post-transition consolidation into fake
+ * volatility, so quiet stretches stay quiet - and a dead-flat one never collapses to a
+ * zero-height domain the scale would divide by.
+ */
+const MIN_WINDOW_SPAN_RATIO = 0.06;
+/** Box-blur radius, as a fraction of `halfWindow`, applied to soften steps in the envelope. */
+const SMOOTHING_RADIUS_RATIO = 0.25;
+
+/** A per-candle `[low, high]` framing of the series - one plotting domain per month. */
+export type PriceEnvelope = { readonly low: readonly number[]; readonly high: readonly number[] };
+
+/**
+ * A local plotting domain for every candle: the range covered by its neighbours within
+ * `halfWindow` months, centred on that range's midpoint, widened by `padRatio` at each end, and
+ * floored at `MIN_WINDOW_SPAN_RATIO`.
+ *
+ * This is how the mobile ticker stays legible. Mapping the whole thirteen-year range onto one
+ * phone screen leaves any given month-window reading as a flat line, but rescaling live against
+ * whatever is on screen would mean recomputing every candle's geometry on every scroll frame -
+ * and would visibly step whenever an extreme entered or left the window. Baking the framing into
+ * the geometry per month instead gives the same well-framed result at zero per-frame cost, and it
+ * cannot jitter: each candle's scale is fixed, so panning changes nothing about how it is drawn.
+ *
+ * The envelope is lightly smoothed so neighbouring candles don't sit at visibly different scales,
+ * then re-expanded to contain each candle - a transition spike must not be clipped by the
+ * smoothing that its own height caused.
+ */
+export function rollingPriceEnvelope(
+  candles: readonly Candle[],
+  halfWindow: number,
+  padRatio = 0.1,
+): PriceEnvelope {
+  if (candles.length === 0) return { low: [], high: [] };
+
+  const lows: number[] = [];
+  const highs: number[] = [];
+  for (let i = 0; i < candles.length; i += 1) {
+    const from = Math.max(0, i - halfWindow);
+    const to = Math.min(candles.length - 1, i + halfWindow);
+    let low = Infinity;
+    let high = -Infinity;
+    for (let j = from; j <= to; j += 1) {
+      const candle = candles[j];
+      if (!candle) continue;
+      if (candle.low < low) low = candle.low;
+      if (candle.high > high) high = candle.high;
+    }
+    const middle = (high + low) / 2;
+    const span = Math.max(
+      (high - low) * (1 + 2 * padRatio),
+      Math.abs(middle) * MIN_WINDOW_SPAN_RATIO,
+    );
+    lows.push(middle - span / 2);
+    highs.push(middle + span / 2);
+  }
+
+  const radius = Math.max(1, Math.round(halfWindow * SMOOTHING_RADIUS_RATIO));
+  const smoothLows = boxBlur(boxBlur(lows, radius), radius);
+  const smoothHighs = boxBlur(boxBlur(highs, radius), radius);
+
+  return {
+    low: smoothLows.map((value, i) => Math.min(value, candles[i]?.low ?? value)),
+    high: smoothHighs.map((value, i) => Math.max(value, candles[i]?.high ?? value)),
+  };
+}
+
+/** Mean of each value and its neighbours within `radius`, clamped at the ends. */
+function boxBlur(values: readonly number[], radius: number): number[] {
+  return values.map((_, i) => {
+    const from = Math.max(0, i - radius);
+    const to = Math.min(values.length - 1, i + radius);
+    let total = 0;
+    for (let j = from; j <= to; j += 1) total += values[j] ?? 0;
+    return total / (to - from + 1);
+  });
+}
+
+/**
  * Linearly interpolates the candle series' close price at an arbitrary month index - matches what
  * the drawn candles/spine represent at that point. Used to place the crosshair readout in between
  * candle months. Clamps to the first/last close outside the series' domain.
