@@ -1,5 +1,5 @@
 /**
- * Theme resolution + persistence (PLAN §1.2 — dark default, light supported, no flash of the
+ * Theme resolution + persistence (PLAN §1.2 - dark default, light supported, no flash of the
  * wrong theme). `localStorage` access is wrapped in try/catch throughout: it can throw in private
  * browsing / storage-restricted contexts, and a theme preference is never worth crashing over.
  */
@@ -31,7 +31,7 @@ function writeStoredTheme(theme: Theme): void {
   try {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   } catch {
-    // Storage unavailable (private browsing, quota, disabled) — the in-memory/DOM state below
+    // Storage unavailable (private browsing, quota, disabled) - the in-memory/DOM state below
     // still applies for the rest of the session, which is an acceptable degradation.
   }
 }
@@ -62,7 +62,7 @@ export function applyTheme(theme: Theme): void {
   document.dispatchEvent(new CustomEvent<Theme>(THEME_CHANGE_EVENT, { detail: theme }));
 }
 
-/** Applies and persists a theme choice — this is what a user-initiated toggle should call. */
+/** Applies and persists a theme choice - this is what a user-initiated toggle should call. */
 export function setTheme(theme: Theme): void {
   applyTheme(theme);
   writeStoredTheme(theme);

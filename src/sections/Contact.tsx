@@ -6,7 +6,7 @@ const EMAIL_USER = 'nickderaj';
 const EMAIL_DOMAIN = 'gmail.com';
 
 /**
- * Section 4 (PLAN §2): terse — one line plus email, CV download, GitHub, LinkedIn. The email is
+ * Section 4 (PLAN §2): terse - one line plus email, CV download, GitHub, LinkedIn. The email is
  * assembled client-side (same approach as Hero) rather than shipped as a plain string.
  */
 export default function Contact() {

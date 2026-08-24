@@ -1,6 +1,6 @@
 /**
  * Faint labelled background bands marking the three career regimes (PLAN §1.3 item 1). Boundaries
- * are derived from `career.ts` `regime` fields via `buildRegimeBands` — never hardcoded dates.
+ * are derived from `career.ts` `regime` fields via `buildRegimeBands` - never hardcoded dates.
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';
@@ -72,7 +72,7 @@ export default function RegimeBands({ entries, geometry }: RegimeBandsProps) {
         }
 
         // Vertical (mobile) orientation: a narrow gutter has no room for readable labels, so
-        // render just the tinted strip and a boundary tick — same data, no label clutter.
+        // render just the tinted strip and a boundary tick - same data, no label clutter.
         const y = Math.min(start, end);
         const bandHeight = Math.abs(end - start);
         return (

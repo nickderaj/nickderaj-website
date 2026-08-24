@@ -1,7 +1,7 @@
 /**
  * Renders the decorative candle series (`lib/candles.ts`) as OHLC bars: a wick from high to low
  * and a body from open to close, green for an up month and red for a down month, using the
- * `--color-candle-up` / `--color-candle-down` tokens. Horizontal orientation only — the mobile
+ * `--color-candle-up` / `--color-candle-down` tokens. Horizontal orientation only - the mobile
  * vertical gutter renders a simplified spine instead (candles don't read at ~48px wide; see
  * `CareerChart.tsx`).
  *
@@ -16,7 +16,7 @@ const MIN_BODY_HEIGHT = 1;
 
 export type CandlesticksProps = {
   geometry: ChartGeometry;
-  /** Month index of the scroll playhead — candles after this are dimmed. */
+  /** Month index of the scroll playhead - candles after this are dimmed. */
   playheadMonth: number;
 };
 

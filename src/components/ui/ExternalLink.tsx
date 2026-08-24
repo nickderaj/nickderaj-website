@@ -3,7 +3,7 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
 export type ExternalLinkProps = {
   href: string;
-  /** Hide the trailing arrow glyph — the underline treatment still applies. Default `true`. */
+  /** Hide the trailing arrow glyph - the underline treatment still applies. Default `true`. */
   showIcon?: boolean;
 } & Omit<ComponentPropsWithoutRef<'a'>, 'href' | 'target' | 'rel'>;
 

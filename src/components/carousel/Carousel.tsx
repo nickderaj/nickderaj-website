@@ -125,7 +125,7 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
 
   const handleDialogClick = (event: React.MouseEvent<HTMLDialogElement>) => {
     // A click that lands on the <dialog> element itself (not its content) is a click on the
-    // backdrop — close on click-outside.
+    // backdrop - close on click-outside.
     if (event.target === dialogRef.current) {
       closeLightbox();
     }
@@ -141,8 +141,7 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
     <section aria-label={`${label} screenshots`} className="w-full">
       {/* This is the W3C APG "scrolling region" pattern: a focusable (tabIndex=0), labelled
           container that owns ArrowLeft/ArrowRight keyboard scrolling. It is intentionally not an
-          interactive-role element — it is a scrollable group of slides, not a single control —
-          so the non-interactive-tabindex / non-interactive-interactions rules don't apply here. */}
+          interactive-role element - it is a scrollable group of slides, not a single control -           so the non-interactive-tabindex / non-interactive-interactions rules don't apply here. */}
       {/* eslint-disable jsx-a11y/no-noninteractive-tabindex, jsx-a11y/no-noninteractive-element-interactions */}
       <div
         ref={scrollerRef}
@@ -236,14 +235,14 @@ export default function Carousel({ screenshots, label }: CarouselProps) {
           the click handler only detects clicks on the dialog backdrop itself, to implement
           click-outside close as a mouse/touch enhancement. Escape already closes the dialog via
           the native <dialog> `cancel` event, and every focusable/interactive element inside
-          (close button, image link) is a real button — no keyboard user depends on this handler. */}
+          (close button, image link) is a real button - no keyboard user depends on this handler. */}
       <dialog
         ref={dialogRef}
         onClose={handleDialogClose}
         onClick={handleDialogClick}
         aria-label={activeShot === undefined ? 'Screenshot preview' : activeShot.alt}
         // Tailwind's preflight zeroes out the UA stylesheet's `dialog { margin: auto }`
-        // centering, so it's restored explicitly here — otherwise `showModal()` pins the
+        // centering, so it's restored explicitly here - otherwise `showModal()` pins the
         // dialog to the top-left instead of centering it in the viewport.
         className="bg-surface text-text border-border fixed inset-0 m-auto max-h-[90vh] max-w-[95vw] rounded border p-0 backdrop:bg-black/80"
       >

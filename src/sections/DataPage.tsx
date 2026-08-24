@@ -1,14 +1,13 @@
 /**
  * `/data` (PLAN §1.3 item 6): "nothing here is hand-waved". Prints the actual computed values
- * that drive the career chart — the decorative candle series, marker positions, and regime bands —
- * plus the raw project metadata, all derived live from `src/content` through the exact same
+ * that drive the career chart - the decorative candle series, marker positions, and regime bands -  * plus the raw project metadata, all derived live from `src/content` through the exact same
  * `src/components/chart/geometry.ts` / `src/lib/candles.ts` / `src/components/chart/regimes.ts`
  * functions the chart itself uses. Deliberately plain and monospace rather than styled: this
  * page's whole point is to look like raw output, not a marketing surface.
  *
  * HONESTY NOTE (see the callout below, rendered on the page): the candle series is generated,
  * seeded decorative texture, not real data. It does not represent earnings, performance, or any
- * measured quantity — the only real signal in it is which months are career-transition months.
+ * measured quantity - the only real signal in it is which months are career-transition months.
  */
 
 import { buildChartGeometry } from '@/components/chart/geometry.ts';
@@ -28,7 +27,7 @@ export default function DataPage() {
   const bands = buildRegimeBands(career);
 
   return (
-    // A plain <div>, not <main> — App.tsx's `/data` route already wraps this in the page's one
+    // A plain <div>, not <main> - App.tsx's `/data` route already wraps this in the page's one
     // <main id="main">; a second <main> here was a duplicate/nested landmark (axe:
     // landmark-no-duplicate-main, landmark-main-is-top-level, landmark-unique).
     <div className="text-text mx-auto max-w-4xl px-4 py-16 font-mono text-xs leading-relaxed sm:px-6 sm:text-sm">
@@ -38,25 +37,30 @@ export default function DataPage() {
         </Link>
       </p>
       <h1 className="mt-6 text-base font-semibold tracking-wide uppercase sm:text-lg">
-        /data — computed source values
+        /data - computed source values
       </h1>
       <p className="text-muted mt-2 max-w-2xl">
-        Everything on this page is computed at build/render time from{' '}
-        <code>src/content/career.ts</code> and <code>src/content/projects/</code> through{' '}
-        <code>src/lib/candles.ts</code>, <code>src/components/chart/geometry.ts</code>, and{' '}
-        <code>src/components/chart/regimes.ts</code> — the same functions the career chart renders
-        from. Nothing here is hand-waved or restated by hand.
+        Everything on this page is computed at build/render time
       </p>
       <p className="border-accent/40 text-text mt-4 max-w-2xl border-l-2 pl-3">
-        <strong>Honesty note:</strong> the candle series below is generated, seeded decorative
-        texture, not real data. It does not represent earnings, performance, or any measured
-        quantity. The one real signal plotted in it is <em>when</em> — every career transition (a
-        new role starting) is marked as an <code>isTransition</code> candle.
+        The candle series below is generated, seeded decorative texture, not real data. It does not
+        represent earnings, performance, or any measured quantity. The one real signal plotted in it
+        is <em>when</em>: every career transition (a new role starting) is marked as an{' '}
+        <code>isTransition</code> candle. Source:{' '}
+        <a
+          href="https://github.com/nickderaj/nickderaj-website"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-accent underline underline-offset-2"
+        >
+          github.com/nickderaj/nickderaj-website
+        </a>
+        .
       </p>
 
       <section className="mt-10">
         <h2 className="text-accent tracking-wide uppercase">
-          Decorative candle series ({String(geometry.candles.length)} monthly candles, generated —
+          Decorative candle series ({String(geometry.candles.length)} monthly candles, generated -
           not real data)
         </h2>
         <p className="text-muted mt-1">

@@ -3,8 +3,7 @@
  * `Crosshair` all build their pixel positions from this one module so the drawn candles, the
  * bands, the dots, and the crosshair can never drift apart (PLAN §2.1).
  *
- * The plotted "price" series is decorative market texture (`src/lib/candles.ts`), not real data —
- * see that module's header comment. What IS real here: the x (time) domain, the career-marker
+ * The plotted "price" series is decorative market texture (`src/lib/candles.ts`), not real data -  * see that module's header comment. What IS real here: the x (time) domain, the career-marker
  * months, and the regime bands, all derived from `career.ts`.
  */
 
@@ -33,9 +32,9 @@ export const DEFAULT_VERTICAL_PADDING: ChartPadding = { top: 16, right: 8, botto
 /** A resolved plotting position for one career entry, on the same axes as the candle series. */
 export type EntryMarker = {
   id: string;
-  /** Month index — the entry's start month. */
+  /** Month index - the entry's start month. */
   x: number;
-  /** Price of the candle at this month — purely a y-position, not a real measurement. */
+  /** Price of the candle at this month - purely a y-position, not a real measurement. */
   y: number;
   scope: number;
   kind: CareerEntry['kind'];
@@ -60,9 +59,9 @@ export type ChartGeometry = {
   valueScale: LinearScale;
   /** Projects a (month index, price) pair to an {x, y} SVG point, orientation-aware. */
   toPoint: (monthIndex: number, price: number) => { x: number; y: number };
-  /** A simple polyline through candle closes — used for the mobile vertical spine variant. */
+  /** A simple polyline through candle closes - used for the mobile vertical spine variant. */
   spinePathD: string;
-  /** Total spine path length in SVG user units — for stroke-dasharray/dashoffset reveal. */
+  /** Total spine path length in SVG user units - for stroke-dasharray/dashoffset reveal. */
   spinePathLength: number;
 };
 
@@ -115,7 +114,7 @@ export function buildChartGeometry(
 
   const closeAt = (month: number): number => {
     // One candle per month across the whole domain, so an entry's start month always has an
-    // exact candle — falling back to the nearest endpoint only matters for degenerate/empty input.
+    // exact candle - falling back to the nearest endpoint only matters for degenerate/empty input.
     const exact = candles.find((candle) => candle.month === month);
     if (exact) return exact.close;
     return candles[0]?.close ?? 0;

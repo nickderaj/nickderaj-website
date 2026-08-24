@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/vitest';
 /**
  * jsdom (the test DOM) doesn't implement `IntersectionObserver`. The career timeline
  * (`useScrollProgress`) uses it to track which role card is active, so any test that mounts the
- * full app tree needs at least a no-op stand-in — this is intentionally the simplest possible
+ * full app tree needs at least a no-op stand-in - this is intentionally the simplest possible
  * shape, not a behavioural mock (no test here asserts on intersection callbacks).
  */
 class MockIntersectionObserver implements IntersectionObserver {
@@ -41,10 +41,10 @@ if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
       media: query,
       onchange: null,
       addListener: () => {
-        // deprecated MediaQueryList API — intentionally unimplemented in this stand-in.
+        // deprecated MediaQueryList API - intentionally unimplemented in this stand-in.
       },
       removeListener: () => {
-        // deprecated MediaQueryList API — intentionally unimplemented in this stand-in.
+        // deprecated MediaQueryList API - intentionally unimplemented in this stand-in.
       },
       addEventListener: () => {
         // no-op: no test here asserts on media-query change events.

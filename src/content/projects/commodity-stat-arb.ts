@@ -5,8 +5,8 @@ export const commodityStatArb = {
   slug: 'commodity-stat-arb',
   title: 'Commodity Futures Spread Trading System',
   thesis:
-    'Spun out of the risk-engine research — a mean-reversion book trading cointegrated commodity spreads, running unattended in paper production.',
-  period: '2024 — present',
+    'Spun out of the risk-engine research - a mean-reversion book trading cointegrated commodity spreads, running unattended in paper production.',
+  period: '2024 - present',
   tags: [
     'Python 3.11',
     'PostgreSQL 16',
@@ -19,19 +19,19 @@ export const commodityStatArb = {
   links: [{ label: 'Repo', href: 'https://github.com/nickderaj/commodity-stat-arb' }],
   screenshots: [
     {
-      src: '/screenshots/commodity-stat-arb/equity-curve.svg',
-      alt: 'Plotly Dash panel showing the cumulative equity curve of the commodity spread book from 2010 to present, including the held-out 2024–2026 segment.',
-      caption: 'Live Dash equity curve, full-sample and held-out segments.',
+      src: '/screenshots/commodity-stat-arb/trade-brent-calendar.png',
+      alt: 'Trade chart for a long Brent calendar spread, showing the spread close against its 30-day prior mean and a 1.5 sigma band, with entry, stop and z-score exit marked, plus a z-score subplot below.',
+      caption: 'Brent calendar spread, long, +27.34 ATR. Entry, stop and z-score exit marked.',
     },
     {
-      src: '/screenshots/commodity-stat-arb/spread-zscore.svg',
-      alt: 'Chart of a cointegrated commodity spread’s rolling z-score against its entry and exit thresholds, with trade markers.',
-      caption: 'Spread z-score signal with entry/exit thresholds.',
+      src: '/screenshots/commodity-stat-arb/trade-bean-corn.png',
+      alt: 'Trade chart for a short soybean-corn spread showing entry, exit and the rolling z-score that generated the signal.',
+      caption: 'Soybean-corn spread, short, +3.08 ATR.',
     },
     {
-      src: '/screenshots/commodity-stat-arb/drawdown-postmortem.svg',
-      alt: 'Annotated drawdown chart tracing the -11.3% paper drawdown to a single unstopped trade, with the subsequent rebuilt stop layer overlaid.',
-      caption: 'Post-mortem on the -11.3% drawdown that drove the stop-layer rebuild.',
+      src: '/screenshots/commodity-stat-arb/trade-kc-chicago-wheat.png',
+      alt: 'Trade chart for a long KC-Chicago wheat spread showing entry, exit and the rolling z-score that generated the signal.',
+      caption: 'KC-Chicago wheat spread, long, +1.56 ATR.',
     },
   ],
   spunOutOf: 'quant-trading-labs',
@@ -44,7 +44,7 @@ export const commodityStatArb = {
     { kind: 'heading', level: 2, text: 'Approach' },
     {
       kind: 'paragraph',
-      text: 'Candidate pairs and baskets are screened for cointegration with Engle-Granger, Johansen and ADF tests, then traded on the resulting spread’s z-score with regime gates from the term structure — the same "divide the timeline into labelled regimes" grammar used on the career chart. An early single-pair Brent–WTI proof of concept (Sharpe 0.41 post-cost over 8.5 years, 73% win rate) validated the mechanics before scaling to the full 5-spread book reported below; the two numbers describe different scopes of the same system, not conflicting results.',
+      text: 'Candidate pairs and baskets are screened for cointegration with Engle-Granger, Johansen and ADF tests, then traded on the resulting spread’s z-score with regime gates from the term structure - the same "divide the timeline into labelled regimes" grammar used on the career chart. An early single-pair Brent–WTI proof of concept (Sharpe 0.41 post-cost over 8.5 years, 73% win rate) validated the mechanics before scaling to the full 5-spread book reported below; the two numbers describe different scopes of the same system, not conflicting results.',
     },
     {
       kind: 'list',
@@ -84,11 +84,6 @@ export const commodityStatArb = {
       label: 'Peak paper drawdown',
       value: '-11.3%',
       note: 'traced to one unstopped trade, pre-rebuild',
-    },
-    { kind: 'heading', level: 2, text: "What I'd change" },
-    {
-      kind: 'paragraph',
-      text: 'Per-spread calibration was reactive — it followed the drawdown rather than anticipating the failure mode. I would build stop-sizing validation into the pre-registration step itself (project 1’s discipline, applied here), so a spread cannot go live without an explicit worst-case single-trade loss bound. I would also extend the regime gates to commodity-specific seasonality rather than term structure alone.',
     },
   ],
 } as const satisfies Project;

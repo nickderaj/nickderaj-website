@@ -1,6 +1,6 @@
 /**
  * Content contracts (PLAN §4). These are the single source of truth for the timeline chart,
- * role cards, project grid/detail views, the print CV, and the `/data` route — every downstream
+ * role cards, project grid/detail views, the print CV, and the `/data` route - every downstream
  * consumer derives from these shapes rather than duplicating data.
  */
 
@@ -16,7 +16,7 @@ export type CareerEntry = {
   kind: 'work' | 'education' | 'milestone';
   /** Drives the chart's background regime bands (PLAN §1.3 item 1). Non-career entries use null. */
   regime: 'commodities' | 'software' | 'quant' | null;
-  /** 0–1. Drives marker radius only — never a plotted axis value (PLAN §1.1). */
+  /** 0–1. Drives marker radius only - never a plotted axis value (PLAN §1.1). */
   scope: number;
   stack: string[];
   teamSize?: number;
@@ -38,7 +38,7 @@ export type ProjectScreenshot = {
 };
 
 /**
- * Structured content blocks for a project write-up. No MDX — content is rendered from typed
+ * Structured content blocks for a project write-up. No MDX - content is rendered from typed
  * data so the whole write-up can be introspected (e.g. for the print stylesheet or `/data`).
  */
 export type ProjectBlock =

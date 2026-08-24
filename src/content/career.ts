@@ -23,7 +23,7 @@ export const career = [
     highlights: [
       'Automated field extraction and validation against corporate documents, cutting manual review time in client onboarding',
       'Led 4 engineers building a real-time ETL pipeline moving flows from Postgres into Kafka and Elasticsearch',
-      'Uplifted legacy publishing services to a low-latency, horizontally scalable architecture',
+      'Used Claude Code to build automated agent skills that fix code quality across all 40 repos in our stack continuously in parallel.',
     ],
   },
   {
@@ -112,7 +112,7 @@ export const career = [
     scope: 0.9,
     stack: ['Physical commodity trading', 'Forward contracting', 'P&L ownership'],
     summary:
-      'Ran the German Power Division (Gaea Power GmbH, co-founded then folded into the group): P&L and operations for eight palm-oil CHP units, plus physical palm-oil procurement on forward contracts. Physical commodity supply, forward contracting and P&L ownership most quant applicants never touch — the throughline from here to the commodity-futures research is direct.',
+      'Ran the German Power Division (Gaea Power GmbH, co-founded then folded into the group): P&L and operations for eight palm-oil CHP units, plus physical palm-oil procurement on forward contracts.',
     highlights: [
       'Owned P&L and O&M for 8 palm-oil combined-heat-and-power units supplying heat to greenhouses and power to the grid',
       'Locked physical palm oil on forward contracts and took delivery into the plants, managing fuel cost against heat and power offtake',

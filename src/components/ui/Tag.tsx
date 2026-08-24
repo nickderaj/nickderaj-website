@@ -2,7 +2,7 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
 export type TagProps = ComponentPropsWithoutRef<'span'>;
 
-/** Small mono tech tag — a bordered pill, no fill, no colour beyond the border/text tokens. */
+/** Small mono tech tag - a bordered pill, no fill, no colour beyond the border/text tokens. */
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(({ className = '', ...rest }, ref) => {
   return (
     <span

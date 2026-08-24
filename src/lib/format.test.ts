@@ -44,14 +44,14 @@ describe('formatTenure', () => {
 
 describe('formatPeriod', () => {
   it('formats a year-granularity period with "present"', () => {
-    expect(formatPeriod('2023-09', 'present')).toBe('2023 — PRESENT');
+    expect(formatPeriod('2023-09', 'present')).toBe('2023 - PRESENT');
   });
 
   it('formats a year-granularity period with a fixed end', () => {
-    expect(formatPeriod('2017-04', '2020-09')).toBe('2017 — 2020');
+    expect(formatPeriod('2017-04', '2020-09')).toBe('2017 - 2020');
   });
 
   it('formats a month-granularity period', () => {
-    expect(formatPeriod('2024-01', '2024-04', 'month')).toBe('JAN 2024 — APR 2024');
+    expect(formatPeriod('2024-01', '2024-04', 'month')).toBe('JAN 2024 - APR 2024');
   });
 });

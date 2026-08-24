@@ -2,7 +2,7 @@
  * Scroll-driven state for the career timeline (PLAN §2.1). Two things, computed independently:
  *
  *  - `progress`: 0..1 progress of the viewport through a ref'd container element. Driven by a
- *    single rAF-throttled `scroll` listener — no scroll-jacking, native scrolling is untouched.
+ *    single rAF-throttled `scroll` listener - no scroll-jacking, native scrolling is untouched.
  *  - `activeIndex`: the index of the career entry currently "in view", via IntersectionObserver
  *    watching a set of item refs (the role cards). `-1` when nothing is registered yet.
  *
@@ -20,7 +20,7 @@ export type ScrollProgressResult = {
   activeIndex: number;
   /** Ref callback to attach to the scroll-progress container. */
   containerRef: (node: HTMLElement | null) => void;
-  /** Ref callback factory — attach `itemRef(index)` to each trackable item (e.g. each role card). */
+  /** Ref callback factory - attach `itemRef(index)` to each trackable item (e.g. each role card). */
   itemRef: (index: number) => (node: HTMLElement | null) => void;
 };
 
@@ -108,7 +108,7 @@ export function useScrollProgress(): ScrollProgressResult {
         }
       },
       {
-        // A band around the viewport's vertical centre — a card is "active" once it crosses the
+        // A band around the viewport's vertical centre - a card is "active" once it crosses the
         // middle of the screen, which reads naturally while scrolling a tall card stack.
         rootMargin: '-40% 0px -40% 0px',
         threshold: [0, 0.25, 0.5, 0.75, 1],

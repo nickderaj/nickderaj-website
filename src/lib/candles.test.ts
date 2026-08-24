@@ -76,7 +76,7 @@ describe('generateCandles', () => {
     expect(transitionBody).toBeGreaterThan(averageOtherBody * 3);
   });
 
-  it('is not monotonic — the series has genuine ups and downs', () => {
+  it('is not monotonic - the series has genuine ups and downs', () => {
     const candles = generateCandles(0, 120, new Set());
     let increases = 0;
     let decreases = 0;
@@ -132,5 +132,22 @@ describe('candleValueAt', () => {
       { month: 10, open: 100, high: 120, low: 100, close: 110, isTransition: false },
     ];
     expect(candleValueAt(candles, 5)).toBeCloseTo(105);
+  });
+
+  it('consolidates sideways after the final career transition', () => {
+    const transitions = new Set([6, 24, 60]);
+    const candles = generateCandles(0, 100, transitions);
+    const after = candles.filter((candle) => candle.month > 60);
+    expect(after.length).toBeGreaterThan(20);
+
+    const closes = after.map((candle) => candle.close);
+    const first = closes[0] ?? 0;
+    const last = closes[closes.length - 1] ?? 0;
+    const min = Math.min(...closes);
+    const max = Math.max(...closes);
+
+    // No downtrend, and a tight range: the current role must not read as a decline.
+    expect(last).toBeGreaterThan(first * 0.99);
+    expect((max - min) / first).toBeLessThan(0.05);
   });
 });

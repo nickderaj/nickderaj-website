@@ -7,7 +7,7 @@ export type ProjectCardProps = {
 };
 
 /**
- * A single project grid card (PLAN §2.3). Restrained — hover state is a subtle border/accent
+ * A single project grid card (PLAN §2.3). Restrained - hover state is a subtle border/accent
  * shift, no lift-and-shadow theatrics. The whole card is one link to the detail view.
  */
 export default function ProjectCard({ project }: ProjectCardProps) {

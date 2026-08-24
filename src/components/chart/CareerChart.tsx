@@ -1,12 +1,12 @@
 /**
- * The career chart (PLAN §1.1, §2.1; reworked to a candlestick chart — see fix #3 in the owner's
+ * The career chart (PLAN §1.1, §2.1; reworked to a candlestick chart - see fix #3 in the owner's
  * review). A single responsive `<svg>`. Horizontal orientation draws a dense monthly OHLC candle
- * series (`Candlesticks`, decorative market texture — see `lib/candles.ts`); the narrow mobile
+ * series (`Candlesticks`, decorative market texture - see `lib/candles.ts`); the narrow mobile
  * vertical gutter draws a simplified spine instead, since candle bodies don't read at ~48px wide.
  * Both are driven by scroll `progress`. Purely decorative: `aria-hidden="true"`, the real content
  * lives in the role card `<ol>`.
  *
- * The y-axis is deliberately unlabelled — no ticks, no title — since the candle series is not a
+ * The y-axis is deliberately unlabelled - no ticks, no title - since the candle series is not a
  * real measurement. The x (time) axis and the regime bands stay, because both are real.
  */
 
@@ -75,7 +75,7 @@ export default function CareerChart({
 
       {showAxes && (
         <g>
-          {/* Faint horizontal gridlines only — no value labels, this axis isn't a real scale. */}
+          {/* Faint horizontal gridlines only - no value labels, this axis isn't a real scale. */}
           {gridlines.map((tick) => (
             <line
               key={tick}

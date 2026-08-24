@@ -4,10 +4,10 @@ import { Fragment } from 'react';
 
 /**
  * The projects grid (PLAN §2.3). Uses `repeat(auto-fit, minmax(...))` so a fourth project drops
- * in with no layout work — it is purely a function of `src/content/projects`.
+ * in with no layout work - it is purely a function of `src/content/projects`.
  *
  * The lineage between `quant-trading-labs` and `commodity-stat-arb` (`spunOutOf`) is drawn as an
- * explicit full-width connector row between their cards, rather than encoded only in prose — it
+ * explicit full-width connector row between their cards, rather than encoded only in prose - it
  * is plain mono text plus a rule, so it degrades to readable text at every breakpoint including
  * mobile.
  */
@@ -47,7 +47,7 @@ type ProjectLineageConnectorProps = {
 /**
  * A full-width row inserted between two grid cards, drawing an explicit connection between a
  * project and the one spun out of it. Being a full-width text-plus-rule element, it reads
- * identically (and correctly) at every breakpoint — no separate mobile fallback is needed.
+ * identically (and correctly) at every breakpoint - no separate mobile fallback is needed.
  */
 function ProjectLineageConnector({ fromTitle, toTitle }: ProjectLineageConnectorProps) {
   return (

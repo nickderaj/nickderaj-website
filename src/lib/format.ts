@@ -23,7 +23,7 @@ const YEAR_MONTH_PATTERN = /^(\d{4})-(\d{2})$/;
 
 type YearMonth = { year: number; month: number };
 
-/** Parses a 'YYYY-MM' string. Throws on malformed input — this is a content-authoring bug. */
+/** Parses a 'YYYY-MM' string. Throws on malformed input - this is a content-authoring bug. */
 function parseYearMonth(value: string): YearMonth {
   const match = YEAR_MONTH_PATTERN.exec(value);
   if (!match) {
@@ -88,7 +88,7 @@ function formatYearMonthLabel(yearMonth: YearMonth, granularity: PeriodGranulari
 
 /**
  * Formats a `start`/`end` pair for display, e.g. `formatPeriod('2023-09', 'present')` →
- * "2023 — PRESENT". Pass `granularity: 'month'` for the fuller "SEP 2023 — PRESENT" form used in
+ * "2023 - PRESENT". Pass `granularity: 'month'` for the fuller "SEP 2023 - PRESENT" form used in
  * role card detail views.
  */
 export function formatPeriod(
@@ -99,5 +99,5 @@ export function formatPeriod(
   const startLabel = formatYearMonthLabel(parseYearMonth(start), granularity);
   const endLabel =
     end === 'present' ? 'PRESENT' : formatYearMonthLabel(parseYearMonth(end), granularity);
-  return `${startLabel} — ${endLabel}`;
+  return `${startLabel} - ${endLabel}`;
 }

@@ -8,7 +8,7 @@ describe('Toolkit', () => {
   it('renders skills pulled from career.ts stacks, not a hardcoded second list', () => {
     render(<Toolkit />);
 
-    // Kafka only ever appears in career.ts (the Goldman Sachs stack) — if it renders, the
+    // Kafka only ever appears in career.ts (the Goldman Sachs stack) - if it renders, the
     // section is reading from content rather than from a separately hand-typed skill list.
     expect(screen.getByText('Kafka')).toBeInTheDocument();
     expect(screen.getByText('Solidity')).toBeInTheDocument();

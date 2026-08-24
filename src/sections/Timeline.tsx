@@ -1,7 +1,7 @@
 /**
- * The career timeline section — the site's centrepiece (PLAN §1, §2.1). A candlestick chart
+ * The career timeline section - the site's centrepiece (PLAN §1, §2.1). A candlestick chart
  * rendered as an SVG (decorative, `aria-hidden`) alongside the real content: an `<ol>` of role
- * cards. Exactly two responsive layouts (the middle "tablet ribbon" variant was removed — it
+ * cards. Exactly two responsive layouts (the middle "tablet ribbon" variant was removed - it
  * rendered on top of the text at 768–1023px):
  *
  *  - ≥1024px: two columns, sticky full-height chart pane left (~55%), scrolling cards right.
@@ -9,9 +9,9 @@
  *
  * Cards render in CHRONOLOGICAL order (Bristol first, Goldman last) so scrolling down tracks the
  * chart's left-to-right time axis. `career.ts` itself stays most-recent-first for other consumers
- * (CV, `/data`) — this section sorts only at the point of rendering.
+ * (CV, `/data`) - this section sorts only at the point of rendering.
  *
- * No props — this section owns its own data (`career.ts`) and scroll-progress wiring.
+ * No props - this section owns its own data (`career.ts`) and scroll-progress wiring.
  */
 
 import CareerChart from '@/components/chart/CareerChart.tsx';

@@ -43,7 +43,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Numerals should always line up — ticker/date/tenure figures live in mono contexts. */
+  /* Numerals should always line up - ticker/date/tenure figures live in mono contexts. */
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
@@ -80,7 +80,7 @@
 
 /*
  * Global reduced-motion damping (PLAN §1.2, §6). Anything with scroll-driven or decorative
- * motion must also provide a static fallback at the component level — this is the backstop.
+ * motion must also provide a static fallback at the component level - this is the backstop.
  */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -7,7 +7,7 @@
  *
  * Fonts: Inter (prose) + IBM Plex Mono (numerals/labels/tickers). Loaded via a Google Fonts
  * <link> in index.html for now.
- * TODO: self-host and subset both fonts before launch (PLAN §5.5 — no third-party font CDN in
+ * TODO: self-host and subset both fonts before launch (PLAN §5.5 - no third-party font CDN in
  * the shipped site).
  */
 
@@ -18,13 +18,13 @@
   --text: #e8e9eb;
   --muted: #8b8f96;
   --border: #23262b;
-  /* Higher-contrast border for interactive UI (buttons, inputs, focusable outlines) — WCAG
+  /* Higher-contrast border for interactive UI (buttons, inputs, focusable outlines) - WCAG
      1.4.11 requires >=3:1 for these against their background; --border alone (~1.3:1) is a
      decorative divider only. */
   --border-strong: #636a73;
   --accent: #5fb3c4;
   /* Restrained market-chart greens/reds for the career candlestick chart (decorative texture,
-     not real data — see src/lib/candles.ts). Both clear 3:1 against ground and surface. */
+     not real data - see src/lib/candles.ts). Both clear 3:1 against ground and surface. */
   --candle-up: #4f9d6e;
   --candle-down: #c1666b;
 

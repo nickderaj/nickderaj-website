@@ -7,9 +7,9 @@ type Group = (typeof GROUPS)[number];
 
 /**
  * Small typed map from a normalized skill/tag name to its display group. This is the only
- * hand-authored list here — the *set* of skills themselves is derived from `career.ts` stacks and
+ * hand-authored list here - the *set* of skills themselves is derived from `career.ts` stacks and
  * project tags below, not duplicated. A skill absent from this map (e.g. Gryphon's "Forward
- * contracting" or Ceres's "Print-to-PDF" — domain experience and project features, not tools)
+ * contracting" or Ceres's "Print-to-PDF" - domain experience and project features, not tools)
  * is silently dropped rather than mis-bucketed.
  */
 const SKILL_CATEGORY: Record<string, Group> = {

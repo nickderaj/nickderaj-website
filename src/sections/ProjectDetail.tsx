@@ -104,7 +104,7 @@ type BodyGroup = { kind: 'single'; block: ProjectBlock } | { kind: 'stats'; bloc
 
 /**
  * Consecutive `stat` blocks are rendered together as one mono stat strip rather than as separate
- * full-width boxes — a stat strip is meant to be scanned in one glance.
+ * full-width boxes - a stat strip is meant to be scanned in one glance.
  */
 function groupBodyBlocks(blocks: ProjectBlock[]): BodyGroup[] {
   const groups: BodyGroup[] = [];

@@ -11,7 +11,7 @@ export type StatStripProps = {
 
 /**
  * Mono label/value pairs separated by middots (PLAN §2.2's `TENURE 2y 4m · STACK … · TEAM 6`
- * treatment). Wraps cleanly on mobile — each pair is a single inline-flex unit so a label never
+ * treatment). Wraps cleanly on mobile - each pair is a single inline-flex unit so a label never
  * breaks away from its value.
  */
 export const StatStrip = forwardRef<HTMLDListElement, StatStripProps>(

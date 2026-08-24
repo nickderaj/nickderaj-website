@@ -1,5 +1,5 @@
 /**
- * One role/education card — the anatomy specified in PLAN §2.2: mono period, role · org, a rule,
+ * One role/education card - the anatomy specified in PLAN §2.2: mono period, role · org, a rule,
  * a mono stat strip (tenure · stack · team), summary prose, then outcome highlight lines.
  * Restrained: no colour beyond the accent marker dot and links.
  */

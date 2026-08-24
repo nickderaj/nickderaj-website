@@ -1,6 +1,5 @@
 /**
- * Derives the career chart's regime bands (PLAN §1.3 item 1) from `career.ts` `regime` fields —
- * never hardcoded dates. Contiguous chronological entries sharing a regime are merged into one
+ * Derives the career chart's regime bands (PLAN §1.3 item 1) from `career.ts` `regime` fields -  * never hardcoded dates. Contiguous chronological entries sharing a regime are merged into one
  * band; entries with `regime: null` (education) are skipped and simply leave a gap.
  */
 

@@ -7,7 +7,7 @@ type NavLink = {
 
 /**
  * Anchor targets this header links to. The corresponding sections (owned by other agents) must
- * render an element with a matching `id` for these links — and for the skip link's `#main` — to
+ * render an element with a matching `id` for these links - and for the skip link's `#main` - to
  * land anywhere.
  */
 const NAV_LINKS: NavLink[] = [

@@ -1,7 +1,7 @@
 import { ExternalLink } from '@/components/ui/index.ts';
 import { Link } from 'react-router';
 
-/** One line: name, year, links, and a restrained "built with" credit. */
+/** One line: name, year, links. */
 export function Footer() {
   const year = new Date().getFullYear();
 
@@ -26,7 +26,6 @@ export function Footer() {
           >
             /data
           </Link>
-          <span>Built with React, Vite &amp; Tailwind.</span>
         </div>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 /**
- * A thin line at the playhead with a mono date readout — a charting-terminal cursor that follows
+ * A thin line at the playhead with a mono date readout - a charting-terminal cursor that follows
  * scroll progress (PLAN §1.3 item 2).
  */
 

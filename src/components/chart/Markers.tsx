@@ -1,7 +1,7 @@
 /**
  * One dot per career entry, positioned from the exact same scale functions used to draw the path
  * (`geometry.toPoint`) so markers can never drift off the line. Radius derives from `scope`
- * (PLAN §1.1 — scope drives marker weight only, never a plotted axis value).
+ * (PLAN §1.1 - scope drives marker weight only, never a plotted axis value).
  */
 
 import type { ChartGeometry } from '@/components/chart/geometry.ts';

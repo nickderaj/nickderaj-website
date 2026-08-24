@@ -15,7 +15,7 @@ import { Link, NavigationType, Route, Routes, useLocation, useNavigationType } f
  * (e.g. the project-detail back link to `/#projects`) scrolls that section into view once the
  * destination route has rendered; a navigation to a fresh path with no hash (e.g. opening a
  * project detail page) starts at the top. Back/forward (`POP`) navigation is left to the browser's
- * own scroll restoration rather than fought — it already does the right thing for same-document
+ * own scroll restoration rather than fought - it already does the right thing for same-document
  * history entries.
  */
 function ScrollManager() {
@@ -73,10 +73,15 @@ function NotFoundPage() {
 }
 
 function App() {
+  const { pathname } = useLocation();
+  const isDataRoute = pathname === '/data';
+
   return (
     <>
       <ScrollManager />
-      <Header />
+      {/* The header's anchors point at homepage sections, so it is omitted on /data, which has
+          its own back link home. */}
+      {!isDataRoute && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route

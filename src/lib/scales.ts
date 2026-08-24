@@ -1,5 +1,5 @@
 /**
- * Small hand-rolled scale helpers for the career chart (PLAN §2.1 — no `d3` dependency). Pure
+ * Small hand-rolled scale helpers for the career chart (PLAN §2.1 - no `d3` dependency). Pure
  * date/domain/scale primitives: parsing 'YYYY-MM' career dates, a linear `domain -> range` scale
  * with `.invert()`, and axis tick generation. The chart's plotted values themselves (the
  * decorative candle series) live in `src/lib/candles.ts`; `src/components/chart/geometry.ts`
@@ -10,7 +10,7 @@ export type YearMonth = { year: number; month: number };
 
 const YEAR_MONTH_PATTERN = /^(\d{4})-(\d{2})$/;
 
-/** Parses a 'YYYY-MM' string. Throws on malformed input — this is a content-authoring bug. */
+/** Parses a 'YYYY-MM' string. Throws on malformed input - this is a content-authoring bug. */
 export function parseYearMonth(value: string): YearMonth {
   const match = YEAR_MONTH_PATTERN.exec(value);
   if (!match) {
@@ -39,7 +39,7 @@ export function resolveYearMonth(value: string | 'present'): YearMonth {
   return value === 'present' ? currentYearMonth() : parseYearMonth(value);
 }
 
-/** Absolute month index (year*12 + zero-based month) — a monotonic integer time axis. */
+/** Absolute month index (year*12 + zero-based month) - a monotonic integer time axis. */
 export function monthIndex({ year, month }: YearMonth): number {
   return year * 12 + (month - 1);
 }

@@ -6,7 +6,7 @@ import { useState } from 'react';
  * Assembled client-side from parts, and only joined at render time via a lazy `useState`
  * initializer (never a module-level string), so the address doesn't sit in the page as a single
  * plain-text token for a naive scraper to lift (PLAN §5.5). Trivial to defeat deliberately, cheap
- * to defeat accidentally — good enough for a personal site.
+ * to defeat accidentally - good enough for a personal site.
  */
 const EMAIL_USER = 'nickderaj';
 const EMAIL_DOMAIN = 'gmail.com';
@@ -19,9 +19,9 @@ function useObfuscatedEmail(): string | null {
 }
 
 /**
- * Section 0 (PLAN §2): name, positioning line, location, and links. Content is kept to roughly
- * the left half of the viewport on wide screens so the Timeline section's chart — which sits
- * directly below and is visually continuous with this section — has room to read as a single
+ * Section 0 (PLAN §2): name, positioning line, and links. Content is kept to roughly
+ * the left half of the viewport on wide screens so the Timeline section's chart - which sits
+ * directly below and is visually continuous with this section - has room to read as a single
  * spine rather than competing with a full-width hero.
  */
 export default function Hero() {
@@ -35,14 +35,13 @@ export default function Hero() {
     >
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         <div className="max-w-xl lg:max-w-2xl">
-          <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">Singapore</p>
           <h1 className="text-text mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
             Nick de Raj
           </h1>
           <p className="text-text mt-6 text-lg leading-relaxed sm:text-xl">
-            Full-stack and quantitative developer at Goldman Sachs. Previously ran a physical
-            commodities business trading palm oil on forward contracts, and built a crypto market
-            maker from scratch. Now researching commodity futures.
+            Full-stack and quant developer, currently at Goldman Sachs. Previously in Oil and Power
+            Markets, transitioned into tech via AI and crypto gaming and trading startups. Now
+            researching quant strategies.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-sm">
             <ExternalLink href="https://github.com/nickderaj" className="min-h-11">
