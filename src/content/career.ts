@@ -92,11 +92,11 @@ export const career = [
     kind: 'work',
     regime: 'software',
     scope: 0.55,
-    stack: ['Next.js', 'TypeScript', 'Ruby on Rails', 'Go', 'AWS'],
+    stack: ['Next.js', 'TypeScript', 'Ruby on Rails', 'AWS'],
     summary:
-      'Built Next.js/TypeScript applications from scratch to production against serverless Node, Rails and Go microservices powering ML data-labelling ingestion.',
+      'Built Next.js/TypeScript applications from scratch to production against serverless Node and Rails microservices powering ML data-labelling ingestion.',
     highlights: [
-      'Shipped multiple production apps end-to-end against serverless Node, Rails and Go services on AWS',
+      'Shipped multiple production apps end-to-end against serverless Node and Rails services on AWS',
       'Supported data-labelling pipelines feeding ML ingestion',
     ],
   },

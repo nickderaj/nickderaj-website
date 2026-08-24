@@ -16,7 +16,6 @@ const SKILL_CATEGORY: Record<string, Group> = {
   Java: 'Languages',
   TypeScript: 'Languages',
   Solidity: 'Languages',
-  Go: 'Languages',
   Python: 'Languages',
 
   Kafka: 'Quant & Data',
