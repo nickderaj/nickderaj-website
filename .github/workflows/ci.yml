@@ -54,13 +54,20 @@ jobs:
           EXPECTED_NAME: 'Nick de Raj'
           EXPECTED_EMAIL: 'nickderaj@gmail.com'
           BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+          # On a pull_request event the checked-out HEAD is GitHub's synthetic test-merge commit,
+          # which is authored by whoever opened the PR and *always* committed by
+          # `GitHub <noreply@github.com>` - so walking back from HEAD failed this check on every
+          # pull request, the owner's included. Walk from the PR's real head instead, so only the
+          # commits actually being proposed get checked. Falls back to the pushed commit on push.
+          HEAD_REF: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
 
+          TIP="${HEAD_REF:-HEAD}"
           if [ -n "${BASE_REF:-}" ] && git cat-file -e "${BASE_REF}^{commit}" 2>/dev/null; then
-            RANGE="${BASE_REF}..HEAD"
+            RANGE="${BASE_REF}..${TIP}"
           else
-            RANGE="HEAD"
+            RANGE="${TIP}"
           fi
 
           echo "Checking commits in range: $RANGE"
