@@ -1,0 +1,11 @@
+{
+  "columns": ["Metric", "WTI / Brent", "Gold / Silver", "Gold / Copper", "WTI / Gold"],
+  "data": [
+    ["Cointegration p-value", "0.045", "0.5808", "0.965", "0.74"],
+    ["ADF on Spread (p-value)", "0.0017", "0.0759", "0.6067", "0.1531"],
+    ["Half-Life (days)", "9.8", "76.9", "178.4", "141.8"],
+    ["Zero Crossings / Year", "26.1", "17.4", "23.1", "15.6"],
+    ["Time Within \u00b12\u03c3", "89.1%", "86.8%", "86.4%", "85.2%"],
+    ["Max |Z-Score|", "5.23", "4.41", "3.72", "4.21"]
+  ]
+}

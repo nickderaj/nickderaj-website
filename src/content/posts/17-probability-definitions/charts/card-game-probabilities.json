@@ -1,0 +1,31 @@
+{
+  "title": "Card Game: Win Probability by Card Rank",
+  "type": "histogram",
+  "series": [
+    {
+      "name": "P(win | your card)",
+      "color": "#89b4fa",
+      "data": [
+        0.0, 0.0784, 0.1569, 0.2353, 0.3137, 0.3922, 0.4706, 0.549, 0.6275, 0.7059, 0.7843, 0.8627,
+        0.9412
+      ]
+    }
+  ],
+  "bins": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  "xAxis": {
+    "label": "Your card rank",
+    "data": ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+  },
+  "yAxis": {
+    "label": "P(win)",
+    "format": "number"
+  },
+  "referenceLines": [
+    {
+      "y": 0.4706,
+      "label": "Overall = 8/17",
+      "color": "#fab387",
+      "strokeDasharray": "6 3"
+    }
+  ]
+}

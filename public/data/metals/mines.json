@@ -1,0 +1,398 @@
+{
+  "Au": [
+    {
+      "name": "Muruntau",
+      "country": "Uzbekistan",
+      "lat": 41.52,
+      "lng": 64.57
+    },
+    {
+      "name": "Grasberg",
+      "country": "Indonesia",
+      "lat": -4.05,
+      "lng": 137.1
+    },
+    {
+      "name": "Olimpiada",
+      "country": "Russia",
+      "lat": 59.3,
+      "lng": 93.6
+    },
+    {
+      "name": "Pueblo Viejo",
+      "country": "Dominican Republic",
+      "lat": 19.0,
+      "lng": -70.17
+    },
+    {
+      "name": "Cadia East",
+      "country": "Australia",
+      "lat": -33.47,
+      "lng": 148.99
+    },
+    {
+      "name": "Kibali",
+      "country": "DRC",
+      "lat": 3.01,
+      "lng": 29.59
+    },
+    {
+      "name": "Loulo-Gounkoto",
+      "country": "Mali",
+      "lat": 12.82,
+      "lng": -11.58
+    },
+    {
+      "name": "Boddington",
+      "country": "Australia",
+      "lat": -32.75,
+      "lng": 116.38
+    },
+    {
+      "name": "Geita",
+      "country": "Tanzania",
+      "lat": -2.83,
+      "lng": 32.21
+    },
+    {
+      "name": "Nevada Gold Mines",
+      "country": "USA",
+      "lat": 40.83,
+      "lng": -116.57
+    },
+    {
+      "name": "Mponeng",
+      "country": "South Africa",
+      "lat": -26.42,
+      "lng": 27.42
+    },
+    {
+      "name": "Canadian Malartic",
+      "country": "Canada",
+      "lat": 48.13,
+      "lng": -78.12
+    },
+    {
+      "name": "Lihir",
+      "country": "Papua New Guinea",
+      "lat": -3.12,
+      "lng": 152.63
+    },
+    {
+      "name": "Tarkwa",
+      "country": "Ghana",
+      "lat": 5.31,
+      "lng": -1.99
+    },
+    {
+      "name": "Obuasi",
+      "country": "Ghana",
+      "lat": 6.2,
+      "lng": -1.67
+    },
+    {
+      "name": "Cerro Corona",
+      "country": "Peru",
+      "lat": -6.77,
+      "lng": -78.58
+    },
+    {
+      "name": "Yanacocha",
+      "country": "Peru",
+      "lat": -6.96,
+      "lng": -78.54
+    },
+    {
+      "name": "Super Pit",
+      "country": "Australia",
+      "lat": -30.77,
+      "lng": 121.49
+    },
+    {
+      "name": "Detour Lake",
+      "country": "Canada",
+      "lat": 50.05,
+      "lng": -79.72
+    }
+  ],
+  "Ag": [
+    {
+      "name": "Penasquito",
+      "country": "Mexico",
+      "lat": 24.04,
+      "lng": -102.29
+    },
+    {
+      "name": "Fresnillo",
+      "country": "Mexico",
+      "lat": 23.17,
+      "lng": -102.87
+    },
+    {
+      "name": "Dukat",
+      "country": "Russia",
+      "lat": 62.53,
+      "lng": 155.72
+    },
+    {
+      "name": "KGHM Polkowice",
+      "country": "Poland",
+      "lat": 51.51,
+      "lng": 16.08
+    },
+    {
+      "name": "Cannington",
+      "country": "Australia",
+      "lat": -21.88,
+      "lng": 140.91
+    },
+    {
+      "name": "Cerro Rico",
+      "country": "Bolivia",
+      "lat": -19.63,
+      "lng": -65.75
+    },
+    {
+      "name": "Uchucchacua",
+      "country": "Peru",
+      "lat": -10.63,
+      "lng": -76.7
+    },
+    {
+      "name": "Greens Creek",
+      "country": "USA",
+      "lat": 58.08,
+      "lng": -134.66
+    },
+    {
+      "name": "San Cristobal",
+      "country": "Bolivia",
+      "lat": -21.11,
+      "lng": -66.63
+    },
+    {
+      "name": "Antamina",
+      "country": "Peru",
+      "lat": -9.53,
+      "lng": -77.06
+    },
+    {
+      "name": "Escobal",
+      "country": "Guatemala",
+      "lat": 14.38,
+      "lng": -90.45
+    },
+    {
+      "name": "Saucito",
+      "country": "Mexico",
+      "lat": 23.0,
+      "lng": -102.0
+    },
+    {
+      "name": "Jiama",
+      "country": "China",
+      "lat": 29.7,
+      "lng": 91.85
+    },
+    {
+      "name": "Boliden",
+      "country": "Sweden",
+      "lat": 64.87,
+      "lng": 20.38
+    }
+  ],
+  "Pd": [
+    {
+      "name": "Norilsk-Talnakh",
+      "country": "Russia",
+      "lat": 69.34,
+      "lng": 88.22
+    },
+    {
+      "name": "Mogalakwena",
+      "country": "South Africa",
+      "lat": -23.68,
+      "lng": 28.82
+    },
+    {
+      "name": "Impala Platinum",
+      "country": "South Africa",
+      "lat": -25.77,
+      "lng": 27.38
+    },
+    {
+      "name": "Stillwater",
+      "country": "USA",
+      "lat": 45.38,
+      "lng": -109.87
+    },
+    {
+      "name": "Lac des Iles",
+      "country": "Canada",
+      "lat": 49.17,
+      "lng": -89.18
+    },
+    {
+      "name": "Zimplats",
+      "country": "Zimbabwe",
+      "lat": -18.4,
+      "lng": 30.1
+    },
+    {
+      "name": "Marikana",
+      "country": "South Africa",
+      "lat": -25.68,
+      "lng": 27.48
+    },
+    {
+      "name": "Amandelbult",
+      "country": "South Africa",
+      "lat": -24.82,
+      "lng": 27.32
+    },
+    {
+      "name": "Mimosa",
+      "country": "Zimbabwe",
+      "lat": -20.38,
+      "lng": 29.72
+    }
+  ],
+  "Pt": [
+    {
+      "name": "Mogalakwena",
+      "country": "South Africa",
+      "lat": -23.68,
+      "lng": 28.82
+    },
+    {
+      "name": "Impala Platinum",
+      "country": "South Africa",
+      "lat": -25.77,
+      "lng": 27.38
+    },
+    {
+      "name": "Marikana",
+      "country": "South Africa",
+      "lat": -25.68,
+      "lng": 27.48
+    },
+    {
+      "name": "Amandelbult",
+      "country": "South Africa",
+      "lat": -24.82,
+      "lng": 27.32
+    },
+    {
+      "name": "Rustenburg",
+      "country": "South Africa",
+      "lat": -25.67,
+      "lng": 27.24
+    },
+    {
+      "name": "Norilsk-Talnakh",
+      "country": "Russia",
+      "lat": 69.34,
+      "lng": 88.22
+    },
+    {
+      "name": "Stillwater",
+      "country": "USA",
+      "lat": 45.38,
+      "lng": -109.87
+    },
+    {
+      "name": "Zimplats",
+      "country": "Zimbabwe",
+      "lat": -18.4,
+      "lng": 30.1
+    },
+    {
+      "name": "Mimosa",
+      "country": "Zimbabwe",
+      "lat": -20.38,
+      "lng": 29.72
+    },
+    {
+      "name": "Lac des Iles",
+      "country": "Canada",
+      "lat": 49.17,
+      "lng": -89.18
+    },
+    {
+      "name": "Unki",
+      "country": "Zimbabwe",
+      "lat": -19.49,
+      "lng": 29.98
+    }
+  ],
+  "Ru": [
+    {
+      "name": "Mogalakwena",
+      "country": "South Africa",
+      "lat": -23.68,
+      "lng": 28.82
+    },
+    {
+      "name": "Impala Platinum",
+      "country": "South Africa",
+      "lat": -25.77,
+      "lng": 27.38
+    },
+    {
+      "name": "Marikana",
+      "country": "South Africa",
+      "lat": -25.68,
+      "lng": 27.48
+    },
+    {
+      "name": "Norilsk-Talnakh",
+      "country": "Russia",
+      "lat": 69.34,
+      "lng": 88.22
+    },
+    {
+      "name": "Zimplats",
+      "country": "Zimbabwe",
+      "lat": -18.4,
+      "lng": 30.1
+    },
+    {
+      "name": "Stillwater",
+      "country": "USA",
+      "lat": 45.38,
+      "lng": -109.87
+    }
+  ],
+  "Ir": [
+    {
+      "name": "Mogalakwena",
+      "country": "South Africa",
+      "lat": -23.68,
+      "lng": 28.82
+    },
+    {
+      "name": "Impala Platinum",
+      "country": "South Africa",
+      "lat": -25.77,
+      "lng": 27.38
+    },
+    {
+      "name": "Marikana",
+      "country": "South Africa",
+      "lat": -25.68,
+      "lng": 27.48
+    },
+    {
+      "name": "Norilsk-Talnakh",
+      "country": "Russia",
+      "lat": 69.34,
+      "lng": 88.22
+    },
+    {
+      "name": "Zimplats",
+      "country": "Zimbabwe",
+      "lat": -18.4,
+      "lng": 30.1
+    }
+  ]
+}

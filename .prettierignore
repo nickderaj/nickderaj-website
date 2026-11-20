@@ -4,3 +4,5 @@ node_modules
 package-lock.json
 .husky/_
 PLAN.md
+public/data
+src/content/posts

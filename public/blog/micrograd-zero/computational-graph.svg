@@ -1,0 +1,55 @@
+<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <rect width="600" height="320" fill="#1e1e2e" rx="0"/>
+
+  <!-- Nodes -->
+  <circle cx="100" cy="80" r="36" fill="#283d55" stroke="#89b4fa" stroke-width="2"/>
+  <text x="100" y="75" text-anchor="middle" font-size="14" font-weight="600" fill="#cdd6f4">a</text>
+  <text x="100" y="93" text-anchor="middle" font-size="12" fill="#bac2de">val: 2.0</text>
+
+  <circle cx="100" cy="220" r="36" fill="#283d55" stroke="#89b4fa" stroke-width="2"/>
+  <text x="100" y="215" text-anchor="middle" font-size="14" font-weight="600" fill="#cdd6f4">b</text>
+  <text x="100" y="233" text-anchor="middle" font-size="12" fill="#bac2de">val: 3.0</text>
+
+  <!-- Operation node × -->
+  <rect x="230" y="125" width="50" height="50" rx="8" fill="#fab387" stroke="#f97316" stroke-width="2"/>
+  <text x="255" y="157" text-anchor="middle" font-size="20" font-weight="700" fill="#1e1e2e">×</text>
+
+  <!-- Result node c -->
+  <circle cx="380" cy="150" r="36" fill="#1e3d2e" stroke="#a6e3a1" stroke-width="2"/>
+  <text x="380" y="145" text-anchor="middle" font-size="14" font-weight="600" fill="#a6e3a1">c</text>
+  <text x="380" y="163" text-anchor="middle" font-size="12" fill="#bac2de">val: 6.0</text>
+
+  <!-- Operation node + -->
+  <rect x="230" y="15" width="50" height="50" rx="8" fill="#cba6f7" stroke="#9b7de0" stroke-width="2"/>
+  <text x="255" y="47" text-anchor="middle" font-size="20" font-weight="700" fill="#1e1e2e">+</text>
+
+  <!-- d node -->
+  <circle cx="330" cy="30" r="22" fill="#3d3510" stroke="#f9e2af" stroke-width="2"/>
+  <text x="330" y="23" text-anchor="middle" font-size="14" font-weight="600" fill="#f9e2af">d</text>
+  <text x="330" y="38" text-anchor="middle" font-size="12" fill="#bac2de">val: 1.0</text>
+
+  <!-- e = c + d result -->
+  <circle cx="480" cy="65" r="36" fill="#3d1e2e" stroke="#f38ba8" stroke-width="2"/>
+  <text x="480" y="60" text-anchor="middle" font-size="14" font-weight="600" fill="#f38ba8">e</text>
+  <text x="480" y="78" text-anchor="middle" font-size="12" fill="#bac2de">val: 7.0</text>
+
+  <!-- Edges -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#7f849c"/>
+    </marker>
+  </defs>
+
+  <line x1="133" y1="95" x2="228" y2="138" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="133" y1="205" x2="228" y2="162" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="282" y1="150" x2="342" y2="150" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="380" y1="114" x2="282" y2="58" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="312" y1="33" x2="282" y2="37" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="282" y1="38" x2="443" y2="60" stroke="#7f849c" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Labels -->
+  <text x="170" y="108" font-size="11" fill="#7f849c" font-style="italic">input</text>
+  <text x="170" y="195" font-size="11" fill="#7f849c" font-style="italic">input</text>
+  <text x="300" y="168" font-size="11" fill="#7f849c" font-style="italic">c = a × b</text>
+  <text x="400" y="52" font-size="11" fill="#7f849c" font-style="italic">e = c + d</text>
+</svg>

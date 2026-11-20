@@ -1,0 +1,28 @@
+{
+  "title": "PMF: Number of Heads in Two Fair Coin Flips",
+  "type": "histogram",
+  "series": [
+    {
+      "name": "P(X = x)",
+      "color": "#89b4fa",
+      "data": [0.25, 0.5, 0.25]
+    }
+  ],
+  "bins": [0, 1, 2],
+  "xAxis": {
+    "label": "Number of heads (x)",
+    "data": ["0", "1", "2"]
+  },
+  "yAxis": {
+    "label": "Probability",
+    "format": "number"
+  },
+  "referenceLines": [
+    {
+      "y": 1.0,
+      "label": "E[X] = 1",
+      "color": "#fab387",
+      "strokeDasharray": "6 3"
+    }
+  ]
+}

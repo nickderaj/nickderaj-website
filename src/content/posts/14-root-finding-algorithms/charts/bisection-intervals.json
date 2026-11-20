@@ -1,0 +1,36 @@
+{
+  "title": "Bisection Method: Interval Narrowing on f(x) = x\u00b3 \u2212 x \u2212 2",
+  "type": "line",
+  "series": [
+    {
+      "name": "Left endpoint (a)",
+      "color": "#f38ba8",
+      "data": [1.0, 1.5, 1.5, 1.5, 1.5, 1.5]
+    },
+    {
+      "name": "Right endpoint (b)",
+      "color": "#89b4fa",
+      "data": [2.0, 2.0, 1.75, 1.625, 1.5625, 1.53125]
+    },
+    {
+      "name": "Midpoint",
+      "color": "#a6e3a1",
+      "data": [1.5, 1.75, 1.625, 1.5625, 1.53125, 1.515625]
+    }
+  ],
+  "xAxis": {
+    "label": "Iteration",
+    "data": ["0", "1", "2", "3", "4", "5"]
+  },
+  "yAxis": {
+    "label": "x value"
+  },
+  "referenceLines": [
+    {
+      "y": 1.5213797068045676,
+      "label": "True root",
+      "color": "#f9e2af",
+      "strokeDasharray": "4 4"
+    }
+  ]
+}

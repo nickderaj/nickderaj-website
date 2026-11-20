@@ -1,0 +1,33 @@
+{
+  "title": "Poker Hand Probabilities (log\u2081\u2080 scale)",
+  "type": "histogram",
+  "series": [
+    {
+      "name": "log\u2081\u2080(probability)",
+      "color": "#89b4fa",
+      "data": [
+        -5.8127, -4.8585, -3.6196, -2.8415, -2.7065, -2.4062, -1.6751, -1.3229, -0.3741, -0.3
+      ]
+    }
+  ],
+  "bins": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "xAxis": {
+    "label": "Hand type",
+    "data": [
+      "Royal\nFlush",
+      "Straight\nFlush",
+      "Four of\na Kind",
+      "Full\nHouse",
+      "Flush",
+      "Straight",
+      "Three of\na Kind",
+      "Two\nPairs",
+      "One\nPair",
+      "High\nCard"
+    ]
+  },
+  "yAxis": {
+    "label": "log\u2081\u2080(P)",
+    "format": "number"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "metals": ["Au", "Ag", "Pd", "Pt", "Ru", "Ir"],
+  "metals_info": {
+    "Au": {
+      "name": "Gold",
+      "unit": "tonnes",
+      "total_reserves": 52530
+    },
+    "Ag": {
+      "name": "Silver",
+      "unit": "tonnes",
+      "total_reserves": 519400
+    },
+    "Pd": {
+      "name": "Palladium",
+      "unit": "tonnes",
+      "total_reserves": 16910
+    },
+    "Pt": {
+      "name": "Platinum",
+      "unit": "tonnes",
+      "total_reserves": 69687
+    },
+    "Ru": {
+      "name": "Ruthenium",
+      "unit": "tonnes",
+      "total_reserves": 4918
+    },
+    "Ir": {
+      "name": "Iridium",
+      "unit": "tonnes",
+      "total_reserves": 2460
+    }
+  },
+  "description": "World precious metals reserves by country (metric tonnes)",
+  "source": "USGS Mineral Commodity Summaries 2025; USGS Minerals Yearbook; Johnson Matthey PGM Market Report 2025; BGS World Mineral Production 2019-2023; S&P Global Market Intelligence"
+}

@@ -1,0 +1,10 @@
+{
+  "columns": ["Quantity", "L non-stochastic (monthly fit)", "L stochastic (daily series)"],
+  "data": [
+    ["Spot volatility \u03c3S", "46.39%", "62.61%"],
+    ["Long-term volatility \u03c3L", "17.64%", "33.65% (after filtering)"],
+    ["Correlation \u03c1", "0.2054", "0.4217"],
+    ["Range of \u03b2", "[0.911, 6.930]", "[1.152, 2.637] (excl. 4 outlier months)"],
+    ["Sample", "Jun 1989 - Feb 1991, NYMEX WTI", "Jun 1989 - Feb 1991, NYMEX WTI"]
+  ]
+}

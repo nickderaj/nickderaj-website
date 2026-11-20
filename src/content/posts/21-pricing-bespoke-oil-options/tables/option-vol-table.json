@@ -1,0 +1,12 @@
+{
+  "columns": ["Option / futures expiry", "Instantaneous vol today", "Black vol to use", "Ratio"],
+  "data": [
+    ["1 month", "35.5%", "37.7%", "1.06x"],
+    ["3 months", "28.1%", "33.8%", "1.20x"],
+    ["6 months", "20.4%", "29.4%", "1.44x"],
+    ["1 year", "12.7%", "23.6%", "1.86x"],
+    ["2 years", "10.0%", "18.4%", "1.84x"],
+    ["3 years", "10.0%", "16.1%", "1.61x"],
+    ["5 years", "10.0%", "14.0%", "1.40x"]
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "columns": ["Model", "State variables", "Convenience yield", "Closed form", "Volatility curve"],
+  "data": [
+    ["Cost of carry", "S", "None", "Yes", "Flat at \u03c3S; contango only"],
+    [
+      "Constant convenience yield",
+      "S",
+      "Constant",
+      "Yes",
+      "Flat at \u03c3S; price diverges at long maturity"
+    ],
+    [
+      "Gibson-Schwartz (1990)",
+      "S, \u03b4",
+      "Stochastic, mean reverting, own factor",
+      "No (numerical PDE)",
+      "Decreasing; depends on \u03b4 dynamics"
+    ],
+    [
+      "Gabillon (1991)",
+      "S, L",
+      "Function of ln(S/L) and t",
+      "Yes",
+      "Decays from \u03c3S to \u03c3L"
+    ],
+    [
+      "Schwartz-Smith (2000)",
+      "Short-term deviation \u03c7, equilibrium \u03be",
+      "Implicit in the factor split",
+      "Yes (Gaussian)",
+      "Decays to the equilibrium factor volatility"
+    ]
+  ]
+}

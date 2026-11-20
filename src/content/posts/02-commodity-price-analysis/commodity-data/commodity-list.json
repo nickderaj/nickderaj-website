@@ -1,0 +1,109 @@
+{
+  "commodities": [
+    {
+      "slug": "gold",
+      "name": "Gold",
+      "category": "Metals"
+    },
+    {
+      "slug": "silver",
+      "name": "Silver",
+      "category": "Metals"
+    },
+    {
+      "slug": "copper",
+      "name": "Copper",
+      "category": "Metals"
+    },
+    {
+      "slug": "platinum",
+      "name": "Platinum",
+      "category": "Metals"
+    },
+    {
+      "slug": "palladium",
+      "name": "Palladium",
+      "category": "Metals"
+    },
+    {
+      "slug": "uranium",
+      "name": "Uranium (ETF)",
+      "category": "Metals"
+    },
+    {
+      "slug": "wti-crude",
+      "name": "WTI Crude Oil",
+      "category": "Energy"
+    },
+    {
+      "slug": "brent-crude",
+      "name": "Brent Crude Oil",
+      "category": "Energy"
+    },
+    {
+      "slug": "natural-gas",
+      "name": "Natural Gas",
+      "category": "Energy"
+    },
+    {
+      "slug": "heating-oil",
+      "name": "Heating Oil",
+      "category": "Energy"
+    },
+    {
+      "slug": "rbob-gasoline",
+      "name": "RBOB Gasoline",
+      "category": "Energy"
+    },
+    {
+      "slug": "corn",
+      "name": "Corn",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "wheat",
+      "name": "Wheat",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "soybeans",
+      "name": "Soybeans",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "coffee",
+      "name": "Coffee",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "sugar",
+      "name": "Sugar",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "cotton",
+      "name": "Cotton",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "cocoa",
+      "name": "Cocoa",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "live-cattle",
+      "name": "Live Cattle",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "lean-hogs",
+      "name": "Lean Hogs",
+      "category": "Agriculture"
+    },
+    {
+      "slug": "soybean-oil",
+      "name": "Soybean Oil",
+      "category": "Agriculture"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "columns": ["Symbol", "Meaning", "Role"],
+  "data": [
+    ["S", "Spot price of oil", "First state variable; the free end of the cantilever"],
+    [
+      "L",
+      "Long-term price of oil",
+      "Second state variable; price for delivery at infinite maturity"
+    ],
+    ["Cy", "Marginal convenience yield", "Deterministic function of S, L and t"],
+    ["Cc", "Marginal cost of carry", "Absorbed into Cy in the two-factor model"],
+    ["\u03c3S", "Spot price volatility", "High; drives the front of the curve"],
+    ["\u03c3L", "Long-term price volatility", "Low; the floor of the volatility curve"],
+    ["\u03c1", "Correlation of the two Brownian motions", "Shapes the volatility term structure"],
+    ["\u03b2", "Sensitivity of Cy to ln(S/L)", "Sets the decay rate of the spot loading"],
+    [
+      "\u03b8, \u03b7",
+      "Amplitude and decay rate of a short-term shock",
+      "Adds front-end curvature"
+    ],
+    [
+      "B(\u03c4) = e^(\u2212\u03b2\u03c4)",
+      "Weight of the spot factor at maturity \u03c4",
+      "1 at expiry, 0 at infinity"
+    ],
+    ["A(\u03c4)", "Convexity and shock adjustment", "Pins the curve to the boundary conditions"]
+  ]
+}

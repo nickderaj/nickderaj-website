@@ -11,7 +11,14 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'coverage', '.husky', 'node_modules'],
+    ignores: [
+      'dist',
+      'coverage',
+      '.husky',
+      'node_modules',
+      'src/components/blog/ceres/**',
+      'src/lib/technical-analysis.ts',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],

@@ -1,0 +1,35 @@
+{
+  "title": "Numerical Integration Convergence: \u222b\u2080\u00b9 e^(-x\u00b2) dx",
+  "type": "line",
+  "series": [
+    {
+      "name": "Trapezoidal Rule",
+      "color": "#fab387",
+      "data": [
+        -1.811, -2.416, -2.768, -3.018, -3.212, -3.505, -3.723, -3.973, -4.223, -4.575, -4.825
+      ]
+    },
+    {
+      "name": "Simpson's Rule",
+      "color": "#89b4fa",
+      "data": [
+        -3.448, -4.505, -5.204, -5.702, -6.089, -6.673, -7.109, -7.609, -8.108, -8.813, -9.312
+      ]
+    }
+  ],
+  "xAxis": {
+    "label": "Number of subintervals (n)",
+    "data": ["2", "4", "6", "8", "10", "14", "18", "24", "32", "48", "64"]
+  },
+  "yAxis": {
+    "label": "log\u2081\u2080(|error|)"
+  },
+  "referenceLines": [
+    {
+      "y": -12,
+      "label": "1e-12",
+      "color": "#585b70",
+      "strokeDasharray": "4 4"
+    }
+  ]
+}
