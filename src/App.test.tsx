@@ -19,9 +19,9 @@ describe('App routing', () => {
     expect(screen.getByRole('heading', { name: /recent writing/i })).toBeInTheDocument();
   });
 
-  it('lists every Ceres post on /blog', () => {
+  it('lists the map posts on /blog', () => {
     renderAt('/blog');
-    expect(posts.length).toBeGreaterThanOrEqual(22);
+    expect(posts.length).toBe(2);
     expect(screen.getByRole('heading', { name: 'Writing' })).toBeInTheDocument();
   });
 

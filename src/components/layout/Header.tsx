@@ -22,7 +22,7 @@ export function Header() {
           </NavLink>
           <nav className="text-muted-foreground flex items-center gap-5 font-mono text-xs">
             <NavLink to="/" end className={navClass}>
-              cv
+              Home
             </NavLink>
             <NavLink to="/blog" className={navClass}>
               blog

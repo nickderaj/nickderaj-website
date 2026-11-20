@@ -6,7 +6,7 @@ test('home, blog index and a post load', async ({ page }) => {
   await page.getByRole('link', { name: 'blog', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Writing' })).toBeVisible();
   await page
-    .getByRole('link', { name: /Pairs Trading/ })
+    .getByRole('link', { name: /World Oil Reserves Map/ })
     .first()
     .click();
   await expect(page.locator('article')).toBeVisible();

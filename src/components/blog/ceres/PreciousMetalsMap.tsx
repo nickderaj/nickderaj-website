@@ -883,8 +883,8 @@ export function PreciousMetalsMap({ dataDir = '/data/metals' }: PreciousMetalsMa
             ref={mapRef}
           >
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"
               noWrap={true}
             />
 
@@ -917,7 +917,7 @@ export function PreciousMetalsMap({ dataDir = '/data/metals' }: PreciousMetalsMa
       >
         Data: USGS Mineral Commodity Summaries 2025, USGS Minerals Yearbook, Johnson Matthey PGM
         Market Report 2025, BGS World Mineral Production. Mine locations: S&P Global Market
-        Intelligence. Boundaries: Natural Earth. Tiles: CARTO / OpenStreetMap.
+        Intelligence. Boundaries: Natural Earth. Tiles: Esri.
       </div>
     </div>
   );

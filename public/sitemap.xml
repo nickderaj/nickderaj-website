@@ -11,112 +11,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://nickderaj.com/blog/01-mean-reversion-pairs-trading</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/02-commodity-price-analysis</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/03-python-conversion-course</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/04-pattern-recognition</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/05-moving_averages_guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/06-macd_guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/07-java-threading-virtual-threads</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://nickderaj.com/blog/08-precious-metals-map</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nickderaj.com/blog/09-oil-reserves-map</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/10-quant-career-progression</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/11-limits-and-derivatives</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/12-integration</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/13-partial-derivatives-multiple-integrals</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/14-root-finding-algorithms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/15-ordinary-differential-equations</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/16-trading-strategies</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/17-probability-definitions</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/18-combinatorial-analysis</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/19-derivatives-fundamentals</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/19-micrograd-zero</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/20-gabillon-oil-term-structures</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://nickderaj.com/blog/21-pricing-bespoke-oil-options</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

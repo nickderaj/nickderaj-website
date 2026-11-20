@@ -2,10 +2,10 @@ import avatar from '@/assets/avatar.png';
 import { PostList } from '@/components/PostList.tsx';
 import { career } from '@/content/career.ts';
 import { projects } from '@/content/projects/index.ts';
+import { skills } from '@/content/skills.ts';
 import { posts } from '@/lib/posts.ts';
-import { deriveToolkitGroups, GROUPS } from '@/lib/toolkit.ts';
-import { ArrowRight, FileDown, Mail } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { ArrowRight, ChevronDown, FileDown, Mail } from 'lucide-react';
+import { useId, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useDocumentMeta } from './useDocumentMeta.ts';
 
@@ -42,6 +42,44 @@ function LinkedinIcon({ className }: { className?: string }) {
   );
 }
 
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L7.1 3.9H5.1L17.7 20Z" />
+    </svg>
+  );
+}
+
+/** A section whose body is hidden until the heading is toggled; collapsed by default. */
+function CollapsibleSection({ title, children }: { title: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  return (
+    <section className="mt-20">
+      <h2 className="mb-6 font-mono text-xs tracking-[0.2em] uppercase">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={id}
+          onClick={() => {
+            setOpen((o) => !o);
+          }}
+          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 uppercase transition-colors"
+        >
+          {title}
+          <ChevronDown
+            aria-hidden="true"
+            className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
+          />
+        </button>
+      </h2>
+      <div id={id} hidden={!open}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-20">
@@ -57,12 +95,12 @@ export default function Home() {
   useDocumentMeta('Nick de Raj — Full-Stack & Quant Developer', SUMMARY);
   const work = career.filter((c) => c.kind === 'work');
   const education = career.filter((c) => c.kind === 'education');
-  const toolkit = deriveToolkitGroups();
 
   const socials = [
     { href: `mailto:${EMAIL}`, label: 'Email', Icon: Mail },
     { href: 'https://github.com/nickderaj', label: 'GitHub', Icon: GithubIcon },
     { href: 'https://www.linkedin.com/in/nickderaj', label: 'LinkedIn', Icon: LinkedinIcon },
+    { href: 'https://x.com/nickderaj', label: 'X', Icon: XIcon },
   ];
 
   return (
@@ -102,7 +140,7 @@ export default function Home() {
         ))}
       </div>
 
-      <Section title="Experience">
+      <CollapsibleSection title="Experience">
         <ol className="border-border relative space-y-10 border-l pl-6">
           {work.map((e) => (
             <li key={e.id} className="relative">
@@ -115,7 +153,6 @@ export default function Home() {
                   {formatPeriod(e.start, e.end)}
                 </span>
               </div>
-              <p className="text-muted-foreground mt-2 text-sm">{e.summary}</p>
               <ul className="text-muted-foreground mt-3 space-y-1.5 text-sm">
                 {e.highlights.map((h) => (
                   <li key={h} className="before:text-primary before:mr-2 before:content-['▸']">
@@ -136,7 +173,7 @@ export default function Home() {
             </li>
           ))}
         </ol>
-      </Section>
+      </CollapsibleSection>
 
       <Section title="Projects">
         <div className="grid gap-4 sm:grid-cols-3">
@@ -160,10 +197,10 @@ export default function Home() {
 
       <Section title="Skills">
         <dl className="space-y-3 text-sm">
-          {GROUPS.map((group) => (
-            <div key={group} className="grid grid-cols-[110px_1fr] gap-4">
+          {skills.map(({ group, items }) => (
+            <div key={group} className="grid gap-1 sm:grid-cols-[170px_1fr] sm:gap-4">
               <dt className="text-muted-foreground font-mono text-xs">{group}</dt>
-              <dd>{toolkit[group].join(', ')}</dd>
+              <dd>{items.join(', ')}</dd>
             </div>
           ))}
         </dl>
@@ -181,7 +218,6 @@ export default function Home() {
                   {e.start.slice(0, 4)} — {e.end.slice(0, 4)}
                 </span>
               </div>
-              <p className="text-muted-foreground mt-1 text-sm">{e.summary}</p>
             </div>
           ))}
         </div>

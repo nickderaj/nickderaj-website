@@ -351,7 +351,7 @@ The Herfindahl-Hirschman Index (HHI) of reserve concentration rises sharply as y
 ### Geospatial data
 
 - **Natural Earth, 1:50m Cultural Vectors (v5.1.1)** — Public-domain country boundary polygons used for the choropleth base layer.
-- **CARTO (Positron Dark)** — Dark-themed basemap tiles, sourced from OpenStreetMap contributors.
+- **Esri (World Dark Gray Base)** — Dark-themed basemap tiles.
 
 <callout variant="note" title="A note on reserves vs. resources">
 "Reserves" refers to the portion of a mineral deposit that can be economically extracted at the time of reporting. They are a subset of the broader "resources" figure. All numbers shown on this map are proved + probable reserves as reported by the sources above. Ruthenium and iridium reserves are not broken out individually in USGS publications; those figures are derived from Johnson Matthey supply data and the known PGM ratios of the Bushveld Complex and Norilsk ore bodies.

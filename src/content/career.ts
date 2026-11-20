@@ -1,29 +1,43 @@
 import type { CareerEntry } from '@/types/content.ts';
 
 /**
- * Single source of truth for the career timeline (PLAN §4, §10). The chart, the role cards, the
- * command palette, the print CV, and `/data` all derive from this array. Adding a job means
- * editing this file only. Sorted most-recent-first.
+ * Single source of truth for work and education history on the home page. Mirrors the CV PDF
+ * (public/nick-de-raj-cv.pdf). Sorted most-recent-first. Adding a job means editing this file only.
  */
 export const career = [
+  {
+    id: 'ucl',
+    start: '2026-01',
+    end: '2028-12',
+    role: 'MSc Financial Mathematics (part-time)',
+    org: 'University College London (UCL)',
+    location: 'London, UK',
+    kind: 'education',
+    regime: null,
+    scope: 0.4,
+    stack: [],
+    summary: '',
+    highlights: [],
+  },
   {
     id: 'gs',
     start: '2024-05',
     end: 'present',
     role: 'Full Stack Developer',
     org: 'Goldman Sachs',
-    location: 'London, UK',
+    location: 'London',
     kind: 'work',
     regime: 'quant',
     scope: 0.95,
-    stack: ['Java', 'Kafka', 'Elasticsearch', 'PostgreSQL'],
+    stack: ['Java', 'Python', 'Kafka', 'Elasticsearch', 'PostgreSQL', 'MongoDB'],
     teamSize: 4,
-    summary:
-      'Built AI-driven document processing for client onboarding and led a real-time ETL pipeline moving trade flow onto low-latency, scalable infrastructure.',
+    summary: '',
     highlights: [
-      'Automated field extraction and validation against corporate documents, cutting manual review time in client onboarding',
-      'Led 4 engineers building a real-time ETL pipeline moving flows from Postgres into Kafka and Elasticsearch',
-      'Used Claude Code to build automated agent skills that fix code quality across all 40 repos in our stack continuously in parallel.',
+      'Develop AI-powered tooling to extract, validate and compare information across KYC forms and corporate documentation, automating manual checks within client onboarding workflows.',
+      'Built a Claude-powered support triage workflow that gathers context from Outlook, Confluence, Jira and the codebase to produce an initial diagnosis and proposed resolution within approximately 15 minutes of receiving a bug report.',
+      'Created Claude skills to identify and remediate SonarQube findings across 40 repositories, processing issues in batches and automatically raising merge requests for review.',
+      'Led a team of four in designing and delivering a real-time ETL pipeline, migrating data flows from PostgreSQL to Kafka and Elasticsearch and modernising legacy services to support scalable, low-latency data publishing.',
+      'Built Java microservices and Python applications, integrating services through asynchronous Kafka pipelines and synchronous APIs, with customer information stored in MongoDB using client-side field-level encryption (CSFLE).',
     ],
   },
   {
@@ -36,13 +50,11 @@ export const career = [
     kind: 'work',
     regime: 'quant',
     scope: 0.8,
-    stack: ['TypeScript', 'NestJS', 'Solidity'],
-    summary:
-      'Built a crypto market maker from scratch, publishing orderbooks to aggregated on-chain venues across major and small-cap tokens. The closest role to a trading seat on the CV.',
+    stack: ['TypeScript', 'Python'],
+    summary: '',
     highlights: [
-      'Took a microservice monorepo market maker from zero to live in 2 months',
-      'First mainnet trade shipped within the build window, quoting BTC, ETH, SOL and small-cap tokens on Uniswap and other aggregated venues',
-      'Scaled to 30+ tokens and millions of dollars in volume within the following month',
+      'Created a market maker system that would publish its orderbooks to aggregated market makers like Uniswap, mostly for smaller cap crypto tokens but also Bitcoin, Ethereum and Solana.',
+      'Designed a microservice based monorepo with TypeScript and Python which went live from scratch in 2 months, making our first trade on mainnet and supported over 30 tokens and millions in volume within a month after that.',
     ],
   },
   {
@@ -56,11 +68,9 @@ export const career = [
     regime: 'software',
     scope: 0.65,
     stack: ['Solidity'],
-    summary:
-      'Led an ERC-1167 minimal-proxy rewrite of the multi-sig wallet business across five EVM chains.',
+    summary: '',
     highlights: [
-      'Shipped ERC-1167 minimal-proxy wallets across Ethereum, Polygon, Avalanche, Tron and others',
-      'Cut per-wallet deployment cost by roughly 60%',
+      'Led the implementation of an ERC-1167 Smart Contract in Solidity to our multi-signatory wallet business, deploying them across multiple chains including Ethereum, Polygon, AVAX, and others to reduce costs by roughly 60%.',
     ],
   },
   {
@@ -73,13 +83,10 @@ export const career = [
     kind: 'work',
     regime: 'software',
     scope: 0.85,
-    stack: ['React Native', 'Node.js', 'GCP'],
-    summary:
-      'Led engineering, product and design to take a mobile game from build to scaled production launch.',
+    stack: ['React Native', 'TypeScript', 'Node.js', 'Google Cloud'],
+    summary: '',
     highlights: [
-      'Shipped to 100k users in under 3 months of launch',
-      'Released simultaneously on iOS and Google Play',
-      'Owned the engineering roadmap while coordinating directly with PM and design',
+      'Led a team of engineers, product managers and designers, to build and scale a mobile game to 100k users in under 3 months using React Native + TypeScript, NodeJS and Google Cloud, deployed to both IOS and Play Store.',
     ],
   },
   {
@@ -88,16 +95,14 @@ export const career = [
     end: '2022-09',
     role: 'Full Stack Developer',
     org: 'Supa',
-    location: 'Malaysia',
+    location: 'Kuala Lumpur',
     kind: 'work',
     regime: 'software',
     scope: 0.55,
-    stack: ['Next.js', 'TypeScript', 'Ruby on Rails', 'AWS'],
-    summary:
-      'Built Next.js/TypeScript applications from scratch to production against serverless Node and Rails microservices powering ML data-labelling ingestion.',
+    stack: ['Next.js', 'TypeScript', 'Node.js', 'Ruby on Rails', 'Golang', 'AWS'],
+    summary: '',
     highlights: [
-      'Shipped multiple production apps end-to-end against serverless Node and Rails services on AWS',
-      'Supported data-labelling pipelines feeding ML ingestion',
+      'Built fully functional NextJS apps in TypeScript from scratch to production, that connect to serverless NodeJS, Ruby on Rails and Golang microservices hosted on AWS to enable data labelling for ML systems to ingest.',
     ],
   },
   {
@@ -106,17 +111,16 @@ export const career = [
     end: '2020-09',
     role: 'Deputy CEO',
     org: 'Gryphon Energy',
-    location: 'Malaysia',
+    location: 'Kuala Lumpur',
     kind: 'work',
     regime: 'commodities',
     scope: 0.9,
-    stack: ['Physical commodity trading', 'Forward contracting', 'P&L ownership'],
-    summary:
-      'Ran the German Power Division (Gaea Power GmbH, co-founded then folded into the group): P&L and operations for eight palm-oil CHP units, plus physical palm-oil procurement on forward contracts.',
+    stack: ['P&L', 'O&M', 'CHP', 'Palm oil', 'Forward contracts'],
+    summary: '',
     highlights: [
-      'Owned P&L and O&M for 8 palm-oil combined-heat-and-power units supplying heat to greenhouses and power to the grid',
-      'Locked physical palm oil on forward contracts and took delivery into the plants, managing fuel cost against heat and power offtake',
-      'Supported the wider group’s oil & gas asset-leasing book',
+      'Ran the German Power Division (Gaea Power GmbH, co-founded then injected into the group): P&L and O&M of eight palm-oil CHP units supplying heat to greenhouses and power to the grid.',
+      'Locked in physical palm oil supply on forward contracts, took delivery into the plants, and managed fuel cost against heat and power offtake.',
+      'Supported the oil and gas division’s asset-leasing book.',
     ],
   },
   {
@@ -130,7 +134,7 @@ export const career = [
     regime: null,
     scope: 0.4,
     stack: [],
-    summary: 'BSc Economics and Mathematics, 2:1 Honours.',
+    summary: '',
     highlights: [],
   },
 ] as const satisfies CareerEntry[];

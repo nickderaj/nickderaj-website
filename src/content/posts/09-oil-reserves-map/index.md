@@ -47,4 +47,4 @@ The **API gravity** classification in the info panel tells you whether the crude
 
 ## Data Sources
 
-Reserve estimates sourced from the U.S. Energy Information Administration (EIA), OPEC Annual Statistical Bulletin, and the BP Statistical Review of World Energy. Crude quality data (API gravity, sulfur content) from assay databases and industry references. 2024--2026 figures are estimates based on the most recent available data. Country boundaries from Natural Earth. Map tiles by CARTO.
+Reserve estimates sourced from the U.S. Energy Information Administration (EIA), OPEC Annual Statistical Bulletin, and the BP Statistical Review of World Energy. Crude quality data (API gravity, sulfur content) from assay databases and industry references. 2024--2026 figures are estimates based on the most recent available data. Country boundaries from Natural Earth. Map tiles by Esri.

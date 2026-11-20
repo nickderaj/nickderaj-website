@@ -8,28 +8,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import { CircleDiagram } from './ceres/CircleDiagram.tsx';
-import { PostChart } from './PostChart.tsx';
-import { PythonTable } from './PythonTable.tsx';
 
-const CustomMermaid = lazy(() =>
-  import('./ceres/CustomMermaid.tsx').then((m) => ({ default: m.CustomMermaid })),
-);
-const CommoditySelector = lazy(() =>
-  import('./ceres/CommodityAnalysis.tsx').then((m) => ({ default: m.CommoditySelector })),
-);
-const CommodityCharts = lazy(() =>
-  import('./ceres/CommodityAnalysis.tsx').then((m) => ({ default: m.CommodityCharts })),
-);
-const PatternSelector = lazy(() =>
-  import('./ceres/PatternAnalysis.tsx').then((m) => ({ default: m.PatternSelector })),
-);
-const PatternDisplay = lazy(() =>
-  import('./ceres/PatternAnalysis.tsx').then((m) => ({ default: m.PatternDisplay })),
-);
-const PatternResultsTable = lazy(() =>
-  import('./ceres/PatternAnalysis.tsx').then((m) => ({ default: m.PatternResultsTable })),
-);
 const OilReservesMap = lazy(() =>
   import('./ceres/OilReservesMap.tsx').then((m) => ({ default: m.OilReservesMap })),
 );
@@ -120,13 +99,6 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
       if (!lang && !text.includes('\n')) {
         return <code>{children}</code>;
       }
-      if (lang === 'mermaid') {
-        return (
-          <Suspense fallback={Fallback}>
-            <CustomMermaid chart={text} />
-          </Suspense>
-        );
-      }
       if (lang && lang in calloutIcons) {
         return (
           <Callout variant={lang}>
@@ -158,42 +130,12 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
         loading="lazy"
       />
     ),
-    'python-table': ({ src }: { src?: string }) =>
-      src ? <PythonTable src={src} postSlug={postSlug} /> : null,
-    'python-figure': ({ src, caption }: { src?: string; caption?: string }) =>
-      src ? <PostChart src={src} postSlug={postSlug} {...(caption ? { caption } : {})} /> : null,
     'table-of-contents': ({ children }: { children?: ReactNode }) => (
       <nav aria-label="Table of contents" className="toc not-prose">
         <ul>{children}</ul>
       </nav>
     ),
     callout: Callout,
-    'circle-diagram': () => <CircleDiagram />,
-    'commodity-selector': () => (
-      <Suspense fallback={Fallback}>
-        <CommoditySelector />
-      </Suspense>
-    ),
-    'commodity-charts': () => (
-      <Suspense fallback={Fallback}>
-        <CommodityCharts />
-      </Suspense>
-    ),
-    'pattern-selector': () => (
-      <Suspense fallback={Fallback}>
-        <PatternSelector />
-      </Suspense>
-    ),
-    'pattern-display': () => (
-      <Suspense fallback={Fallback}>
-        <PatternDisplay />
-      </Suspense>
-    ),
-    'pattern-results-table': () => (
-      <Suspense fallback={Fallback}>
-        <PatternResultsTable />
-      </Suspense>
-    ),
     'oil-reserves-map': ({ datadir }: { datadir?: string }) => (
       <Suspense fallback={Fallback}>
         <OilReservesMap {...(datadir ? { dataDir: datadir } : {})} />
