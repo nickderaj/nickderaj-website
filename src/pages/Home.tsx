@@ -160,6 +160,16 @@ export default function Home() {
         </div>
       </Section>
 
+      <Section title="Recent writing">
+        <PostList posts={posts.slice(0, 3)} />
+        <Link
+          to="/blog"
+          className="text-muted-foreground hover:text-foreground mt-4 inline-flex items-center gap-1 font-mono text-xs"
+        >
+          all posts <ArrowRight className="h-3 w-3" />
+        </Link>
+      </Section>
+
       <CollapsibleSection title="Experience">
         <ol className="border-border relative space-y-10 border-l pl-6">
           {work.map((e) => (
@@ -222,16 +232,6 @@ export default function Home() {
           ))}
         </dl>
       </CollapsibleSection>
-
-      <Section title="Recent writing">
-        <PostList posts={posts.slice(0, 3)} />
-        <Link
-          to="/blog"
-          className="text-muted-foreground hover:text-foreground mt-4 inline-flex items-center gap-1 font-mono text-xs"
-        >
-          all posts <ArrowRight className="h-3 w-3" />
-        </Link>
-      </Section>
     </main>
   );
 }
