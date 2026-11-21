@@ -2,7 +2,7 @@
 title: 'World Oil Reserves Map'
 date: '2026-02-09'
 description: 'Interactive choropleth map of global proven oil reserves by country from 1980 to 2026, color-coded by crude oil sulfur content.'
-tags: ['oil', 'commodities', 'geopolitics', 'data-visualization']
+tags: ['commodities']
 ---
 
 <table-of-contents>

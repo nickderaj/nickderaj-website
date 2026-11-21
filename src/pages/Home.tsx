@@ -140,6 +140,26 @@ export default function Home() {
         ))}
       </div>
 
+      <Section title="Projects">
+        <div className="grid gap-4 sm:grid-cols-2">
+          {projects.map((p) => (
+            <a
+              key={p.id}
+              href={p.links[0]?.href}
+              target="_blank"
+              rel="noreferrer"
+              className="border-border hover:border-primary rounded-lg border p-4 transition-colors"
+            >
+              <div className="font-mono text-sm">{p.title}</div>
+              <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{p.thesis}</p>
+              <div className="text-primary mt-3 font-mono text-[11px]">
+                {p.tags.slice(0, 4).join(' · ')}
+              </div>
+            </a>
+          ))}
+        </div>
+      </Section>
+
       <CollapsibleSection title="Experience">
         <ol className="border-border relative space-y-10 border-l pl-6">
           {work.map((e) => (
@@ -175,38 +195,7 @@ export default function Home() {
         </ol>
       </CollapsibleSection>
 
-      <Section title="Projects">
-        <div className="grid gap-4 sm:grid-cols-3">
-          {projects.map((p) => (
-            <a
-              key={p.id}
-              href={p.links[0]?.href}
-              target="_blank"
-              rel="noreferrer"
-              className="border-border hover:border-primary rounded-lg border p-4 transition-colors"
-            >
-              <div className="font-mono text-sm">{p.title}</div>
-              <p className="text-muted-foreground mt-2 text-xs leading-relaxed">{p.thesis}</p>
-              <div className="text-primary mt-3 font-mono text-[11px]">
-                {p.tags.slice(0, 4).join(' · ')}
-              </div>
-            </a>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Skills">
-        <dl className="space-y-3 text-sm">
-          {skills.map(({ group, items }) => (
-            <div key={group} className="grid gap-1 sm:grid-cols-[170px_1fr] sm:gap-4">
-              <dt className="text-muted-foreground font-mono text-xs">{group}</dt>
-              <dd>{items.join(', ')}</dd>
-            </div>
-          ))}
-        </dl>
-      </Section>
-
-      <Section title="Education">
+      <CollapsibleSection title="Education">
         <div className="space-y-5">
           {education.map((e) => (
             <div key={e.id}>
@@ -221,7 +210,18 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </Section>
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Skills">
+        <dl className="space-y-3 text-sm">
+          {skills.map(({ group, items }) => (
+            <div key={group} className="grid gap-1 sm:grid-cols-[170px_1fr] sm:gap-4">
+              <dt className="text-muted-foreground font-mono text-xs">{group}</dt>
+              <dd>{items.join(', ')}</dd>
+            </div>
+          ))}
+        </dl>
+      </CollapsibleSection>
 
       <Section title="Recent writing">
         <PostList posts={posts.slice(0, 3)} />

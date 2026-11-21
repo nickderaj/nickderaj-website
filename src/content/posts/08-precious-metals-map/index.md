@@ -2,7 +2,7 @@
 title: 'World Precious Metals Reserves Map'
 date: '2026-02-09'
 description: 'Interactive choropleth map of global precious metals reserves — gold, silver, palladium, platinum, ruthenium and iridium — with active mine locations.'
-tags: ['commodities', 'geopolitics', 'data-visualization', 'metals']
+tags: ['commodities']
 ---
 
 <table-of-contents>
