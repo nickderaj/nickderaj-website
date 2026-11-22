@@ -142,9 +142,12 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
       </nav>
     ),
     callout: Callout,
-    'commodity-chart': ({ kind }: { kind?: string }) => (
+    'commodity-chart': ({ kind, group }: { kind?: string; group?: string }) => (
       <Suspense fallback={Fallback}>
-        <CommodityRatioChart kind={kind === 'precious' ? 'precious' : 'multiples'} />
+        <CommodityRatioChart
+          kind={kind === 'precious' || kind === 'alternatives' ? kind : 'multiples'}
+          {...(group ? { group } : {})}
+        />
       </Suspense>
     ),
     'gold-chart': ({ kind }: { kind?: string }) => (

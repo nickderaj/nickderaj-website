@@ -1,11 +1,18 @@
 import { scaleLog, scaleTime } from 'd3-scale';
 import { useEffect, useState } from 'react';
 
-type Stat = { id: string; name: string; r2: number; miss: number; lastRatio: number };
+type Stat = {
+  id: string;
+  name: string;
+  r2: number;
+  miss: number;
+  lastRatio: number;
+  group?: string;
+};
 type Point = [string, number, number]; // date, price, ratio to 2006-2021 real-yield line
 type Data = { stats: Stat[]; series: Record<string, Point[]> };
 
-export type CommodityChartKind = 'multiples' | 'precious';
+export type CommodityChartKind = 'multiples' | 'precious' | 'alternatives';
 
 const BREAK = '2022-01-01';
 const COLORS: Record<string, string> = {
@@ -16,9 +23,19 @@ const COLORS: Record<string, string> = {
 const LO = 0.25;
 const HI = 8;
 
-let cache: Promise<Data> | undefined;
-const load = (dir: string): Promise<Data> =>
-  (cache ??= fetch(`${dir}/commodities.json`).then((r) => r.json() as Promise<Data>));
+const cache = new Map<string, Promise<Data>>();
+const load = (dir: string, file: string): Promise<Data> => {
+  const url = `${dir}/${file}`;
+  let p = cache.get(url);
+  if (!p) {
+    p = fetch(url).then((r) => r.json() as Promise<Data>);
+    cache.set(url, p);
+  }
+  return p;
+};
+
+// alternatives.json spans 2006-2026; panels share one x-axis so short series don't stretch.
+const ALT_DOMAIN: [string, string] = ['2006-01-01', '2026-11-13'];
 
 const ms = (d: string) => new Date(`${d}T00:00:00Z`).getTime();
 const f = (v: number) => v.toFixed(1);
@@ -37,6 +54,7 @@ function Panel({
   extra,
   ticks,
   big,
+  domain,
 }: {
   w: number;
   h: number;
@@ -49,12 +67,13 @@ function Panel({
   extra?: React.ReactNode;
   ticks: number[];
   big?: boolean;
+  domain?: [string, string];
 }) {
   const first = series[0]?.pts[0];
   const last = series[0]?.pts.at(-1);
   if (!first || !last) return null;
   const x = scaleTime()
-    .domain([new Date(ms(first[0])), new Date(ms(last[0]))])
+    .domain([new Date(ms(domain?.[0] ?? first[0])), new Date(ms(domain?.[1] ?? last[0]))])
     .range([pad.l, w - pad.r]);
   const y = scaleLog()
     .domain([LO, HI])
@@ -137,18 +156,23 @@ function Panel({
 
 export function CommodityRatioChart({
   kind,
+  group,
   dataDir = '/data/gold-real-yields',
 }: {
   kind: CommodityChartKind;
+  group?: string;
   dataDir?: string;
 }) {
   const [data, setData] = useState<Data>();
   const [failed, setFailed] = useState(false);
   useEffect(() => {
-    load(dataDir).then(setData, () => {
-      setFailed(true);
-    });
-  }, [dataDir]);
+    load(dataDir, kind === 'alternatives' ? 'alternatives.json' : 'commodities.json').then(
+      setData,
+      () => {
+        setFailed(true);
+      },
+    );
+  }, [dataDir, kind]);
 
   if (failed)
     return (
@@ -156,6 +180,29 @@ export function CommodityRatioChart({
     );
   if (!data)
     return <div className="text-muted-foreground my-6 font-mono text-xs">Loading chart…</div>;
+
+  if (kind === 'alternatives') {
+    const stats = data.stats.filter((s) => !group || s.group === group);
+    return (
+      <div className="not-prose my-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {stats.map((s) => (
+          <figure key={s.id} className="border-border bg-card rounded-lg border p-2">
+            <Panel
+              w={240}
+              h={170}
+              pad={{ l: 30, r: 6, t: 6, b: 20 }}
+              series={[{ id: s.id, pts: data.series[s.id] ?? [], color: 'var(--chart-1)' }]}
+              miss={s.miss}
+              title={s.name}
+              sub={`R² ${s.r2.toFixed(2)}`}
+              ticks={[0.5, 1, 2, 4]}
+              domain={ALT_DOMAIN}
+            />
+          </figure>
+        ))}
+      </div>
+    );
+  }
 
   if (kind === 'multiples') {
     return (
