@@ -81,11 +81,11 @@ function Callout({
   const Icon = calloutIcons[v];
   return (
     <div className={`callout callout-${v} not-prose`}>
-      <Icon className="mt-0.5 h-4 w-4 shrink-0" />
-      <div>
-        {title ? <div className="callout-title">{title}</div> : null}
-        {children}
+      <div className="callout-label">
+        <Icon className="h-3.5 w-3.5 shrink-0" />
+        {title ?? `${v.charAt(0).toUpperCase()}${v.slice(1)}`}
       </div>
+      <div className="callout-body">{children}</div>
     </div>
   );
 }

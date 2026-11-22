@@ -227,39 +227,45 @@
   overflow-y: hidden;
   padding: 0.5em 0;
 }
+/* Callout: bordered card with its label sitting on the top edge, like a fieldset legend. */
 .callout {
-  display: flex;
-  gap: 0.75rem;
-  margin: 1.5rem 0;
-  padding: 0.9rem 1rem;
+  --callout: var(--primary);
+  position: relative;
+  margin: 2.25rem 0 1.5rem;
+  padding: 1.1rem 1.1rem 0.85rem;
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--callout) 45%, var(--border));
+  background: color-mix(in oklab, var(--callout) 6%, var(--card));
   font-size: 0.95rem;
   line-height: 1.7;
 }
-.callout > div > * + * {
+.callout-label {
+  position: absolute;
+  top: 0;
+  left: 0.85rem;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.5rem;
+  background: var(--background);
+  color: var(--callout);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.callout-body > * + * {
   margin-top: 0.5em;
 }
-.callout-note {
-  border-left: 3px solid var(--chart-2);
-  background: color-mix(in oklch, var(--chart-2) 8%, transparent);
-}
-.callout-note svg {
-  color: var(--chart-2);
-}
 .callout-tip {
-  border-left: 3px solid var(--primary);
-  background: color-mix(in oklch, var(--primary) 8%, transparent);
-}
-.callout-tip svg {
-  color: var(--primary);
+  --callout: var(--chart-4);
 }
 .callout-warning {
-  border-left: 3px solid var(--destructive);
-  background: color-mix(in oklch, var(--destructive) 8%, transparent);
+  --callout: var(--destructive);
 }
-.callout-warning svg {
-  color: var(--destructive);
+.callout-important {
+  --callout: var(--chart-5);
 }
 
 html {
@@ -300,17 +306,6 @@ html {
 .prose img {
   max-width: 100%;
   height: auto;
-}
-.callout-important {
-  border-left: 3px solid var(--chart-5);
-  background: color-mix(in oklch, var(--chart-5) 8%, transparent);
-}
-.callout-important svg {
-  color: var(--chart-5);
-}
-.callout-title {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
 }
 .leaflet-container {
   font-family: var(--font-sans);
