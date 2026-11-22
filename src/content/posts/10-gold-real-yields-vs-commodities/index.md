@@ -27,8 +27,6 @@ The post leans on a few statistical terms. Here is what each one means, in the o
 
 <callout variant="note" title="Correlation: levels vs changes">Correlation runs from −1 (opposite) to +1 (together). Level correlation compares the prices themselves, which two trending series can match by accident. Change correlation compares week-to-week (or month-to-month) moves, which shows whether they actually move together.</callout>
 
-<callout variant="note" title="Break-out rule used here">For the alternative commodities I call a series a break-out if its fit R² to 2021 is at least 0.30 and no more than 40% of its weeks after 2021 fall inside the band. It is a rule I chose to pick out the series worth comparing with gold.</callout>
-
 ## Gold and real yields, together
 
 <gold-chart kind="overlay"></gold-chart>
