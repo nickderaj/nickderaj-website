@@ -107,7 +107,9 @@ export default function Home() {
       <section>
         <div>
           <h1 className="text-4xl font-semibold tracking-tight">Nick de Raj</h1>
-          <p className="text-primary mt-1 font-mono text-sm">Full-Stack Developer &amp; Researcher</p>
+          <p className="text-primary mt-1 font-mono text-sm">
+            Full-Stack Developer &amp; Researcher
+          </p>
           <p className="text-muted-foreground mt-1 font-mono text-xs">London, UK</p>
         </div>
       </section>
