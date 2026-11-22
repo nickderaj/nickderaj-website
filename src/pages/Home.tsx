@@ -4,12 +4,14 @@ import { projects } from '@/content/projects/index.ts';
 import { skills } from '@/content/skills.ts';
 import { posts } from '@/lib/posts.ts';
 import { ArrowRight, ChevronDown, FileDown, Mail } from 'lucide-react';
-import { useId, useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useDocumentMeta } from './useDocumentMeta.ts';
 
 const SUMMARY =
   'Full-stack and quant developer, currently at Goldman Sachs. Previously in Oil and Power Markets, transitioned into tech via AI and crypto gaming and trading startups. Now researching quant strategies.';
+
+const MAX_POSTS = 5;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -46,36 +48,6 @@ function XIcon({ className }: { className?: string }) {
     <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
       <path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.9L7.1 3.9H5.1L17.7 20Z" />
     </svg>
-  );
-}
-
-/** A section whose body is hidden until the heading is toggled; collapsed by default. */
-function CollapsibleSection({ title, children }: { title: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  const id = useId();
-  return (
-    <section className="mt-20">
-      <h2 className="mb-6 font-mono text-xs tracking-[0.2em] uppercase">
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={id}
-          onClick={() => {
-            setOpen((o) => !o);
-          }}
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 uppercase transition-colors"
-        >
-          {title}
-          <ChevronDown
-            aria-hidden="true"
-            className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`}
-          />
-        </button>
-      </h2>
-      <div id={id} hidden={!open}>
-        {children}
-      </div>
-    </section>
   );
 }
 
@@ -136,6 +108,63 @@ export default function Home() {
         ))}
       </div>
 
+      <Section title="Recent writing">
+        <PostList posts={posts.slice(0, MAX_POSTS)} />
+        {posts.length > MAX_POSTS && (
+          <Link
+            to="/blog"
+            className="text-muted-foreground hover:text-foreground mt-4 inline-flex items-center gap-1 font-mono text-xs"
+          >
+            See more <ArrowRight className="h-3 w-3" />
+          </Link>
+        )}
+      </Section>
+
+      <Section title="Experience">
+        <ol className="border-border relative space-y-3 border-l pl-6">
+          {work.map((e) => (
+            <li key={e.id} className="relative">
+              <span className="border-primary bg-background absolute top-3 -left-[29px] h-2.5 w-2.5 rounded-full border" />
+              <details className="group border-border rounded-lg border">
+                <summary className="hover:bg-secondary/40 flex cursor-pointer list-none flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-lg px-4 py-3 [&::-webkit-details-marker]:hidden">
+                  <h3 className="flex items-center gap-2 font-medium">
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="text-muted-foreground h-4 w-4 shrink-0 -rotate-90 transition-transform group-open:rotate-0"
+                    />
+                    <span>
+                      {e.role} <span className="text-muted-foreground">· {e.org}</span>
+                    </span>
+                  </h3>
+                  <span className="text-muted-foreground font-mono text-xs">
+                    {formatPeriod(e.start, e.end)}
+                  </span>
+                </summary>
+                <div className="px-4 pb-4">
+                  <ul className="text-muted-foreground space-y-1.5 text-sm">
+                    {e.highlights.map((h) => (
+                      <li key={h} className="before:text-primary before:mr-2 before:content-['▸']">
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {e.stack.map((s) => (
+                      <span
+                        key={s}
+                        className="bg-secondary text-secondary-foreground rounded px-1.5 py-0.5 font-mono text-[11px]"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
       <Section title="Projects">
         <div className="grid gap-4 sm:grid-cols-2">
           {projects.map((p) => (
@@ -156,52 +185,7 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section title="Recent writing">
-        <PostList posts={posts.slice(0, 3)} />
-        <Link
-          to="/blog"
-          className="text-muted-foreground hover:text-foreground mt-4 inline-flex items-center gap-1 font-mono text-xs"
-        >
-          all posts <ArrowRight className="h-3 w-3" />
-        </Link>
-      </Section>
-
-      <CollapsibleSection title="Experience">
-        <ol className="border-border relative space-y-10 border-l pl-6">
-          {work.map((e) => (
-            <li key={e.id} className="relative">
-              <span className="border-primary bg-background absolute top-1.5 -left-[29px] h-2.5 w-2.5 rounded-full border" />
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-medium">
-                  {e.role} <span className="text-muted-foreground">· {e.org}</span>
-                </h3>
-                <span className="text-muted-foreground font-mono text-xs">
-                  {formatPeriod(e.start, e.end)}
-                </span>
-              </div>
-              <ul className="text-muted-foreground mt-3 space-y-1.5 text-sm">
-                {e.highlights.map((h) => (
-                  <li key={h} className="before:text-primary before:mr-2 before:content-['▸']">
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {e.stack.map((s) => (
-                  <span
-                    key={s}
-                    className="bg-secondary text-secondary-foreground rounded px-1.5 py-0.5 font-mono text-[11px]"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </CollapsibleSection>
-
-      <CollapsibleSection title="Education">
+      <Section title="Education">
         <div className="space-y-5">
           {education.map((e) => (
             <div key={e.id}>
@@ -216,9 +200,9 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </CollapsibleSection>
+      </Section>
 
-      <CollapsibleSection title="Skills">
+      <Section title="Skills">
         <dl className="space-y-3 text-sm">
           {skills.map(({ group, items }) => (
             <div key={group} className="grid gap-1 sm:grid-cols-[170px_1fr] sm:gap-4">
@@ -227,7 +211,7 @@ export default function Home() {
             </div>
           ))}
         </dl>
-      </CollapsibleSection>
+      </Section>
     </main>
   );
 }
