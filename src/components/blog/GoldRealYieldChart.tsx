@@ -283,7 +283,7 @@ function Ratio({ data }: { data: Loaded }) {
         strokeWidth={3}
         paintOrder="stroke"
       >
-        band: ±2 typical misses (±{Math.round(2 * stats.miss * 100)}% in logs)
+        band: ±2 standard deviations (±{Math.round(2 * stats.miss * 100)}% in logs)
       </text>
     </>
   );

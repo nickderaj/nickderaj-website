@@ -19,7 +19,7 @@ The post leans on a few statistical terms. Here is what each one means, in the o
 
 <callout variant="note" title="R² (R-squared)">A number from 0 to 1 for how much of the ups and downs in ln(price) the line explains. 0.85 means 85% of the variation is accounted for; 0 means none. It measures fit, not cause, and two series that both trend over time can score high by coincidence.</callout>
 
-<callout variant="note" title="Typical miss and the band">The typical miss is the standard deviation of the gaps between the actual and fitted values, about 12% for gold. The shaded band is ±2 typical misses, which holds roughly 95% of weeks if the gaps are bell-shaped. "In band" means a week fell inside it.</callout>
+<callout variant="note" title="Standard deviation and the band">Standard deviation measures how spread out numbers are around their average. Here it is the spread of the gaps between actual and fitted prices, about 12% for gold. The shaded band is ±2 standard deviations. If the gaps follow a normal distribution, where most values sit near the average and fewer sit further out (about 68% within ±1 standard deviation and about 95% within ±2), the band should hold roughly 95% of weeks. "In band" means a week fell inside it.</callout>
 
 <callout variant="note" title="Price ÷ line (the multiple)">The actual price divided by what the 2006–2021 line predicts for that week's real yield. 1× is on the line, 2× is twice the line's price, 0.5× is half. The ratio charts use a log scale, so these distances look even.</callout>
 
@@ -45,13 +45,13 @@ OLS of ln(gold) on the real yield, 2006–2021 (835 weeks): R² 0.85, about 25% 
 
 <gold-chart kind="ratio"></gold-chart>
 
-Gold divided by the fitted line. Within ±24% (two typical misses of 12%) in 787 of 835 weeks to 2021. Last inside the band on 29 July 2022.
+Gold divided by the fitted line. Within ±24% (two standard deviations of 12%) in 787 of 835 weeks to 2021. Last inside the band on 29 July 2022.
 
 ---
 
 ## Same test, other commodities
 
-Same method: ln(price) on the 10-year real yield, fitted 2006–2021, then price ÷ line. Weekly front-month futures (Yahoo). Shaded band is ±2 typical misses of each commodity's own fit; dashed vertical is 2022.
+Same method: ln(price) on the 10-year real yield, fitted 2006–2021, then price ÷ line. Weekly front-month futures (Yahoo). Shaded band is ±2 standard deviations of each commodity's own fit; dashed vertical is 2022.
 
 <commodity-chart kind="multiples"></commodity-chart>
 
@@ -79,7 +79,7 @@ Price ÷ real-yield line, log scale. All three lifted away from 1× after 2021; 
 
 ## Alternative commodities
 
-Same test again on 48 more markets, to see whether anything other than the precious metals had a real-yield relationship before 2022 and lost it afterwards. Same method: ln(price) on the 10-year real yield, fitted to 2021 (from each series' own start), then price ÷ line. Shaded band is ±2 typical misses of that fit; dashed vertical is 2022. Cointegration critical value is −3.34 at 5%, as above. Each chart overlays every series in its category on one log axis, so short series start late and the Chinese series stop in July 2024. Grey lines are the ratio for each series, labelled when the latest ratio is above 2× or below 0.6×. Coloured lines are the break-outs: a fit R² of at least 0.30 before 2022 and no more than 40% of weeks inside the band afterwards. Four series meet that rule: live cattle, feeder cattle, tin and Chinese glass.
+Same test again on 48 more markets, to see whether anything other than the precious metals had a real-yield relationship before 2022 and lost it afterwards. Same method: ln(price) on the 10-year real yield, fitted to 2021 (from each series' own start), then price ÷ line. Shaded band is ±2 standard deviations of that fit; dashed vertical is 2022. Cointegration critical value is −3.34 at 5%, as above. Each chart overlays every series in its category on one log axis, so short series start late and the Chinese series stop in July 2024. Grey lines are the ratio for each series, labelled when the latest ratio is above 2× or below 0.6×. Coloured lines are the break-outs: a fit R² of at least 0.30 before 2022 and no more than 40% of weeks inside the band afterwards. Four series meet that rule: live cattle, feeder cattle, tin and Chinese glass.
 
 **What stands out**
 
