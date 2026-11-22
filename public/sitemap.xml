@@ -11,12 +11,27 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://nickderaj.com/blog/08-precious-metals-map</loc>
+    <loc>https://nickderaj.com/blog/01-precious-metals-map</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://nickderaj.com/blog/09-oil-reserves-map</loc>
+    <loc>https://nickderaj.com/blog/02-oil-reserves-map</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nickderaj.com/blog/03-gold-real-yields-vs-commodities</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nickderaj.com/blog/04-alternative-commodities-correlations</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nickderaj.com/blog/05-use-cases-of-riemanns-hypothesis</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -5,7 +5,7 @@ description: 'Correlations, baskets, stress episodes and recent moves for mainst
 tags: ['commodities']
 ---
 
-A follow-up to [Gold and real yields vs other commodities](/blog/10-gold-real-yields-vs-commodities). That post tested which commodities followed real yields. This one looks at how commodities outside the mainstream move relative to each other, to mainstream commodities and to equities.
+A follow-up to [Gold and real yields vs other commodities](/blog/03-gold-real-yields-vs-commodities). That post tested which commodities followed real yields. This one looks at how commodities outside the mainstream move relative to each other, to mainstream commodities and to equities.
 
 <alt-chart kind="stats"></alt-chart>
 
