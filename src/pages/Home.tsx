@@ -3,7 +3,7 @@ import { career } from '@/content/career.ts';
 import { projects } from '@/content/projects/index.ts';
 import { skills } from '@/content/skills.ts';
 import { posts } from '@/lib/posts.ts';
-import { ArrowRight, ChevronDown, FileDown, Mail } from 'lucide-react';
+import { ArrowRight, ChevronDown, Mail } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useDocumentMeta } from './useDocumentMeta.ts';
@@ -87,14 +87,6 @@ export default function Home() {
       </section>
       <p className="text-muted-foreground mt-8 max-w-2xl leading-relaxed">{SUMMARY}</p>
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <a
-          href="/nick-de-raj-cv.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="bg-primary text-primary-foreground inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium hover:opacity-90"
-        >
-          <FileDown className="h-4 w-4" /> View CV (PDF)
-        </a>
         {socials.map(({ href, label, Icon }) => (
           <a
             key={label}
