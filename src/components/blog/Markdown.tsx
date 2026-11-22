@@ -8,9 +8,13 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import type { AltChartKind } from './AltCorrelationChart.tsx';
 
 const CommodityRatioChart = lazy(() =>
   import('./CommodityRatioChart.tsx').then((m) => ({ default: m.CommodityRatioChart })),
+);
+const AltCorrelationChart = lazy(() =>
+  import('./AltCorrelationChart.tsx').then((m) => ({ default: m.AltCorrelationChart })),
 );
 const GoldRealYieldChart = lazy(() =>
   import('./GoldRealYieldChart.tsx').then((m) => ({ default: m.GoldRealYieldChart })),
@@ -152,6 +156,11 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
           }
           {...(group ? { group } : {})}
         />
+      </Suspense>
+    ),
+    'alt-chart': ({ kind }: { kind?: string }) => (
+      <Suspense fallback={Fallback}>
+        <AltCorrelationChart kind={(kind ?? 'stats') as AltChartKind} />
       </Suspense>
     ),
     'gold-chart': ({ kind }: { kind?: string }) => (

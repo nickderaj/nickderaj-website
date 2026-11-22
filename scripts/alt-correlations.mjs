@@ -169,7 +169,12 @@ const W = {
   preChina: ['0000', '2021-12-31'],
 };
 const res = { within: {}, cross: {}, vsBench: {}, top: {} };
-const sets = { main: group.main, other: group.other, china: group.china };
+// Mainstream excludes DJP, which is the benchmark, not a member.
+const sets = {
+  main: group.main.filter((s) => s.id !== 'djp'),
+  other: group.other,
+  china: group.china,
+};
 for (const [k, S] of Object.entries(sets)) {
   res.within[k] = {};
   for (const [wn, [lo, hi]] of Object.entries(W)) res.within[k][wn] = summ(pairs(S, S, lo, hi));
@@ -409,8 +414,59 @@ for (const [id, nm, t] of RECENT) {
     day: dayMove(rows),
     week: move(px, '2026-11-13', '2026-11-20'),
     twoWeek: move(px, '2026-11-06', '2026-11-20'),
+    px: rows.filter(([d]) => d >= '2026-11-06'),
   });
 }
+
+// ---- Data for the post's charts ----
+const ordered = [
+  ...mainEx.map((x) => ({ ...x, g: 'main' })),
+  ...group.other.map((x) => ({ ...x, g: 'other' })),
+  ...group.china.map((x) => ({ ...x, g: 'china' })),
+];
+const r3 = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
+const matrix = ordered.map((a, i) =>
+  ordered.map((b, j) => (i === j ? 1 : r3(corr(a.r, b.r, '0000', '9999', 100)))),
+);
+const curve = (r) => {
+  let v = 0;
+  return [...r.entries()]
+    .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+    .map(([d, x]) => [d, Math.round(100 * Math.exp((v += x)) * 100) / 100]);
+};
+const weekRows = [];
+for (const d of [...bk.main.keys()].sort()) {
+  if (bk.other.has(d) && spx.r.has(d))
+    weekRows.push([d, r3(spx.r.get(d)), r3(bk.main.get(d)), r3(bk.other.get(d))]);
+}
+res.viz = {
+  series: ordered.map((x) => ({ id: x.id, name: x.name, g: x.g })),
+  matrix,
+  vsBench: ordered.map((x) => ({
+    id: x.id,
+    spx: r3(corr(x.r, spx.r, '0000', '9999', 100)),
+    djp: r3(corr(x.r, djp.r, '0000', '9999', 100)),
+  })),
+  curves: {
+    main: curve(bk.main),
+    other: curve(bk.other),
+    china: curve(bk.china),
+    spx: curve(spx.r),
+    djp: curve(djp.r),
+  },
+  weeks: weekRows,
+  worstWeeks: worst,
+  episodeMembers: EP.map(([label, from, to]) => ({
+    label,
+    from,
+    to,
+    spx: win(spx.px, from, to),
+    djp: win(djp.px, from, to),
+    members: ordered
+      .map((x) => ({ n: x.name, g: x.g, r: r3(win(x.px, from, to)) }))
+      .filter((x) => x.r != null),
+  })),
+};
 res.meta = {
   start: START,
   end: END,
