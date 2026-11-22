@@ -19,9 +19,9 @@ describe('App routing', () => {
     expect(screen.getByRole('heading', { name: /recent writing/i })).toBeInTheDocument();
   });
 
-  it('lists the map posts on /blog', () => {
+  it('lists the posts on /blog', () => {
     renderAt('/blog');
-    expect(posts.length).toBe(2);
+    expect(posts.length).toBe(3);
     expect(screen.getByRole('heading', { name: 'Writing' })).toBeInTheDocument();
   });
 
