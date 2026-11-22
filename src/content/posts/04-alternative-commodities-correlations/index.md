@@ -1,6 +1,6 @@
 ---
 title: 'How alternative commodities move together and apart'
-date: '2026-11-22'
+date: '2026-11-21'
 description: 'Correlations, baskets, stress episodes and recent moves for mainstream, other and Chinese onshore commodity futures, in charts.'
 tags: ['commodities']
 ---

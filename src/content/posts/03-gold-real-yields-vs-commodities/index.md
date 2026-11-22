@@ -1,6 +1,6 @@
 ---
 title: 'Gold and real yields vs other commodities'
-date: '2026-11-21'
+date: '2026-11-20'
 description: 'Gold stopped following real yields after 2021. Was it the only one? The same test on 56 other commodities, from silver to Chinese bitumen.'
 tags: ['commodities']
 ---
