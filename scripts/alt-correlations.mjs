@@ -353,7 +353,7 @@ for (const [k, S] of Object.entries({ main: mainEx, other: group.other, china: g
 res.worstSpxWeeks.spxMean = mean(worst.map((d) => spx.r.get(d)));
 res.worstSpxWeeks.spxMin = Math.min(...worst.map((d) => spx.r.get(d)));
 res.worstSpxWeeks.spxMax = Math.max(...worst.map((d) => spx.r.get(d)));
-// Markets named by Babbedge (Top Traders Unplugged, Apr 2026) that have live Yahoo prices; ETFs/equities are proxies.
+// Niche markets with live Yahoo prices; ETFs/equities are proxies.
 const NAMED = [
   ['ttf', 'Dutch TTF gas', 'TTF=F'],
   ['iron', 'Iron ore 62%', 'TIO=F'],

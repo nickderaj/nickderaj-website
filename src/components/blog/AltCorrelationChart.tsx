@@ -1178,7 +1178,7 @@ function Recent({ d }: { d: Data }) {
         items={[
           { label: 'Equities', color: FG },
           { label: 'Mainstream commodities', color: COLOR.main },
-          { label: 'Markets named by GreshamQuant', color: COLOR.other },
+          { label: 'Niche-market proxies', color: COLOR.other },
         ]}
       />
     </div>
@@ -1204,7 +1204,7 @@ function Dumbbell({ d }: { d: Data }) {
         viewBox={`0 0 ${String(W)} ${String(H)}`}
         className="h-auto w-full"
         role="img"
-        aria-label="Correlation of named-market proxies with equities and commodities"
+        aria-label="Correlation of niche-market proxies with equities and commodities"
       >
         <g fontFamily="var(--font-mono)" fontSize={10} fill={MUTED}>
           {[-0.2, 0, 0.2, 0.4, 0.6].map((t) => (

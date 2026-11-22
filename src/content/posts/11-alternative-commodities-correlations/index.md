@@ -82,11 +82,11 @@ The 20 worst weekly S&P 500 returns since 2006 ranged from −20.1% to −5.9%, 
 
 <alt-chart kind="recent"></alt-chart>
 
-Futures and ETFs with live prices for markets that GreshamQuant has named publicly. These are market prices, not GreshamQuant's returns or positions. South African sunflower seeds, Chinese bitumen, US power, biofuels, freight routes and propane have no live public series here. Coal and uranium are equity ETFs.
+Futures and ETFs with live prices for eight niche markets: Dutch gas, iron ore, US hot-rolled steel, carbon, dry bulk freight, coal and uranium. These are market prices only. South African sunflower seeds, US power, biofuels, freight routes and propane have no live public series here. Coal and uranium are equity ETFs.
 
 <alt-chart kind="dumbbell"></alt-chart>
 
-Weekly correlations among the eight named-market proxies from 2024-01-26 (the start of the COAL ETF series), 28 pairs: mean 0.10, median 0.07, 36% of pairs negative, 11% above 0.3. The highest is Coal equities ETF (COAL) / Uranium equities ETF (URA) at 0.48; the lowest is Dutch TTF gas / Uranium equities ETF (URA) at −0.12.
+Weekly correlations among the eight niche-market proxies from 2024-01-26 (the start of the COAL ETF series), 28 pairs: mean 0.10, median 0.07, 36% of pairs negative, 11% above 0.3. The highest is Coal equities ETF (COAL) / Uranium equities ETF (URA) at 0.48; the lowest is Dutch TTF gas / Uranium equities ETF (URA) at −0.12.
 
 ## Method and reproduction
 
