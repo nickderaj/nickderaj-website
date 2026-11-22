@@ -21,7 +21,7 @@ describe('App routing', () => {
 
   it('lists the posts on /blog', () => {
     renderAt('/blog');
-    expect(posts.length).toBe(4);
+    expect(posts.length).toBe(5);
     expect(screen.getByRole('heading', { name: 'Writing' })).toBeInTheDocument();
   });
 

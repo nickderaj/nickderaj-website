@@ -19,6 +19,9 @@ const AltCorrelationChart = lazy(() =>
 const GoldRealYieldChart = lazy(() =>
   import('./GoldRealYieldChart.tsx').then((m) => ({ default: m.GoldRealYieldChart })),
 );
+const RiemannChart = lazy(() =>
+  import('./RiemannChart.tsx').then((m) => ({ default: m.RiemannChart })),
+);
 const OilReservesMap = lazy(() =>
   import('./ceres/OilReservesMap.tsx').then((m) => ({ default: m.OilReservesMap })),
 );
@@ -166,6 +169,17 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
     'gold-chart': ({ kind }: { kind?: string }) => (
       <Suspense fallback={Fallback}>
         <GoldRealYieldChart kind={kind === 'ratio' || kind === 'overlay' ? kind : 'scatter'} />
+      </Suspense>
+    ),
+    'riemann-chart': ({ kind }: { kind?: string }) => (
+      <Suspense fallback={Fallback}>
+        <RiemannChart
+          kind={
+            kind === 'witnesses' || kind === 'residues' || kind === 'race' || kind === 'outlook'
+              ? kind
+              : 'industries'
+          }
+        />
       </Suspense>
     ),
     'oil-reserves-map': ({ datadir }: { datadir?: string }) => (
