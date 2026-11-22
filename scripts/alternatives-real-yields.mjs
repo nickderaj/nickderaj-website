@@ -170,6 +170,7 @@ for (const c of SPEC) {
       end: o.at(-1).d,
       nTrain: train.length,
       nPost: post.length,
+      breakout: false,
       r2: fit.r2,
       slope: b1,
       miss,
@@ -187,6 +188,8 @@ for (const c of SPEC) {
     out.push({ id: c.id, name: c.name, skip: e.message });
   }
 }
+// Break-out rule: real pre-2022 fit (R² >= 0.30) and mostly outside its band afterwards (<= 40% of weeks inside).
+for (const s of out) if (!s.skip) s.breakout = s.r2 >= 0.3 && s.bandPost <= 0.4;
 writeFileSync(
   'public/data/gold-real-yields/alternatives.json',
   JSON.stringify({ stats: out.filter((s) => !s.skip), series }),

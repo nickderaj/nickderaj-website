@@ -8,11 +8,12 @@ type Stat = {
   miss: number;
   lastRatio: number;
   group?: string;
+  breakout?: boolean;
 };
 type Point = [string, number, number]; // date, price, ratio to 2006-2021 real-yield line
 type Data = { stats: Stat[]; series: Record<string, Point[]> };
 
-export type CommodityChartKind = 'multiples' | 'precious' | 'alternatives';
+export type CommodityChartKind = 'multiples' | 'precious' | 'alternatives' | 'breakouts';
 
 const BREAK = '2022-01-01';
 const COLORS: Record<string, string> = {
@@ -55,11 +56,12 @@ function Panel({
   ticks,
   big,
   domain,
+  ariaLabel,
 }: {
   w: number;
   h: number;
   pad: { l: number; r: number; t: number; b: number };
-  series: { id: string; pts: Point[]; color: string }[];
+  series: { id: string; pts: Point[]; color: string; opacity?: number; width?: number }[];
   miss?: number;
   title?: string;
   sub?: string;
@@ -68,6 +70,7 @@ function Panel({
   ticks: number[];
   big?: boolean;
   domain?: [string, string];
+  ariaLabel?: string;
 }) {
   const first = series[0]?.pts[0];
   const last = series[0]?.pts.at(-1);
@@ -85,7 +88,7 @@ function Panel({
       viewBox={`0 0 ${String(w)} ${String(h)}`}
       className="h-auto w-full"
       role="img"
-      aria-label={title ?? 'Ratio chart'}
+      aria-label={ariaLabel ?? title ?? 'Ratio chart'}
     >
       <g fontFamily="var(--font-mono)" fontSize={fs} fill="var(--muted-foreground)">
         {ticks.map((v) => (
@@ -138,7 +141,9 @@ function Panel({
           d={line(s.pts.map((p) => [x(new Date(ms(p[0]))), y(Math.min(HI, Math.max(LO, p[2])))]))}
           fill="none"
           stroke={s.color}
-          strokeWidth={big ? 1.8 : 1.4}
+          strokeWidth={s.width ?? (big ? 1.8 : 1.4)}
+          strokeOpacity={s.opacity ?? 1}
+          strokeLinejoin="round"
         />
       ))}
       {title && (
@@ -154,6 +159,71 @@ function Panel({
   );
 }
 
+const STRONG: Record<string, string> = {
+  gold: 'var(--chart-1)',
+  tin: 'var(--chart-3)',
+  cattle: 'var(--chart-2)',
+  feeder: 'var(--chart-4)',
+  glass: 'var(--chart-5)',
+};
+type Line = { id: string; name: string; pts: Point[]; color: string; strong: boolean };
+
+// Every series of a category on one log chart. Strong lines are coloured and always labelled; the rest
+// are grey and labelled only when the latest ratio is above 2x or below 0.6x (or the category is small).
+function Combined({ lines, label }: { lines: Line[]; label?: string }) {
+  const W = 720;
+  const H = 400;
+  const pad = { l: 44, r: 150, t: 16, b: 30 };
+  const y = scaleLog()
+    .domain([LO, HI])
+    .range([H - pad.b, pad.t]);
+  const latest = (l: Line) => l.pts.at(-1)?.[2] ?? 1;
+  const shown = lines
+    .filter((l) => l.strong || lines.length <= 5 || latest(l) >= 2 || latest(l) <= 0.6)
+    .map((l) => ({ l, y0: y(Math.min(HI, Math.max(LO, latest(l)))) }))
+    .sort((a, b) => a.y0 - b.y0);
+  const GAP = 12;
+  const ys: number[] = [];
+  shown.forEach(({ y0 }, i) => ys.push(Math.max(y0, i ? (ys[i - 1] ?? 0) + GAP : y0)));
+  for (let i = ys.length - 1; i >= 0; i--)
+    ys[i] = Math.min(ys[i] ?? 0, i === ys.length - 1 ? H - pad.b : (ys[i + 1] ?? 0) - GAP);
+  const series = [...lines]
+    .sort((a, b) => Number(a.strong) - Number(b.strong))
+    .map((l) => ({
+      id: l.id,
+      pts: l.pts,
+      color: l.strong ? l.color : 'var(--muted-foreground)',
+      opacity: l.strong ? 1 : 0.45,
+      width: l.strong ? 2 : 1,
+    }));
+  return (
+    <figure className="not-prose border-border bg-card my-8 rounded-lg border p-3">
+      <Panel
+        w={W}
+        h={H}
+        pad={pad}
+        big
+        series={series}
+        ticks={[0.25, 0.5, 1, 2, 4, 8]}
+        domain={ALT_DOMAIN}
+        ariaLabel={`${label ?? 'Commodities'}: price divided by real-yield line`}
+        extra={shown.map(({ l }, i) => (
+          <text
+            key={l.id}
+            x={W - pad.r + 6}
+            y={(ys[i] ?? 0) + 4}
+            fontSize={l.strong ? 12 : 10}
+            fontWeight={l.strong ? 600 : 400}
+            fill={l.strong ? l.color : 'var(--muted-foreground)'}
+          >
+            {`${l.name} ${latest(l).toFixed(1)}×`}
+          </text>
+        ))}
+      />
+    </figure>
+  );
+}
+
 export function CommodityRatioChart({
   kind,
   group,
@@ -166,8 +236,17 @@ export function CommodityRatioChart({
   const [data, setData] = useState<Data>();
   const [failed, setFailed] = useState(false);
   useEffect(() => {
-    load(dataDir, kind === 'alternatives' ? 'alternatives.json' : 'commodities.json').then(
-      setData,
+    const files =
+      kind === 'breakouts'
+        ? ['alternatives.json', 'commodities.json']
+        : [kind === 'alternatives' ? 'alternatives.json' : 'commodities.json'];
+    Promise.all(files.map((file) => load(dataDir, file))).then(
+      (parts) => {
+        setData({
+          stats: parts.flatMap((d) => d.stats),
+          series: Object.assign({}, ...parts.map((d) => d.series)) as Data['series'],
+        });
+      },
       () => {
         setFailed(true);
       },
@@ -181,26 +260,23 @@ export function CommodityRatioChart({
   if (!data)
     return <div className="text-muted-foreground my-6 font-mono text-xs">Loading chart…</div>;
 
-  if (kind === 'alternatives') {
-    const stats = data.stats.filter((s) => !group || s.group === group);
+  if (kind === 'alternatives' || kind === 'breakouts') {
+    const stats =
+      kind === 'breakouts'
+        ? [...data.stats.filter((s) => s.id === 'gold'), ...data.stats.filter((s) => s.breakout)]
+        : data.stats.filter((s) => s.group === group);
+    const lines: Line[] = stats.map((s) => ({
+      id: s.id,
+      name: s.name,
+      pts: data.series[s.id] ?? [],
+      strong: kind === 'breakouts' || !!s.breakout,
+      color: STRONG[s.id] ?? 'var(--chart-2)',
+    }));
     return (
-      <div className="not-prose my-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {stats.map((s) => (
-          <figure key={s.id} className="border-border bg-card rounded-lg border p-2">
-            <Panel
-              w={240}
-              h={170}
-              pad={{ l: 30, r: 6, t: 6, b: 20 }}
-              series={[{ id: s.id, pts: data.series[s.id] ?? [], color: 'var(--chart-1)' }]}
-              miss={s.miss}
-              title={s.name}
-              sub={`R² ${s.r2.toFixed(2)}`}
-              ticks={[0.5, 1, 2, 4]}
-              domain={ALT_DOMAIN}
-            />
-          </figure>
-        ))}
-      </div>
+      <Combined
+        lines={lines}
+        label={kind === 'breakouts' ? 'Break-outs vs gold' : (group ?? 'Commodities')}
+      />
     );
   }
 

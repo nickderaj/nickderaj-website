@@ -145,7 +145,11 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
     'commodity-chart': ({ kind, group }: { kind?: string; group?: string }) => (
       <Suspense fallback={Fallback}>
         <CommodityRatioChart
-          kind={kind === 'precious' || kind === 'alternatives' ? kind : 'multiples'}
+          kind={
+            kind === 'precious' || kind === 'alternatives' || kind === 'breakouts'
+              ? kind
+              : 'multiples'
+          }
           {...(group ? { group } : {})}
         />
       </Suspense>

@@ -57,12 +57,12 @@ Price ÷ real-yield line, log scale. All three lifted away from 1× after 2021; 
 
 ## Alternative commodities
 
-Same test again on 48 more markets, to see whether anything other than the precious metals had a real-yield relationship before 2022 and lost it afterwards. Same method: ln(price) on the 10-year real yield, fitted to 2021 (from each series' own start), then price ÷ line. Shaded band is ±2 typical misses of that fit; dashed vertical is 2022. Cointegration critical value is −3.34 at 5%, as above. Panels share one time axis, so short series start late and the Chinese series stop in July 2024.
+Same test again on 48 more markets, to see whether anything other than the precious metals had a real-yield relationship before 2022 and lost it afterwards. Same method: ln(price) on the 10-year real yield, fitted to 2021 (from each series' own start), then price ÷ line. Shaded band is ±2 typical misses of that fit; dashed vertical is 2022. Cointegration critical value is −3.34 at 5%, as above. Each chart overlays every series in its category on one log axis, so short series start late and the Chinese series stop in July 2024. Grey lines are the ratio for each series, labelled when the latest ratio is above 2× or below 0.6×. Coloured lines are the break-outs: a fit R² of at least 0.30 before 2022 and no more than 40% of weeks inside the band afterwards. Four series meet that rule: live cattle, feeder cattle, tin and Chinese glass.
 
 **What stands out**
 
 - Nothing comes close to gold's R² of 0.85. Best of the rest: apples 0.54 (a short 2017+ sample with a _positive_ slope), then tin 0.42, IMF iron ore 0.41, soybean meal 0.40, Chinese glass 0.38 and cattle 0.34–0.37.
-- Tin is the closest copy of the precious-metal story: decent fit, leaves its band after 2021 (16% of weeks inside), now 4.3× the line. Live and feeder cattle leave too (14% and 16% inside), and their correlation with real yields flips from about −0.6 before 2022 to +0.75 after.
+- Tin has the highest R² of the four break-outs (0.42), leaves its band after 2021 (16% of weeks inside) and is now 4.3× the line. Live and feeder cattle leave too (14% and 16% inside), and their correlation with real yields flips from about −0.6 before 2022 to +0.75 after.
 - Many series clear −3.34 before 2022 (lean hogs −4.35, Class III milk, soybean meal, sunflower oil, lead, eggs, cocoa, rough rice), but most have R² near 0.1 or less. They revert around a flat line rather than tracking yields, and with 48 tests two or three false passes at 5% are expected.
 - Vegetable oils and iron ore drift away late rather than in 2022. IMF sunflower oil was inside its band until September 2025 and is now 2.05×; palm, rapeseed and soybean oil look similar. I have not tested why.
 - Chinese futures mostly never had a relationship. Bitumen has R² 0.01, stays inside its band (98% of weeks to July 2024) and sits at 1.2×. Rubber, rebar, PVC, eggs, palm oil and rapeseed oil are the same. Glass, coke and rapeseed meal are the exceptions.
@@ -162,3 +162,54 @@ SHFE, DCE and ZCE main contract, weekly, from Sina Finance. The free feed stops 
 | China PVC (DCE) | 0.02 | -2.33 | 97% | 99% | 0.9× |
 | China glass (ZCE) | 0.38 | -2.37 | 98% | 32% | 1.8× |
 
+### Break-outs compared with gold
+
+Gold plus the four series that meet the break-out rule, as price ÷ real-yield line. Glass ends in July 2024; tin is monthly (IMF), with gold averaged by month for tin comparisons.
+
+<commodity-chart kind="breakouts"></commodity-chart>
+
+**Fit and break**
+
+| | Fit R² (to 2021) | Price change per +1 pt real yield | In band, to 2021 | In band, after 2021 | Last week in band | Latest ÷ line | Peak ÷ line after 2021 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Gold | 0.85 | -25% | 94% | 6% | 2022-07 | 6.0× | 6.7× |
+| Live cattle | 0.37 | -10% | 95% | 14% | 2022-09 | 2.4× | 2.7× |
+| Feeder cattle | 0.34 | -12% | 92% | 16% | 2023-01 | 3.1× | 3.4× |
+| China glass (ZCE) | 0.38 | -24% | 98% | 32% | 2022-12 | 1.8× | 2.5× |
+| Tin (IMF) | 0.42 | -18% | 96% | 16% | 2023-05 | 4.3× | 4.3× |
+
+**Co-movement with real yields.** Level correlation is of ln price with the real yield. Change correlation is of weekly changes (monthly for tin).
+
+| | Level corr. with real yield, to 2021 | Level corr., after 2021 | Change corr. with real yield, to 2021 | Change corr., after 2021 |
+| --- | --- | --- | --- | --- |
+| Gold | -0.92 | 0.54 | -0.30 | -0.23 |
+| Live cattle | -0.61 | 0.74 | -0.05 | 0.04 |
+| Feeder cattle | -0.59 | 0.75 | -0.04 | 0.03 |
+| China glass (ZCE) | -0.62 | -0.49 | 0.01 | -0.03 |
+| Tin (IMF) | -0.65 | 0.01 | -0.06 | -0.39 |
+
+**Co-movement with gold after 2021.** Glass covers 2022 to July 2024 only; gold is measured over the same dates.
+
+| | Price change since end-2021 | Gold, same dates | Level corr. with gold, after 2021 | Change corr. with gold, after 2021 | R² of ln price on time, after 2021 | Same for gold |
+| --- | --- | --- | --- | --- | --- | --- |
+| Live cattle | +54% | +123% | 0.91 | 0.02 | 0.91 | 0.89 |
+| Feeder cattle | +93% | +123% | 0.91 | -0.06 | 0.93 | 0.89 |
+| China glass (ZCE) | -16% | +31% | 0.08 | 0.18 | 0.07 | 0.62 |
+| Tin (IMF) | +36% | +145% | 0.76 | 0.51 | 0.35 | 0.89 |
+
+**Similarities**
+
+- All four had 92–98% of weeks inside their band to 2021 (gold 94%) and a negative fitted slope (−10% to −24% per point of real yield; gold −25%).
+- All four had a negative level correlation with real yields to 2021 (−0.59 to −0.65; gold −0.92).
+- The last week inside the band was between September 2022 and May 2023 for the four (gold: 29 July 2022), and the latest ÷ line is above 1× for all (1.8× to 4.3×).
+- Live and feeder cattle have a level correlation of 0.91 with gold after 2021, and the R² of ln price on time is 0.91 and 0.93 (gold 0.89).
+
+**Differences**
+
+- Fit R² to 2021 is 0.34–0.42 for the four, against 0.85 for gold. Gold's level correlation with real yields to 2021 is −0.92.
+- Gold's weekly changes correlate with real-yield changes at −0.30 before 2022 and −0.23 after. For live cattle, feeder cattle and glass it is between −0.05 and +0.04 in both periods. Tin is −0.06 before and −0.39 after (monthly).
+- After 2021 the level correlation with real yields is +0.54 for gold, +0.74 and +0.75 for live and feeder cattle, +0.01 for tin and −0.49 for glass.
+- Latest ÷ line is 6.0× for gold against 2.4×, 3.1×, 4.3× and 1.8×. Gold's peak after 2021 is 6.7×; live cattle's is 2.7×, feeder cattle's 3.4×, tin's 4.3× (its latest) and glass's 2.5×.
+- Price change since end-2021: live cattle +54% (gold +123%), feeder cattle +93% (gold +123%), tin +36% (gold +145%), glass −16% to July 2024 (gold +31%). Glass's ratio is above 1× while its price is lower than at end-2021, because its fitted line fell with higher real yields.
+- Weekly changes in live cattle, feeder cattle and glass have correlations with gold's weekly changes of 0.02, −0.06 and 0.18. Tin's monthly changes correlate with gold's at 0.51, and its level correlation with gold is 0.76 (R² on time 0.35).
+- Glass's level correlation with gold after 2021 is 0.08.
