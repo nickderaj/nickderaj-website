@@ -7,7 +7,7 @@ tags: ['commodities']
 
 A follow-up to [Gold and real yields vs other commodities](/blog/10-gold-real-yields-vs-commodities). That post tested which commodities followed real yields. This one looks at how commodities outside the mainstream move relative to each other, to mainstream commodities and to equities.
 
-It was prompted by an April 2026 [Top Traders Unplugged interview](https://www.toptradersunplugged.com/podcast/the-hidden-edge-in-markets-no-one-is-trading-ft-tom-babbedge/) with Tom Babbedge of GreshamQuant, a systematic manager that trades only alternative commodities. This post presents data. It contains no GreshamQuant returns or positions; I found none published.
+It was prompted by an April 2026 [Top Traders Unplugged interview](https://www.toptradersunplugged.com/podcast/the-hidden-edge-in-markets-no-one-is-trading-ft-tom-babbedge/) with Tom Babbedge of GreshamQuant, a systematic manager that trades only alternative commodities, and a [November 2026 episode](https://www.toptradersunplugged.com/podcast/the-hard-part-isnt-buying-trend-following-ft-yoav-git/) with his colleague Yoav Git. This post presents data. It contains no GreshamQuant returns or positions; I found none published.
 
 ## What GreshamQuant has said
 
@@ -15,6 +15,15 @@ It was prompted by an April 2026 [Top Traders Unplugged interview](https://www.t
 - On financial markets in macro shocks: "Everything collapses to one in terms of its correlation."
 - On their own book: a correlation to the SocGen CTA index of "20%, 25%".
 - In a 2021 [Hedge Fund Journal profile](https://thehedgefundjournal.com/gresham-alternative-commodities), Scott Kerson, then head of systematic strategies, said the strategy's markets have "an average pairwise correlation of 0.2 over a 10-to-20-year history", and said there was "some increase in correlation in March 2020".
+
+In the [14 November 2026 episode](https://www.toptradersunplugged.com/podcast/the-hard-part-isnt-buying-trend-following-ft-yoav-git/), which the site tags GreshamQuant and which Babbedge's interview refers to as a colleague's, Yoav Git and host Alan Dunne discuss trend following across asset classes. It names no individual markets or positions and gives no GreshamQuant returns. What was said:
+
+- On the firm: "in our company, we run sort of asset class specific CTAs."
+- On correlation to a liquid CTA portfolio: commodity trend "has only maybe 20%, 30% correlation to liquid trend"; alternative-markets CTAs have "somewhere between 70% and 80% correlation".
+- On Sharpe ratios: adding commodity trend to liquid trend takes a Sharpe from 0.6 to 0.8. Alternative trend "will add you a little bit", "maybe bump you up from 60 to 65 basis point", and after commodity trend is added, "the additional Sharpe from alternative trend … is like literally zero."
+- On equity downturns: equity trend has a convexity of about 35–40% and bond trend about 20%. Commodity trend is "flat", "if anything … slightly negative". Git says "you're not buying commodity trend for crisis alpha."
+- On inflation: commodity trend "does very well either in stagflation or in overheating", and inflation is the main variable conditioning its performance.
+- On November 2026: Dunne cites the SocGen CTA index at −3.2% to 11 November (+10.2% year to date) and the SocGen Trend index at −3.9% (+9.95%). Git says the midterms "brought almost a reversal a lot in the commodity market" and "that's where most CTAs are feeling the pain"; Dunne says "from long energy positions basically" and Git replies "Exactly." Git also says the month "has been quite good for me on the bond trend". These describe the indices and CTAs generally, not GreshamQuant's fund.
 
 The sections below measure the same kinds of quantities on public price data. The market sets differ from GreshamQuant's, so the numbers are not a replication of theirs.
 
