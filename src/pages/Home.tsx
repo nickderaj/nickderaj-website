@@ -91,7 +91,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 export default function Home() {
-  useDocumentMeta('Nick de Raj — Full-Stack & Quant Researcher', SUMMARY);
+  useDocumentMeta('Nick de Raj — Full-Stack Developer & Researcher', SUMMARY);
   const work = career.filter((c) => c.kind === 'work');
   const education = career.filter((c) => c.kind === 'education');
 
@@ -107,7 +107,7 @@ export default function Home() {
       <section>
         <div>
           <h1 className="text-4xl font-semibold tracking-tight">Nick de Raj</h1>
-          <p className="text-primary mt-1 font-mono text-sm">Full-Stack &amp; Quant Researcher</p>
+          <p className="text-primary mt-1 font-mono text-sm">Full-Stack Developer &amp; Researcher</p>
           <p className="text-muted-foreground mt-1 font-mono text-xs">London, UK</p>
         </div>
       </section>
