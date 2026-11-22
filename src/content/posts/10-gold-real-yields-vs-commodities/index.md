@@ -1,11 +1,33 @@
 ---
 title: 'Gold and real yields vs other commodities'
 date: '2026-11-21'
-description: 'Reproducing the gold vs real yield charts from Caio Marchesani, and why the relationship broke in 2022.'
+description: 'Gold stopped following real yields after 2021. Was it the only one? The same test on 56 other commodities, from silver to Chinese bitumen.'
 tags: ['commodities']
 ---
 
-Reproduced from [Caio Marchesani, "Gold and real yields"](https://caiomarchesani.com/articles/gold-and-real-yields/). Weekly Friday closes, COMEX gold (`GC=F`) and 10-year TIPS yield (FRED `DFII10`).
+I read [Caio Marchesani's article, "Gold and real yields"](https://caiomarchesani.com/articles/gold-and-real-yields/) and wanted to see whether gold was the only commodity that made this jump. This post first reproduces his gold charts (weekly Friday closes of COMEX gold, `GC=F`, against the 10-year TIPS yield, FRED `DFII10`), then runs the same test on eight other commodities and on 48 more unusual ones, from soybean meal to Shanghai bitumen.
+
+## Maths primer
+
+The post leans on a few statistical terms. Here is what each one means, in the order they show up.
+
+<callout variant="note" title="Real yield">The yield on inflation-protected US Treasuries (10-year TIPS): the interest rate after inflation. Gold pays no interest, so a higher real yield makes holding it relatively less attractive. That is the usual reason gold and real yields move in opposite directions.</callout>
+
+<callout variant="note" title="ln (natural log) of price">Charts and fits use ln(price) so that equal percentage moves are equal distances. A price that doubles moves the same distance whether it goes 100 to 200 or 1,000 to 2,000. It also lets the slope be read as a percentage.</callout>
+
+<callout variant="note" title="Regression (OLS) and the fitted line">Ordinary least squares draws the straight line through ln(price) against the real yield that leaves the smallest total squared error. The slope says how much price changes, in percent, for each +1 point of real yield. Here the line is fitted on 2006–2021 only and then extended forward, so later years show how far prices drifted from the old relationship.</callout>
+
+<callout variant="note" title="R² (R-squared)">A number from 0 to 1 for how much of the ups and downs in ln(price) the line explains. 0.85 means 85% of the variation is accounted for; 0 means none. It measures fit, not cause, and two series that both trend over time can score high by coincidence.</callout>
+
+<callout variant="note" title="Typical miss and the band">The typical miss is the standard deviation of the gaps between the actual and fitted values, about 12% for gold. The shaded band is ±2 typical misses, which holds roughly 95% of weeks if the gaps are bell-shaped. "In band" means a week fell inside it.</callout>
+
+<callout variant="note" title="Price ÷ line (the multiple)">The actual price divided by what the 2006–2021 line predicts for that week's real yield. 1× is on the line, 2× is twice the line's price, 0.5× is half. The ratio charts use a log scale, so these distances look even.</callout>
+
+<callout variant="note" title="Cointegration t">A test (an Engle–Granger style ADF test) of whether the gap between price and line keeps returning to zero, which a stable relationship should do, or wanders off. More negative is stronger evidence; below −3.34 passes at the 5% level. Run on many series, about 1 in 20 pass by chance.</callout>
+
+<callout variant="note" title="Correlation: levels vs changes">Correlation runs from −1 (opposite) to +1 (together). Level correlation compares the prices themselves, which two trending series can match by accident. Change correlation compares week-to-week (or month-to-month) moves, which shows whether they actually move together.</callout>
+
+<callout variant="note" title="Break-out rule used here">For the alternative commodities I call a series a break-out if its fit R² to 2021 is at least 0.30 and no more than 40% of its weeks after 2021 fall inside the band. It is a rule I chose to pick out the series worth comparing with gold.</callout>
 
 ## Gold and real yields, together
 
