@@ -9,6 +9,12 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 
+const CommodityRatioChart = lazy(() =>
+  import('./CommodityRatioChart.tsx').then((m) => ({ default: m.CommodityRatioChart })),
+);
+const GoldRealYieldChart = lazy(() =>
+  import('./GoldRealYieldChart.tsx').then((m) => ({ default: m.GoldRealYieldChart })),
+);
 const OilReservesMap = lazy(() =>
   import('./ceres/OilReservesMap.tsx').then((m) => ({ default: m.OilReservesMap })),
 );
@@ -136,6 +142,16 @@ export function Markdown({ content, postSlug = '' }: { content: string; postSlug
       </nav>
     ),
     callout: Callout,
+    'commodity-chart': ({ kind }: { kind?: string }) => (
+      <Suspense fallback={Fallback}>
+        <CommodityRatioChart kind={kind === 'precious' ? 'precious' : 'multiples'} />
+      </Suspense>
+    ),
+    'gold-chart': ({ kind }: { kind?: string }) => (
+      <Suspense fallback={Fallback}>
+        <GoldRealYieldChart kind={kind === 'ratio' || kind === 'overlay' ? kind : 'scatter'} />
+      </Suspense>
+    ),
     'oil-reserves-map': ({ datadir }: { datadir?: string }) => (
       <Suspense fallback={Fallback}>
         <OilReservesMap {...(datadir ? { dataDir: datadir } : {})} />
