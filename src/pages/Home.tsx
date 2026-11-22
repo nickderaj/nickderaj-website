@@ -1,4 +1,3 @@
-import avatar from '@/assets/avatar.png';
 import { PostList } from '@/components/PostList.tsx';
 import { career } from '@/content/career.ts';
 import { projects } from '@/content/projects/index.ts';
@@ -92,7 +91,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 export default function Home() {
-  useDocumentMeta('Nick de Raj — Full-Stack & Quant Developer', SUMMARY);
+  useDocumentMeta('Nick de Raj — Full-Stack & Quant Researcher', SUMMARY);
   const work = career.filter((c) => c.kind === 'work');
   const education = career.filter((c) => c.kind === 'education');
 
@@ -105,15 +104,10 @@ export default function Home() {
 
   return (
     <main id="main" className="mx-auto max-w-3xl px-6 pt-16">
-      <section className="flex flex-col gap-8 sm:flex-row sm:items-center">
-        <img
-          src={avatar}
-          alt="Nick de Raj"
-          className="border-border h-28 w-28 rounded-2xl border shadow-[0_0_60px_-15px_var(--primary)]"
-        />
+      <section>
         <div>
           <h1 className="text-4xl font-semibold tracking-tight">Nick de Raj</h1>
-          <p className="text-primary mt-1 font-mono text-sm">Full-Stack &amp; Quant Developer</p>
+          <p className="text-primary mt-1 font-mono text-sm">Full-Stack &amp; Quant Researcher</p>
           <p className="text-muted-foreground mt-1 font-mono text-xs">London, UK</p>
         </div>
       </section>
