@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import App from './App.tsx';
-import { posts } from './lib/posts.ts';
+import { legacyPostSlugs } from './lib/legacySlugs.ts';
+import { getPost, posts } from './lib/posts.ts';
 
 function renderAt(path: string) {
   return render(
@@ -37,5 +38,14 @@ describe('App routing', () => {
   it('shows 404 for unknown posts', () => {
     renderAt('/blog/nope');
     expect(screen.getByText('Page not found')).toBeInTheDocument();
+  });
+
+  it.each(Object.entries(legacyPostSlugs))('redirects old slug %s to %s', (oldSlug, newSlug) => {
+    const target = getPost(newSlug);
+    if (!target) {
+      throw new Error(`legacy redirect target missing: ${newSlug}`);
+    }
+    renderAt(`/blog/${oldSlug}`);
+    expect(screen.getByRole('heading', { level: 1, name: target.title })).toBeInTheDocument();
   });
 });

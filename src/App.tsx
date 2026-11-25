@@ -1,7 +1,15 @@
 import { Footer } from '@/components/layout/Footer.tsx';
 import { Header } from '@/components/layout/Header.tsx';
+import { legacyPostSlugs } from '@/lib/legacySlugs.ts';
 import { useEffect } from 'react';
-import { NavigationType, Route, Routes, useLocation, useNavigationType } from 'react-router';
+import {
+  Navigate,
+  NavigationType,
+  Route,
+  Routes,
+  useLocation,
+  useNavigationType,
+} from 'react-router';
 import BlogIndex from './pages/BlogIndex.tsx';
 import BlogPost from './pages/BlogPost.tsx';
 import Home from './pages/Home.tsx';
@@ -27,6 +35,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<BlogIndex />} />
+        {Object.entries(legacyPostSlugs).map(([oldSlug, newSlug]) => (
+          <Route
+            key={oldSlug}
+            path={`/blog/${oldSlug}`}
+            element={<Navigate to={`/blog/${newSlug}`} replace />}
+          />
+        ))}
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
