@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
+import vercelConfig from '../vercel.json?raw';
 import App from './App.tsx';
 import { legacyPostSlugs } from './lib/legacySlugs.ts';
 import { getPost, posts } from './lib/posts.ts';
@@ -47,5 +48,19 @@ describe('App routing', () => {
     }
     renderAt(`/blog/${oldSlug}`);
     expect(screen.getByRole('heading', { level: 1, name: target.title })).toBeInTheDocument();
+  });
+
+  it('keeps the vercel.json 301 redirects in sync with the legacy slug map', () => {
+    const config = JSON.parse(vercelConfig) as {
+      redirects: { source: string; destination: string; permanent: boolean }[];
+    };
+    const fromConfig = Object.fromEntries(
+      config.redirects.map((r) => [
+        r.source.replace('/blog/', ''),
+        r.destination.replace('/blog/', ''),
+      ]),
+    );
+    expect(fromConfig).toEqual(legacyPostSlugs);
+    expect(config.redirects.every((r) => r.permanent)).toBe(true);
   });
 });

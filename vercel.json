@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/blog/08-precious-metals-map",
+      "destination": "/blog/01-precious-metals-map",
+      "permanent": true
+    },
+    {
+      "source": "/blog/09-oil-reserves-map",
+      "destination": "/blog/02-oil-reserves-map",
+      "permanent": true
+    },
+    {
+      "source": "/blog/10-gold-real-yields-vs-commodities",
+      "destination": "/blog/03-gold-real-yields-vs-commodities",
+      "permanent": true
+    },
+    {
+      "source": "/blog/11-alternative-commodities-correlations",
+      "destination": "/blog/04-alternative-commodities-correlations",
+      "permanent": true
+    },
+    {
+      "source": "/blog/12-use-cases-of-riemanns-hypothesis",
+      "destination": "/blog/05-use-cases-of-riemanns-hypothesis",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
